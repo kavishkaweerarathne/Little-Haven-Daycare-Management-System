@@ -25,7 +25,7 @@
     <main class="register-container">
         <div class="register-card">
             <!-- Logo -->
-            <a href="home.php" class="logo">
+            <a href="../home/home.php" class="logo">
                 <i class="fas fa-hands-holding-child logo-icon"></i>
                 <span class="logo-text">Little Haven</span>
             </a>
@@ -102,8 +102,8 @@
             </form>
 
             <div class="register-footer">
-                <p>Already have an account? <a href="login.php">Sign In</a></p>
-                <a href="home.php" class="back-home">
+                <p>Already have an account? <a href="../home/login.php">Sign In</a></p>
+                <a href="../home/home.php" class="back-home">
                     <i class="fas fa-arrow-left"></i> Back to Homepage
                 </a>
             </div>

@@ -37,7 +37,7 @@
                 <li><a href="#contact">Contact</a></li>
             </ul>
             <div class="nav-cta">
-                <a href="login.php" class="btn btn-primary btn-nav">Login</a>
+                <a href="../login/login.php" class="btn btn-primary btn-nav">Login</a>
             </div>
         </nav>
     </header>
