@@ -62,7 +62,11 @@
                 <button type="submit" class="btn-login">Sign In</button>
             </form>
 
-            <a href="home.php" class="back-home">
+            <div class="login-footer" style="margin-top: 25px; font-size: 0.95rem; color: var(--text-muted);">
+                <p>Don't have an account? <a href="register.php" style="color: var(--primary-dark); text-decoration: none; font-weight: 700;">Register Now</a></p>
+            </div>
+
+            <a href="home.php" class="back-home" style="margin-top: 20px;">
                 <i class="fas fa-arrow-left"></i> Back to Homepage
             </a>
         </div>
