@@ -139,9 +139,10 @@ h1, h2, h3, h4 {
 .logo {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 24px;
     text-decoration: none;
     transition: var(--transition-smooth);
+    padding-left: 8px;
 }
 
 .logo-icon {
