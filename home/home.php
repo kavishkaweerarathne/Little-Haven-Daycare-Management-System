@@ -27,7 +27,7 @@
     <header class="header">
         <nav class="container nav">
             <a href="home.php" class="logo">
-                <img src="../assets/logo_teal.png" alt="Little Haven">
+                <i class="fas fa-hands-holding-child logo-icon"></i>
                 <span class="logo-text">Little Haven</span>
             </a>
             <ul class="nav-links">

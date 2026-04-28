@@ -26,7 +26,7 @@
         <div class="login-card">
             <!-- Logo -->
             <a href="home.php" class="logo">
-                <img src="../assets/logo_teal.png" alt="Little Haven Logo">
+                <i class="fas fa-hands-holding-child logo-icon"></i>
                 <span>Little Haven</span>
             </a>
 

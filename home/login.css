@@ -86,20 +86,35 @@ body {
 .logo {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 16px;
     text-decoration: none;
-    margin-bottom: 30px;
+    margin-bottom: 35px;
+    transition: var(--transition-smooth);
 }
 
-.logo img {
-    height: 40px;
+.logo-icon {
+    font-size: 3rem;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 4px 8px rgba(38, 198, 218, 0.3));
 }
 
 .logo span {
     font-family: var(--font-heading);
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: 800;
     color: var(--secondary);
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, var(--secondary), var(--primary-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.logo:hover .logo-icon {
+    transform: translateY(-5px) rotate(-10deg);
 }
 
 .login-header {
