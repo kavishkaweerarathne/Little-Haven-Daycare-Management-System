@@ -102,7 +102,7 @@
             </form>
 
             <div class="register-footer">
-                <p>Already have an account? <a href="../home/login.php">Sign In</a></p>
+                <p>Already have an account? <a href="../login/login.php">Sign In</a></p>
                 <a href="../home/home.php" class="back-home">
                     <i class="fas fa-arrow-left"></i> Back to Homepage
                 </a>
