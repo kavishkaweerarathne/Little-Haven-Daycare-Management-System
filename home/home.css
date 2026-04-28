@@ -202,7 +202,7 @@ h1, h2, h3, h4 {
 
 .nav-links a:hover {
     color: var(--secondary);
-    background: white;
+    background: rgb(216, 239, 255);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
     transform: translateY(-2px);
 }
