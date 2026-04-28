@@ -28,7 +28,7 @@
         <nav class="container nav">
             <a href="home.php" class="logo">
                 <img src="../assets/logo_teal.png" alt="Little Haven">
-                <span>Little Haven</span>
+                <span class="logo-text">Little Haven</span>
             </a>
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
