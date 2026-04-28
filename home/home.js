@@ -1,26 +1,3 @@
-// Smart Header Behavior (Hide on Scroll Down, Show on Scroll Up)
-let lastScrollY = window.scrollY;
-const header = document.querySelector('.header');
-
-window.addEventListener('scroll', () => {
-    if (!header) return;
-
-    const currentScrollY = window.scrollY;
-    
-    // Sticky state
-    header.classList.toggle('sticky', currentScrollY > 50);
-
-    // Hide/Show logic
-    if (currentScrollY > lastScrollY && currentScrollY > 200) {
-        // Scrolling down
-        header.classList.add('nav-hidden');
-    } else {
-        // Scrolling up
-        header.classList.remove('nav-hidden');
-    }
-
-    lastScrollY = currentScrollY;
-});
 
 // Enhanced Intersection Observer for Stylish Reveals
 const observerOptions = {
