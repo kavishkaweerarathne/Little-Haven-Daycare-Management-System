@@ -123,33 +123,33 @@
     </section>
 
     <!-- Footer -->
-    <footer class="footer" style="background: var(--secondary); color: white; padding: 100px 0 30px;">
-        <div class="container" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 80px;">
-            <div>
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-column">
                 <a href="#" class="logo" style="color: white; margin-bottom: 30px;">
-                    <img src="../assets/logo_teal.png" alt="Little Haven" style="height: 40px; filter: brightness(0) invert(1);">
-                    <span>Little Haven</span>
+                    <i class="fas fa-hands-holding-child logo-icon" style="color: var(--primary); font-size: 2.5rem;"></i>
+                    <span class="logo-text" style="background: white; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Little Haven</span>
                 </a>
-                <p style="opacity: 0.7; max-width: 400px;">Setting the gold standard for early childhood education and management since 2015.</p>
+                <p class="footer-info">Setting the gold standard for early childhood education and management since 2015.</p>
             </div>
-            <div>
-                <h4 style="margin-bottom: 30px;">Explore</h4>
-                <ul style="list-style: none; display: flex; flex-direction: column; gap: 15px; opacity: 0.7;">
+            <div class="footer-column">
+                <h4>Explore</h4>
+                <ul class="footer-links">
                     <li><a href="#home">Our Philosophy</a></li>
                     <li><a href="#services">Learning Paths</a></li>
                     <li><a href="#about">The Facility</a></li>
                 </ul>
             </div>
-            <div>
-                <h4 style="margin-bottom: 30px;">Connect</h4>
-                <p style="opacity: 0.7; margin-bottom: 20px;">123 Elite Avenue, Sky City<br>hello@littlehaven.com</p>
-                <div style="display: flex; gap: 15px;">
-                    <a href="#" style="width: 40px; height: 40px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%;"><i class="fab fa-instagram"></i></a>
-                    <a href="#" style="width: 40px; height: 40px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%;"><i class="fab fa-linkedin-in"></i></a>
+            <div class="footer-column">
+                <h4>Connect</h4>
+                <p class="footer-info">123 Elite Avenue, Sky City<br>hello@littlehaven.com</p>
+                <div class="social-links">
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
         </div>
-        <div class="container" style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: 80px; padding-top: 30px; text-align: center; opacity: 0.5; font-size: 0.9rem;">
+        <div class="container footer-bottom">
             &copy; 2026 Little Haven Elite. All Rights Reserved.
         </div>
     </footer>
