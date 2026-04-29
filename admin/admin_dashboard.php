@@ -72,7 +72,13 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             <div style="background: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                     <h2>Staff Directory</h2>
-                    <a href="add_user.php?role=staff" class="logout-btn" style="background: var(--primary); text-decoration: none;">+ Add Staff</a>
+                    <div style="display: flex; gap: 1rem;">
+                        <div style="position: relative;">
+                            <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8;"></i>
+                            <input type="text" id="staff-search" placeholder="Search staff..." style="padding: 10px 10px 10px 35px; border: 1px solid #e2e8f0; border-radius: 8px; width: 250px;">
+                        </div>
+                        <a href="add_user.php?role=staff" class="logout-btn" style="background: var(--primary); text-decoration: none;">+ Add Staff</a>
+                    </div>
                 </div>
                 <table style="width: 100%; border-collapse: collapse;">
                     <thead>
@@ -111,7 +117,13 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             <div style="background: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                     <h2>Parent Directory</h2>
-                    <a href="add_user.php?role=parent" class="logout-btn" style="background: var(--primary); text-decoration: none;">+ Add Parent</a>
+                    <div style="display: flex; gap: 1rem;">
+                        <div style="position: relative;">
+                            <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8;"></i>
+                            <input type="text" id="parents-search" placeholder="Search parents..." style="padding: 10px 10px 10px 35px; border: 1px solid #e2e8f0; border-radius: 8px; width: 250px;">
+                        </div>
+                        <a href="add_user.php?role=parent" class="logout-btn" style="background: var(--primary); text-decoration: none;">+ Add Parent</a>
+                    </div>
                 </div>
                 <table style="width: 100%; border-collapse: collapse;">
                     <thead>

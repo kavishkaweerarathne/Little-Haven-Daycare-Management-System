@@ -39,3 +39,31 @@ function confirmDelete(id) {
         window.location.href = 'delete_user.php?id=' + id;
     }
 }
+
+// Search Filtering Logic
+function initSearch(inputId, tableId) {
+    const searchInput = document.getElementById(inputId);
+    const table = document.querySelector(`#${tableId} table`);
+    
+    if (searchInput && table) {
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = table.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    }
+}
+
+// Initialize searches
+document.addEventListener('DOMContentLoaded', () => {
+    initSearch('staff-search', 'staff-tab');
+    initSearch('parents-search', 'parents-tab');
+});
