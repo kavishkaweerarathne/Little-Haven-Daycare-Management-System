@@ -37,19 +37,29 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
         
         <!-- Dashboard Section -->
         <div id="dashboard-tab" class="tab-content active">
+            <?php
+            include '../config.php';
+            $staff_count_query = "SELECT COUNT(*) as total FROM users WHERE role = 'staff'";
+            $staff_count_res = mysqli_query($con, $staff_count_query);
+            $staff_count = mysqli_fetch_assoc($staff_count_res)['total'];
+
+            $parent_count_query = "SELECT COUNT(*) as total FROM users WHERE role = 'parent'";
+            $parent_count_res = mysqli_query($con, $parent_count_query);
+            $parent_count = mysqli_fetch_assoc($parent_count_res)['total'];
+            ?>
             <div class="stats-grid">
-                <div class="stat-card">
+                <div class="stat-card" onclick="document.querySelector('[data-tab=\'staff\']').click()" style="cursor: pointer;">
                     <div class="stat-icon" style="background: #6366f1;"><i class="fas fa-users"></i></div>
                     <div>
                         <h3 style="margin:0; font-size: 0.9rem; color: #6b7280;">Total Staff</h3>
-                        <p style="margin:0; font-size: 1.5rem; font-weight: 700;">12</p>
+                        <p style="margin:0; font-size: 1.5rem; font-weight: 700;"><?php echo $staff_count; ?></p>
                     </div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="document.querySelector('[data-tab=\'parents\']').click()" style="cursor: pointer;">
                     <div class="stat-icon" style="background: #10b981;"><i class="fas fa-user-group"></i></div>
                     <div>
                         <h3 style="margin:0; font-size: 0.9rem; color: #6b7280;">Total Parents</h3>
-                        <p style="margin:0; font-size: 1.5rem; font-weight: 700;">48</p>
+                        <p style="margin:0; font-size: 1.5rem; font-weight: 700;"><?php echo $parent_count; ?></p>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -83,6 +93,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                 <table style="width: 100%; border-collapse: collapse;">
                     <thead>
                         <tr style="text-align: left; border-bottom: 2px solid #f3f4f6;">
+                            <th style="padding: 1rem;">ID</th>
                             <th style="padding: 1rem;">Name</th>
                             <th style="padding: 1rem;">Email</th>
                             <th style="padding: 1rem;">Phone</th>
@@ -96,6 +107,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                         $result = mysqli_query($con, $sql);
                         while($row = mysqli_fetch_assoc($result)) {
                             echo "<tr style='border-bottom: 1px solid #f3f4f6;'>";
+                            echo "<td style='padding: 1rem;'>#".$row['id']."</td>";
                             echo "<td style='padding: 1rem;'>".$row['fullname']."</td>";
                             echo "<td style='padding: 1rem;'>".$row['email']."</td>";
                             echo "<td style='padding: 1rem;'>".$row['phone']."</td>";
@@ -128,6 +140,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                 <table style="width: 100%; border-collapse: collapse;">
                     <thead>
                         <tr style="text-align: left; border-bottom: 2px solid #f3f4f6;">
+                            <th style="padding: 1rem;">ID</th>
                             <th style="padding: 1rem;">Name</th>
                             <th style="padding: 1rem;">Email</th>
                             <th style="padding: 1rem;">Phone</th>
@@ -140,6 +153,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                         $result = mysqli_query($con, $sql);
                         while($row = mysqli_fetch_assoc($result)) {
                             echo "<tr style='border-bottom: 1px solid #f3f4f6;'>";
+                            echo "<td style='padding: 1rem;'>#".$row['id']."</td>";
                             echo "<td style='padding: 1rem;'>".$row['fullname']."</td>";
                             echo "<td style='padding: 1rem;'>".$row['email']."</td>";
                             echo "<td style='padding: 1rem;'>".$row['phone']."</td>";
