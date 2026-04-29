@@ -34,11 +34,28 @@ document.querySelectorAll('.sidebar nav p').forEach(item => {
     });
 });
 
-function confirmDelete(id) {
+function confirmDelete(id, tab) {
     if (confirm("Are you sure you want to delete this user? This action cannot be undone.")) {
-        window.location.href = 'delete_user.php?id=' + id;
+        window.location.href = 'delete_user.php?id=' + id + '&tab=' + tab;
     }
 }
+
+// Function to get URL parameters
+function getUrlParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+}
+
+// Check for tab parameter on load
+document.addEventListener('DOMContentLoaded', () => {
+    const initialTab = getUrlParam('tab');
+    if (initialTab) {
+        const tabElement = document.querySelector(`.sidebar nav p[data-tab="${initialTab}"]`);
+        if (tabElement) {
+            tabElement.click();
+        }
+    }
+});
 
 // Search Filtering Logic
 function initSearch(inputId, tableId) {

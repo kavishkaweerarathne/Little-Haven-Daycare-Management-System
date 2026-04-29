@@ -7,8 +7,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     exit();
 }
 
+$tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
+
 if (!isset($_GET['id'])) {
-    header("Location: admin_dashboard.php");
+    header("Location: admin_dashboard.php?tab=$tab");
     exit();
 }
 
@@ -18,7 +20,7 @@ $result = mysqli_query($con, $sql);
 $user = mysqli_fetch_assoc($result);
 
 if (!$user) {
-    echo "<script>alert('User not found!'); window.location.href='admin_dashboard.php';</script>";
+    echo "<script>alert('User not found!'); window.location.href='admin_dashboard.php?tab=$tab';</script>";
     exit();
 }
 
@@ -31,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $update_sql = "UPDATE users SET fullname='$fullname', email='$email', phone='$phone', role='$role' WHERE id='$id'";
     
     if (mysqli_query($con, $update_sql)) {
-        echo "<script>alert('User updated successfully!'); window.location.href='admin_dashboard.php';</script>";
+        echo "<script>alert('User updated successfully!'); window.location.href='admin_dashboard.php?tab=$tab';</script>";
     } else {
         echo "<script>alert('Error updating user: " . mysqli_error($con) . "');</script>";
     }
@@ -125,7 +127,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </select>
             </div>
             <button type="submit" class="btn-save">Save Changes</button>
-            <a href="admin_dashboard.php" class="btn-cancel">Cancel</a>
+            <a href="admin_dashboard.php?tab=<?php echo $tab; ?>" class="btn-cancel">Cancel</a>
         </form>
     </div>
 </body>

@@ -7,8 +7,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     exit();
 }
 
+$tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
+
 if (!isset($_GET['id'])) {
-    header("Location: admin_dashboard.php");
+    header("Location: admin_dashboard.php?tab=$tab");
     exit();
 }
 
@@ -18,7 +20,7 @@ $result = mysqli_query($con, $sql);
 $user = mysqli_fetch_assoc($result);
 
 if (!$user) {
-    echo "<script>alert('User not found!'); window.location.href='admin_dashboard.php';</script>";
+    echo "<script>alert('User not found!'); window.location.href='admin_dashboard.php?tab=$tab';</script>";
     exit();
 }
 ?>
@@ -128,7 +130,7 @@ if (!$user) {
 </head>
 <body>
     <div class="profile-container">
-        <a href="admin_dashboard.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
+        <a href="admin_dashboard.php?tab=<?php echo $tab; ?>" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
         
         <div class="profile-header">
             <div class="avatar">
@@ -159,15 +161,15 @@ if (!$user) {
         </div>
 
         <div class="action-footer">
-            <a href="edit_user.php?id=<?php echo $user['id']; ?>" class="btn btn-edit">Edit Profile</a>
-            <a href="#" onclick="confirmDelete(<?php echo $user['id']; ?>)" class="btn btn-delete">Delete User</a>
+            <a href="edit_user.php?id=<?php echo $user['id']; ?>&tab=<?php echo $tab; ?>" class="btn btn-edit">Edit Profile</a>
+            <a href="#" onclick="confirmDelete(<?php echo $user['id']; ?>, '<?php echo $tab; ?>')" class="btn btn-delete">Delete User</a>
         </div>
     </div>
 
     <script>
-    function confirmDelete(id) {
+    function confirmDelete(id, tab) {
         if (confirm("Are you sure you want to delete this user? This action cannot be undone.")) {
-            window.location.href = 'delete_user.php?id=' + id;
+            window.location.href = 'delete_user.php?id=' + id + '&tab=' + tab;
         }
     }
     </script>

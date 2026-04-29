@@ -8,6 +8,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 }
 
 $default_role = isset($_GET['role']) ? $_GET['role'] : 'parent';
+$tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fullname = mysqli_real_escape_string($con, $_POST['fullname']);
@@ -29,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "INSERT INTO users (fullname, email, phone, password, role) VALUES ('$fullname', '$email', '$phone', '$password', '$role')";
     
     if (mysqli_query($con, $sql)) {
-        echo "<script>alert('User added successfully!'); window.location.href='admin_dashboard.php';</script>";
+        echo "<script>alert('User added successfully!'); window.location.href='admin_dashboard.php?tab=$tab';</script>";
     } else {
         echo "<script>alert('Error adding user: " . mysqli_error($con) . "');</script>";
     }
@@ -129,7 +130,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </select>
             </div>
             <button type="submit" class="btn-save">Create User</button>
-            <a href="admin_dashboard.php" class="btn-cancel">Cancel</a>
+            <a href="admin_dashboard.php?tab=<?php echo $tab; ?>" class="btn-cancel">Cancel</a>
         </form>
     </div>
 </body>

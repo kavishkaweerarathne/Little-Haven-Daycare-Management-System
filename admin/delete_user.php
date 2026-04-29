@@ -8,6 +8,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     exit();
 }
 
+$tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
+
 if (isset($_GET['id'])) {
     $id = mysqli_real_escape_string($con, $_GET['id']);
     
@@ -17,11 +19,11 @@ if (isset($_GET['id'])) {
     $sql = "DELETE FROM users WHERE id = '$id'";
     
     if (mysqli_query($con, $sql)) {
-        echo "<script>alert('User deleted successfully!'); window.location.href='admin_dashboard.php';</script>";
+        echo "<script>alert('User deleted successfully!'); window.location.href='admin_dashboard.php?tab=$tab';</script>";
     } else {
-        echo "<script>alert('Error deleting user: " . mysqli_error($con) . "'); window.location.href='admin_dashboard.php';</script>";
+        echo "<script>alert('Error deleting user: " . mysqli_error($con) . "'); window.location.href='admin_dashboard.php?tab=$tab';</script>";
     }
 } else {
-    header("Location: admin_dashboard.php");
+    header("Location: admin_dashboard.php?tab=$tab");
 }
 ?>

@@ -77,7 +77,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                             <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8;"></i>
                             <input type="text" id="staff-search" placeholder="Search staff..." style="padding: 10px 10px 10px 35px; border: 1px solid #e2e8f0; border-radius: 8px; width: 250px;">
                         </div>
-                        <a href="add_user.php?role=staff" class="logout-btn" style="background: var(--primary); text-decoration: none;">+ Add Staff</a>
+                        <a href="add_user.php?role=staff&tab=staff" class="logout-btn" style="background: var(--primary); text-decoration: none;">+ Add Staff</a>
                     </div>
                 </div>
                 <table style="width: 100%; border-collapse: collapse;">
@@ -100,9 +100,9 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                             echo "<td style='padding: 1rem;'>".$row['email']."</td>";
                             echo "<td style='padding: 1rem;'>".$row['phone']."</td>";
                             echo "<td style='padding: 1rem;'>
-                                    <a href='view_user.php?id=".$row['id']."' class='action-btn view-btn' style='color: #10b981; margin-right: 10px;'><i class='fas fa-eye'></i></a>
-                                    <a href='edit_user.php?id=".$row['id']."' class='action-btn edit-btn'><i class='fas fa-edit'></i></a>
-                                    <a href='#' onclick='confirmDelete(".$row['id'].")' class='action-btn delete-btn'><i class='fas fa-trash'></i></a>
+                                    <a href='view_user.php?id=".$row['id']."&tab=staff' class='action-btn view-btn' style='color: #10b981; margin-right: 10px;'><i class='fas fa-eye'></i></a>
+                                    <a href='edit_user.php?id=".$row['id']."&tab=staff' class='action-btn edit-btn'><i class='fas fa-edit'></i></a>
+                                    <a href='#' onclick='confirmDelete(".$row['id'].", \"staff\")' class='action-btn delete-btn'><i class='fas fa-trash'></i></a>
                                   </td>";
                             echo "</tr>";
                         }
@@ -122,7 +122,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                             <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8;"></i>
                             <input type="text" id="parents-search" placeholder="Search parents..." style="padding: 10px 10px 10px 35px; border: 1px solid #e2e8f0; border-radius: 8px; width: 250px;">
                         </div>
-                        <a href="add_user.php?role=parent" class="logout-btn" style="background: var(--primary); text-decoration: none;">+ Add Parent</a>
+                        <a href="add_user.php?role=parent&tab=parents" class="logout-btn" style="background: var(--primary); text-decoration: none;">+ Add Parent</a>
                     </div>
                 </div>
                 <table style="width: 100%; border-collapse: collapse;">
@@ -144,9 +144,9 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                             echo "<td style='padding: 1rem;'>".$row['email']."</td>";
                             echo "<td style='padding: 1rem;'>".$row['phone']."</td>";
                             echo "<td style='padding: 1rem;'>
-                                    <a href='view_user.php?id=".$row['id']."' class='action-btn view-btn' style='color: #10b981; margin-right: 10px;'><i class='fas fa-eye'></i></a>
-                                    <a href='edit_user.php?id=".$row['id']."' class='action-btn edit-btn'><i class='fas fa-edit'></i></a>
-                                    <a href='#' onclick='confirmDelete(".$row['id'].")' class='action-btn delete-btn'><i class='fas fa-trash'></i></a>
+                                    <a href='view_user.php?id=".$row['id']."&tab=parents' class='action-btn view-btn' style='color: #10b981; margin-right: 10px;'><i class='fas fa-eye'></i></a>
+                                    <a href='edit_user.php?id=".$row['id']."&tab=parents' class='action-btn edit-btn'><i class='fas fa-edit'></i></a>
+                                    <a href='#' onclick='confirmDelete(".$row['id'].", \"parents\")' class='action-btn delete-btn'><i class='fas fa-trash'></i></a>
                                   </td>";
                             echo "</tr>";
                         }
