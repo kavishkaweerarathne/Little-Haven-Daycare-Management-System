@@ -104,3 +104,41 @@ body {
 .logout-btn:hover {
     opacity: 0.9;
 }
+
+/* Table Styles */
+table {
+    margin-top: 1rem;
+}
+
+th {
+    color: #6b7280;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+td {
+    color: #374151;
+    font-size: 0.95rem;
+}
+
+tr:hover {
+    background-color: #f9fafb;
+}
+
+.action-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.edit-btn { color: #4f46e5; }
+.delete-btn { color: #ef4444; }
+
+.edit-btn:hover { background: #eef2ff; }
+.delete-btn:hover { background: #fef2f2; }
