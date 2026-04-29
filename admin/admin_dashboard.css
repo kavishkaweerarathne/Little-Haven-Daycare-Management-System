@@ -146,45 +146,71 @@ tr:hover {
 /* Settings Styles */
 .settings-container {
     display: flex;
-    gap: 2rem;
     background: white;
-    padding: 2rem;
     border-radius: 1rem;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     min-height: 600px;
+    overflow: hidden; /* Ensure rounded corners clip the sidebar background */
 }
 
 .settings-sidebar {
-    width: 250px;
-    border-right: 1px solid #f3f4f6;
-    padding-right: 1.5rem;
+    width: 280px;
+    background: #f0f7ff; /* Light blue background */
+    padding: 1.5rem;
+    border-radius: 12px 0 0 12px;
+    border-right: 1px solid #e0e7ff;
 }
 
 .settings-nav-item {
-    padding: 12px 15px;
-    border-radius: 8px;
+    padding: 14px 18px;
+    border-radius: 12px;
     cursor: pointer;
-    transition: all 0.3s;
-    margin-bottom: 5px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-bottom: 8px;
     display: flex;
     align-items: center;
-    gap: 12px;
-    color: #6b7280;
-    font-weight: 500;
+    gap: 14px;
+    color: #4b5563;
+    font-weight: 600;
+    border: 1px solid transparent;
+}
+
+.settings-nav-item i {
+    font-size: 1.2rem;
+    width: 24px;
+    text-align: center;
+    transition: transform 0.3s;
 }
 
 .settings-nav-item:hover {
-    background: #f9fafb;
+    background: #f3f4f6;
     color: var(--primary);
+    transform: translateX(5px);
 }
 
 .settings-nav-item.active {
     background: #eef2ff;
     color: var(--primary);
+    border-color: rgba(79, 70, 229, 0.2);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+}
+
+/* Individual Icon Colors */
+[data-settings-tab="profile"] i { color: #6366f1; }
+[data-settings-tab="system"] i { color: #10b981; }
+[data-settings-tab="security"] i { color: #f59e0b; }
+[data-settings-tab="theme"] i { color: #8b5cf6; }
+[data-settings-tab="help"] i { color: #3b82f6; }
+[data-settings-tab="feedback"] i { color: #ec4899; }
+[data-settings-tab="logout"] i { color: #ef4444; }
+
+.settings-nav-item.active i {
+    transform: scale(1.1);
 }
 
 .settings-main {
     flex: 1;
+    padding: 2rem;
 }
 
 .settings-header {
