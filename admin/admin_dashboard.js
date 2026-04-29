@@ -33,3 +33,9 @@ document.querySelectorAll('.sidebar nav p').forEach(item => {
         document.getElementById('tab-title').textContent = titles[targetTab] || 'Admin Dashboard';
     });
 });
+
+function confirmDelete(id) {
+    if (confirm("Are you sure you want to delete this user? This action cannot be undone.")) {
+        window.location.href = 'delete_user.php?id=' + id;
+    }
+}

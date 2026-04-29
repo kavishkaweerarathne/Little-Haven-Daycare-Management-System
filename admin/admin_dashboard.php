@@ -72,7 +72,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             <div style="background: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                     <h2>Staff Directory</h2>
-                    <button class="logout-btn" style="background: var(--primary);">+ Add Staff</button>
+                    <a href="add_user.php?role=staff" class="logout-btn" style="background: var(--primary); text-decoration: none;">+ Add Staff</a>
                 </div>
                 <table style="width: 100%; border-collapse: collapse;">
                     <thead>
@@ -94,8 +94,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                             echo "<td style='padding: 1rem;'>".$row['email']."</td>";
                             echo "<td style='padding: 1rem;'>".$row['phone']."</td>";
                             echo "<td style='padding: 1rem;'>
-                                    <button style='border:none; background:none; color: #4f46e5; cursor:pointer; margin-right: 10px;'><i class='fas fa-edit'></i></button>
-                                    <button style='border:none; background:none; color: #ef4444; cursor:pointer;'><i class='fas fa-trash'></i></button>
+                                    <a href='edit_user.php?id=".$row['id']."' class='action-btn edit-btn'><i class='fas fa-edit'></i></a>
+                                    <a href='#' onclick='confirmDelete(".$row['id'].")' class='action-btn delete-btn'><i class='fas fa-trash'></i></a>
                                   </td>";
                             echo "</tr>";
                         }
@@ -110,7 +110,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             <div style="background: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                     <h2>Parent Directory</h2>
-                    <button class="logout-btn" style="background: var(--primary);">+ Add Parent</button>
+                    <a href="add_user.php?role=parent" class="logout-btn" style="background: var(--primary); text-decoration: none;">+ Add Parent</a>
                 </div>
                 <table style="width: 100%; border-collapse: collapse;">
                     <thead>
@@ -131,8 +131,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                             echo "<td style='padding: 1rem;'>".$row['email']."</td>";
                             echo "<td style='padding: 1rem;'>".$row['phone']."</td>";
                             echo "<td style='padding: 1rem;'>
-                                    <button style='border:none; background:none; color: #4f46e5; cursor:pointer; margin-right: 10px;'><i class='fas fa-edit'></i></button>
-                                    <button style='border:none; background:none; color: #ef4444; cursor:pointer;'><i class='fas fa-trash'></i></button>
+                                    <a href='edit_user.php?id=".$row['id']."' class='action-btn edit-btn'><i class='fas fa-edit'></i></a>
+                                    <a href='#' onclick='confirmDelete(".$row['id'].")' class='action-btn delete-btn'><i class='fas fa-trash'></i></a>
                                   </td>";
                             echo "</tr>";
                         }
