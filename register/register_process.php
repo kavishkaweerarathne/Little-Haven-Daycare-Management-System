@@ -23,11 +23,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("<script>alert('Email already registered!'); window.history.back();</script>");
     }
 
-    // Hash the password
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     // Insert user into database
-    $sql = "INSERT INTO users (fullname, email, phone, password, role) VALUES ('$fullname', '$email', '$phone', '$hashed_password', '$role')";
+    $sql = "INSERT INTO users (fullname, email, phone, password, role) VALUES ('$fullname', '$email', '$phone', '$password', '$role')";
 
     if (mysqli_query($con, $sql)) {
         echo "<script>alert('Registration successful! Please login.'); window.location.href='../login/login.php';</script>";
