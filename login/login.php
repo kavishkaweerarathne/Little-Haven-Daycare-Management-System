@@ -1,4 +1,15 @@
-<?php include '../config.php'; ?>
+<?php 
+include '../config.php'; 
+session_start();
+if (isset($_SESSION['user_id'])) {
+    if ($_SESSION['role'] === 'parent') {
+        header("Location: ../parent/parent_dashboard.php");
+    } elseif ($_SESSION['role'] === 'staff') {
+        header("Location: ../staff/staff_dashboard.php");
+    }
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
