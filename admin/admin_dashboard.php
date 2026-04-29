@@ -24,7 +24,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             <p><i class="fas fa-users"></i> Manage Staff</p>
             <p><i class="fas fa-user-group"></i> Manage Parents</p>
             <p><i class="fas fa-baby"></i> Manage Children</p>
-            <p><i class="fas fa-file-invoice-dollar"></i> Finance</p>
+            <p><i class="fas fa-file-invoice-dollar"></i> Billing and Payment</p>
+            <p><i class="fas fa-boxes-stacked"></i> Inventory</p>
             <p><i class="fas fa-gear"></i> Settings</p>
         </nav>
     </div>
