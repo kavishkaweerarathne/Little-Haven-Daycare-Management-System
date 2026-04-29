@@ -66,4 +66,5 @@ function initSearch(inputId, tableId) {
 document.addEventListener('DOMContentLoaded', () => {
     initSearch('staff-search', 'staff-tab');
     initSearch('parents-search', 'parents-tab');
+    initSearch('children-search', 'children-tab');
 });

@@ -112,47 +112,162 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             </div>
         </div>
 
-        <!-- Manage Parents Section -->
-        <div id="parents-tab" class="tab-content" style="display: none;">
+        <!-- Manage Children Section -->
+        <div id="children-tab" class="tab-content" style="display: none;">
             <div style="background: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                    <h2>Parent Directory</h2>
+                    <h2>Children Registry</h2>
                     <div style="display: flex; gap: 1rem;">
                         <div style="position: relative;">
                             <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8;"></i>
-                            <input type="text" id="parents-search" placeholder="Search parents..." style="padding: 10px 10px 10px 35px; border: 1px solid #e2e8f0; border-radius: 8px; width: 250px;">
+                            <input type="text" id="children-search" placeholder="Search children..." style="padding: 10px 10px 10px 35px; border: 1px solid #e2e8f0; border-radius: 8px; width: 250px;">
                         </div>
-                        <a href="add_user.php?role=parent" class="logout-btn" style="background: var(--primary); text-decoration: none;">+ Add Parent</a>
+                        <button class="logout-btn" style="background: var(--primary);">+ Add Child</button>
                     </div>
                 </div>
                 <table style="width: 100%; border-collapse: collapse;">
                     <thead>
                         <tr style="text-align: left; border-bottom: 2px solid #f3f4f6;">
                             <th style="padding: 1rem;">Name</th>
-                            <th style="padding: 1rem;">Email</th>
-                            <th style="padding: 1rem;">Phone</th>
+                            <th style="padding: 1rem;">Age</th>
+                            <th style="padding: 1rem;">Gender</th>
                             <th style="padding: 1rem;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                        $sql = "SELECT * FROM users WHERE role = 'parent'";
+                        $sql = "SELECT * FROM children";
                         $result = mysqli_query($con, $sql);
-                        while($row = mysqli_fetch_assoc($result)) {
-                            echo "<tr style='border-bottom: 1px solid #f3f4f6;'>";
-                            echo "<td style='padding: 1rem;'>".$row['fullname']."</td>";
-                            echo "<td style='padding: 1rem;'>".$row['email']."</td>";
-                            echo "<td style='padding: 1rem;'>".$row['phone']."</td>";
-                            echo "<td style='padding: 1rem;'>
-                                    <a href='view_user.php?id=".$row['id']."' class='action-btn view-btn' style='color: #10b981; margin-right: 10px;'><i class='fas fa-eye'></i></a>
-                                    <a href='edit_user.php?id=".$row['id']."' class='action-btn edit-btn'><i class='fas fa-edit'></i></a>
-                                    <a href='#' onclick='confirmDelete(".$row['id'].")' class='action-btn delete-btn'><i class='fas fa-trash'></i></a>
-                                  </td>";
-                            echo "</tr>";
+                        if (mysqli_num_rows($result) > 0) {
+                            while($row = mysqli_fetch_assoc($result)) {
+                                echo "<tr style='border-bottom: 1px solid #f3f4f6;'>";
+                                echo "<td style='padding: 1rem;'>".$row['name']."</td>";
+                                echo "<td style='padding: 1rem;'>".$row['age']."</td>";
+                                echo "<td style='padding: 1rem;'>".$row['gender']."</td>";
+                                echo "<td style='padding: 1rem;'>
+                                        <button class='action-btn view-btn' style='color: #10b981; margin-right: 10px;'><i class='fas fa-eye'></i></button>
+                                        <button class='action-btn edit-btn'><i class='fas fa-edit'></i></button>
+                                        <button class='action-btn delete-btn'><i class='fas fa-trash'></i></button>
+                                      </td>";
+                                echo "</tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='4' style='padding: 2rem; text-align: center; color: #64748b;'>No children records found.</td></tr>";
                         }
                         ?>
                     </tbody>
                 </table>
+            </div>
+        </div>
+
+        <!-- Billing and Payment Section -->
+        <div id="billing-tab" class="tab-content" style="display: none;">
+            <div style="background: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2>Billing Records</h2>
+                    <button class="logout-btn" style="background: var(--primary);">+ Generate Invoice</button>
+                </div>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="text-align: left; border-bottom: 2px solid #f3f4f6;">
+                            <th style="padding: 1rem;">Child Name</th>
+                            <th style="padding: 1rem;">Amount</th>
+                            <th style="padding: 1rem;">Status</th>
+                            <th style="padding: 1rem;">Due Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $sql = "SELECT b.*, c.name FROM billing b JOIN children c ON b.child_id = c.id";
+                        $result = mysqli_query($con, $sql);
+                        if (mysqli_num_rows($result) > 0) {
+                            while($row = mysqli_fetch_assoc($result)) {
+                                $status_color = $row['status'] == 'Paid' ? '#10b981' : '#f59e0b';
+                                echo "<tr style='border-bottom: 1px solid #f3f4f6;'>";
+                                echo "<td style='padding: 1rem;'>".$row['name']."</td>";
+                                echo "<td style='padding: 1rem;'>LKR ".$row['amount']."</td>";
+                                echo "<td style='padding: 1rem;'><span style='background: $status_color; color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem;'>".$row['status']."</span></td>";
+                                echo "<td style='padding: 1rem;'>".$row['due_date']."</td>";
+                                echo "</tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='4' style='padding: 2rem; text-align: center; color: #64748b;'>No billing records found.</td></tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Inventory Section -->
+        <div id="inventory-tab" class="tab-content" style="display: none;">
+            <div style="background: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2>Inventory Management</h2>
+                    <button class="logout-btn" style="background: var(--primary);">+ Add Item</button>
+                </div>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="text-align: left; border-bottom: 2px solid #f3f4f6;">
+                            <th style="padding: 1rem;">Item Name</th>
+                            <th style="padding: 1rem;">Quantity</th>
+                            <th style="padding: 1rem;">Category</th>
+                            <th style="padding: 1rem;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $sql = "SELECT * FROM inventory";
+                        $result = mysqli_query($con, $sql);
+                        if (mysqli_num_rows($result) > 0) {
+                            while($row = mysqli_fetch_assoc($result)) {
+                                echo "<tr style='border-bottom: 1px solid #f3f4f6;'>";
+                                echo "<td style='padding: 1rem;'>".$row['item_name']."</td>";
+                                echo "<td style='padding: 1rem;'>".$row['quantity']."</td>";
+                                echo "<td style='padding: 1rem;'>".$row['category']."</td>";
+                                echo "<td style='padding: 1rem;'>".$row['status']."</td>";
+                                echo "</tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='4' style='padding: 2rem; text-align: center; color: #64748b;'>No inventory items found.</td></tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Settings Section -->
+        <div id="settings-tab" class="tab-content" style="display: none;">
+            <div style="background: white; padding: 2.5rem; border-radius: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); max-width: 700px;">
+                <h2 style="margin-bottom: 2rem; color: var(--sidebar);">System Settings</h2>
+                
+                <form action="update_settings.php" method="POST">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+                        <div class="form-group">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Daycare Name</label>
+                            <input type="text" name="system_name" value="Little Haven Elite" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                        </div>
+                        <div class="form-group">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Admin Email</label>
+                            <input type="email" name="admin_email" value="admin@gmail.com" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 2rem;">
+                        <h3 style="font-size: 1.1rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 0.5rem; margin-bottom: 1.5rem;">Security</h3>
+                        <div class="form-group">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Change Admin Password</label>
+                            <input type="password" name="new_password" placeholder="Enter new password" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 0.5rem;">
+                            <input type="password" name="confirm_password" placeholder="Confirm new password" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem;">
+                        <button type="submit" class="logout-btn" style="background: var(--primary); width: auto;">Save All Settings</button>
+                        <button type="reset" class="logout-btn" style="background: #94a3b8; width: auto;">Reset Changes</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
