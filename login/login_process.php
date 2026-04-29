@@ -6,7 +6,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = mysqli_real_escape_string($con, $_POST['username']);
     $password = $_POST['password'];
 
-    // Check if user exists (using email as username)
+    // Hardcoded Admin Check
+    if ($username === 'admin@gmail.com' && $password === '0000') {
+        $_SESSION['user_id'] = 'admin';
+        $_SESSION['fullname'] = 'Administrator';
+        $_SESSION['email'] = 'admin@gmail.com';
+        $_SESSION['role'] = 'admin';
+        header("Location: ../admin/admin_dashboard.php");
+        exit();
+    }
+
+    // Check if user exists in database
     $sql = "SELECT * FROM users WHERE email = '$username'";
     $result = mysqli_query($con, $sql);
 
