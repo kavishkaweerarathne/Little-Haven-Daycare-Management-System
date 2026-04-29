@@ -155,6 +155,273 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                 </table>
             </div>
         </div>
+
+        <!-- Settings Section -->
+        <div id="settings-tab" class="tab-content" style="display: none;">
+            <div class="settings-container">
+                <div class="settings-sidebar">
+                    <div class="settings-nav-item active" data-settings-tab="profile">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Profile Settings</span>
+                    </div>
+                    <div class="settings-nav-item" data-settings-tab="system">
+                        <i class="fas fa-sliders"></i>
+                        <span>System Settings</span>
+                    </div>
+                    <div class="settings-nav-item" data-settings-tab="security">
+                        <i class="fas fa-shield-halved"></i>
+                        <span>Security & Privacy</span>
+                    </div>
+                    <div class="settings-nav-item" data-settings-tab="theme">
+                        <i class="fas fa-moon"></i>
+                        <span>Theme & Appearance</span>
+                    </div>
+                    <div class="settings-nav-item" data-settings-tab="help">
+                        <i class="fas fa-circle-question"></i>
+                        <span>Help & Support</span>
+                    </div>
+                    <div class="settings-nav-item" data-settings-tab="feedback">
+                        <i class="fas fa-comment-dots"></i>
+                        <span>Feedback</span>
+                    </div>
+                    <div class="settings-nav-item logout-nav" data-settings-tab="logout">
+                        <i class="fas fa-right-from-bracket"></i>
+                        <span>Logout</span>
+                    </div>
+                </div>
+
+                <div class="settings-main">
+                    <!-- Profile Tab -->
+                    <div id="settings-profile" class="settings-content active">
+                        <div class="settings-header">
+                            <h2>Profile Settings</h2>
+                            <p>Manage your personal information and how it appears to others.</p>
+                        </div>
+                        <form class="settings-form">
+                            <div class="profile-upload">
+                                <div class="avatar-preview">
+                                    <img src="https://ui-avatars.com/api/?name=Admin&background=4f46e5&color=fff" alt="Profile">
+                                    <div class="avatar-edit">
+                                        <i class="fas fa-camera"></i>
+                                    </div>
+                                </div>
+                                <div class="upload-info">
+                                    <h3>Profile Picture</h3>
+                                    <p>PNG, JPG or GIF. Max 2MB.</p>
+                                </div>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Full Name</label>
+                                    <input type="text" value="Administrator" placeholder="Enter full name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    <input type="email" value="admin@gmail.com" placeholder="Enter email">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="tel" value="+94 77 123 4567" placeholder="Enter phone">
+                                </div>
+                                <div class="form-group">
+                                    <label>Position</label>
+                                    <input type="text" value="Head Administrator" readonly>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="save-btn">Save Changes</button>
+                                <button type="reset" class="cancel-btn">Reset</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- System Tab -->
+                    <div id="settings-system" class="settings-content" style="display: none;">
+                        <div class="settings-header">
+                            <h2>System Settings</h2>
+                            <p>Configure daycare wide settings and preferences.</p>
+                        </div>
+                        <form class="settings-form">
+                            <div class="form-grid">
+                                <div class="form-group full-width">
+                                    <label>Daycare Name</label>
+                                    <input type="text" value="Little Haven Daycare">
+                                </div>
+                                <div class="form-group">
+                                    <label>Primary Contact Email</label>
+                                    <input type="email" value="info@littlehaven.com">
+                                </div>
+                                <div class="form-group">
+                                    <label>Primary Phone</label>
+                                    <input type="tel" value="+94 11 234 5678">
+                                </div>
+                                <div class="form-group">
+                                    <label>Opening Time</label>
+                                    <input type="time" value="07:30">
+                                </div>
+                                <div class="form-group">
+                                    <label>Closing Time</label>
+                                    <input type="time" value="18:30">
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="save-btn">Update System</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Security Tab -->
+                    <div id="settings-security" class="settings-content" style="display: none;">
+                        <div class="settings-header">
+                            <h2>Security & Privacy</h2>
+                            <p>Update your password and manage security preferences.</p>
+                        </div>
+                        <form class="settings-form">
+                            <div class="form-group">
+                                <label>Current Password</label>
+                                <input type="password" placeholder="••••••••">
+                            </div>
+                            <div class="form-group">
+                                <label>New Password</label>
+                                <input type="password" placeholder="••••••••">
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm New Password</label>
+                                <input type="password" placeholder="••••••••">
+                            </div>
+                            <div class="security-list">
+                                <div class="security-item">
+                                    <div class="item-info">
+                                        <h4>Two-Factor Authentication</h4>
+                                        <p>Add an extra layer of security to your account.</p>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="security-item">
+                                    <div class="item-info">
+                                        <h4>Session Timeout</h4>
+                                        <p>Automatically log out after 30 minutes of inactivity.</p>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="save-btn">Change Password</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Theme Tab -->
+                    <div id="settings-theme" class="settings-content" style="display: none;">
+                        <div class="settings-header">
+                            <h2>Theme & Appearance</h2>
+                            <p>Customize how the dashboard looks and feels.</p>
+                        </div>
+                        <div class="theme-options">
+                            <div class="theme-card active" data-theme="light">
+                                <div class="theme-preview light">
+                                    <div class="preview-sidebar"></div>
+                                    <div class="preview-content">
+                                        <div class="preview-line"></div>
+                                        <div class="preview-line"></div>
+                                    </div>
+                                </div>
+                                <h4>Light Mode</h4>
+                                <p>Clean and bright interface</p>
+                            </div>
+                            <div class="theme-card" data-theme="dark">
+                                <div class="theme-preview dark">
+                                    <div class="preview-sidebar"></div>
+                                    <div class="preview-content">
+                                        <div class="preview-line"></div>
+                                        <div class="preview-line"></div>
+                                    </div>
+                                </div>
+                                <h4>Dark Mode</h4>
+                                <p>Easier on the eyes in low light</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Help Tab -->
+                    <div id="settings-help" class="settings-content" style="display: none;">
+                        <div class="settings-header">
+                            <h2>Help & Support</h2>
+                            <p>Find answers to common questions or contact support.</p>
+                        </div>
+                        <div class="faq-list">
+                            <div class="faq-item">
+                                <h4>How do I add a new staff member?</h4>
+                                <p>Go to the "Manage Staff" tab and click the "+ Add Staff" button.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h4>Can I change the system language?</h4>
+                                <p>Currently, the system only supports English. More languages coming soon.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h4>How to reset a parent's password?</h4>
+                                <p>Go to "Manage Parents", edit the user, and use the "Reset Password" option.</p>
+                            </div>
+                        </div>
+                        <div class="contact-support">
+                            <h3>Still need help?</h3>
+                            <p>Our support team is available 24/7.</p>
+                            <a href="mailto:support@littlehaven.com" class="save-btn" style="text-decoration: none; display: inline-block;">Contact Support</a>
+                        </div>
+                    </div>
+
+                    <!-- Feedback Tab -->
+                    <div id="settings-feedback" class="settings-content" style="display: none;">
+                        <div class="settings-header">
+                            <h2>Share your feedback</h2>
+                            <p>Help us improve Little Haven Management System.</p>
+                        </div>
+                        <form class="settings-form feedback-form">
+                            <div class="form-group">
+                                <label>How would you rate your experience?</label>
+                                <div class="rating-stars">
+                                    <i class="far fa-star" data-rating="1"></i>
+                                    <i class="far fa-star" data-rating="2"></i>
+                                    <i class="far fa-star" data-rating="3"></i>
+                                    <i class="far fa-star" data-rating="4"></i>
+                                    <i class="far fa-star" data-rating="5"></i>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>What can we improve?</label>
+                                <textarea placeholder="Tell us what you think..." rows="5" style="padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit; resize: vertical;"></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="save-btn">Submit Feedback</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Logout Tab -->
+                    <div id="settings-logout" class="settings-content" style="display: none;">
+                        <div class="settings-header">
+                            <h2>Logout</h2>
+                            <p>Are you sure you want to end your session?</p>
+                        </div>
+                        <div class="logout-confirm-card">
+                            <i class="fas fa-right-from-bracket logout-icon"></i>
+                            <h3>You are about to log out</h3>
+                            <p>Any unsaved changes will be lost.</p>
+                            <div class="form-actions" style="justify-content: center; border: none;">
+                                <a href="../login/logout.php" class="logout-btn" style="padding: 12px 40px;">Yes, Logout</a>
+                                <button type="button" class="cancel-btn" onclick="document.querySelector('[data-settings-tab=\'profile\']').click()">Stay Logged In</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- Custom JS -->
     <script src="admin_dashboard.js"></script>
