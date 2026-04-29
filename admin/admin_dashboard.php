@@ -94,6 +94,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                             echo "<td style='padding: 1rem;'>".$row['email']."</td>";
                             echo "<td style='padding: 1rem;'>".$row['phone']."</td>";
                             echo "<td style='padding: 1rem;'>
+                                    <a href='view_user.php?id=".$row['id']."' class='action-btn view-btn' style='color: #10b981; margin-right: 10px;'><i class='fas fa-eye'></i></a>
                                     <a href='edit_user.php?id=".$row['id']."' class='action-btn edit-btn'><i class='fas fa-edit'></i></a>
                                     <a href='#' onclick='confirmDelete(".$row['id'].")' class='action-btn delete-btn'><i class='fas fa-trash'></i></a>
                                   </td>";
@@ -131,6 +132,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                             echo "<td style='padding: 1rem;'>".$row['email']."</td>";
                             echo "<td style='padding: 1rem;'>".$row['phone']."</td>";
                             echo "<td style='padding: 1rem;'>
+                                    <a href='view_user.php?id=".$row['id']."' class='action-btn view-btn' style='color: #10b981; margin-right: 10px;'><i class='fas fa-eye'></i></a>
                                     <a href='edit_user.php?id=".$row['id']."' class='action-btn edit-btn'><i class='fas fa-edit'></i></a>
                                     <a href='#' onclick='confirmDelete(".$row['id'].")' class='action-btn delete-btn'><i class='fas fa-trash'></i></a>
                                   </td>";
