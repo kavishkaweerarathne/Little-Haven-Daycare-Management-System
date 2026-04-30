@@ -147,13 +147,147 @@ tr:hover {
     color: #ef4444;
 }
 
-.edit-btn:hover {
-    background: rgba(38, 198, 218, 0.1);
+.edit-btn:hover { background: rgba(38, 198, 218, 0.1); }
+.delete-btn:hover { background: #fef2f2; }
+
+/* Dashboard Enhancements */
+.welcome-banner {
+    background: linear-gradient(135deg, var(--secondary) 0%, #2c7da0 100%);
+    color: white;
+    padding: 2.5rem;
+    border-radius: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
 }
 
-.delete-btn:hover {
-    background: #fef2f2;
+.welcome-banner::after {
+    content: '';
+    position: absolute;
+    right: -50px;
+    top: -50px;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
 }
+
+.welcome-text h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.welcome-text p {
+    opacity: 0.9;
+    font-size: 1.1rem;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+}
+
+.card {
+    background: white;
+    padding: 2rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.card-header h3 {
+    font-size: 1.25rem;
+    color: var(--text);
+}
+
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.activity-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.activity-details h4 {
+    font-size: 0.95rem;
+    margin-bottom: 2px;
+}
+
+.activity-details p {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.quick-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.action-card {
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 1px solid #e2e8f0;
+}
+
+.action-card:hover {
+    background: white;
+    border-color: var(--primary);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(38, 198, 218, 0.1);
+}
+
+.action-card i {
+    font-size: 1.5rem;
+    color: var(--primary);
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+.action-card span {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text);
+}
+
+.trend-up { color: #10b981; font-size: 0.8rem; font-weight: 600; }
+.trend-down { color: #ef4444; font-size: 0.8rem; font-weight: 600; }
 
 /* Settings Styles */
 .settings-container {
@@ -484,6 +618,11 @@ input:checked+.slider:before {
 }
 
 
+@keyframes pulse {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
 
 /* FAQ Styles */
 .faq-list {

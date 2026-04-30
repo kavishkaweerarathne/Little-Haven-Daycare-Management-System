@@ -47,33 +47,128 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             $parent_count_res = mysqli_query($con, $parent_count_query);
             $parent_count = mysqli_fetch_assoc($parent_count_res)['total'];
             ?>
+
+            <div class="welcome-banner">
+                <div class="welcome-text">
+                    <h2>Hello, Administrator! 👋</h2>
+                    <p>Welcome back to Little Haven. Here's what's happening today.</p>
+                </div>
+                <div class="welcome-date" style="text-align: right;">
+                    <h3 style="margin:0;"><?php echo date('l'); ?></h3>
+                    <p style="margin:0; opacity: 0.8;"><?php echo date('jS F, Y'); ?></p>
+                </div>
+            </div>
+
             <div class="stats-grid">
                 <div class="stat-card" onclick="document.querySelector('[data-tab=\'staff\']').click()" style="cursor: pointer;">
                     <div class="stat-icon" style="background: var(--primary);"><i class="fas fa-users"></i></div>
                     <div>
-                        <h3 style="margin:0; font-size: 0.9rem; color: #6b7280;">Total Staff</h3>
+                        <h3 style="margin:0; font-size: 0.85rem; color: #6b7280; font-weight: 600;">Total Staff</h3>
                         <p style="margin:0; font-size: 1.5rem; font-weight: 700;"><?php echo $staff_count; ?></p>
+                        <span class="trend-up"><i class="fas fa-caret-up"></i> 12% increase</span>
                     </div>
                 </div>
                 <div class="stat-card" onclick="document.querySelector('[data-tab=\'parents\']').click()" style="cursor: pointer;">
                     <div class="stat-icon" style="background: var(--secondary);"><i class="fas fa-user-group"></i></div>
                     <div>
-                        <h3 style="margin:0; font-size: 0.9rem; color: #6b7280;">Total Parents</h3>
+                        <h3 style="margin:0; font-size: 0.85rem; color: #6b7280; font-weight: 600;">Total Parents</h3>
                         <p style="margin:0; font-size: 1.5rem; font-weight: 700;"><?php echo $parent_count; ?></p>
+                        <span class="trend-up"><i class="fas fa-caret-up"></i> 5% growth</span>
                     </div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon" style="background: #FFD166;"><i class="fas fa-baby"></i></div>
                     <div>
-                        <h3 style="margin:0; font-size: 0.9rem; color: #6b7280;">Active Kids</h3>
+                        <h3 style="margin:0; font-size: 0.85rem; color: #6b7280; font-weight: 600;">Active Kids</h3>
                         <p style="margin:0; font-size: 1.5rem; font-weight: 700;">56</p>
+                        <span class="trend-down"><i class="fas fa-caret-down"></i> 2% decrease</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #10b981;"><i class="fas fa-file-invoice-dollar"></i></div>
+                    <div>
+                        <h3 style="margin:0; font-size: 0.85rem; color: #6b7280; font-weight: 600;">Revenue</h3>
+                        <p style="margin:0; font-size: 1.5rem; font-weight: 700;">$4,250</p>
+                        <span class="trend-up"><i class="fas fa-caret-up"></i> 8% growth</span>
                     </div>
                 </div>
             </div>
 
-            <div style="background: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-                <h2>System Status</h2>
-                <p>Everything is running smoothly. No pending approvals today.</p>
+            <div class="dashboard-grid">
+                <div class="left-col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Recent Activity</h3>
+                            <a href="#" style="color: var(--primary); text-decoration: none; font-size: 0.85rem; font-weight: 600;">View All</a>
+                        </div>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon" style="background: rgba(38, 198, 218, 0.1); color: var(--primary);">
+                                    <i class="fas fa-user-plus"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <h4>New Staff Registered</h4>
+                                    <p>Samantha Perera joined the teaching team.</p>
+                                    <span style="font-size: 0.75rem; color: #94a3b8;">2 hours ago</span>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon" style="background: rgba(26, 82, 118, 0.1); color: var(--secondary);">
+                                    <i class="fas fa-file-invoice"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <h4>Payment Received</h4>
+                                    <p>Invoice #INV-8820 was paid by Kamal Gunasekara.</p>
+                                    <span style="font-size: 0.75rem; color: #94a3b8;">5 hours ago</span>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon" style="background: rgba(255, 209, 102, 0.1); color: #f59e0b;">
+                                    <i class="fas fa-baby"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <h4>New Enrollment</h4>
+                                    <p>Little Aryan has been enrolled in the Playgroup.</p>
+                                    <span style="font-size: 0.75rem; color: #94a3b8;">Yesterday</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="right-col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Quick Actions</h3>
+                        </div>
+                        <div class="quick-actions">
+                            <div class="action-card" onclick="location.href='add_user.php?role=staff&tab=staff'">
+                                <i class="fas fa-user-plus"></i>
+                                <span>Add Staff</span>
+                            </div>
+                            <div class="action-card" onclick="location.href='add_user.php?role=parent&tab=parents'">
+                                <i class="fas fa-user-group"></i>
+                                <span>Add Parent</span>
+                            </div>
+                            <div class="action-card">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>Reports</span>
+                            </div>
+                            <div class="action-card" onclick="document.querySelector('[data-tab=\'settings\']').click()">
+                                <i class="fas fa-gear"></i>
+                                <span>Settings</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card" style="background: #F1F5F9; border: none;">
+                        <h3 style="font-size: 1.1rem; margin-bottom: 1rem;">System Status</h3>
+                        <div style="display: flex; align-items: center; gap: 10px; color: #10b981; font-weight: 600; font-size: 0.9rem;">
+                            <span style="width: 10px; height: 10px; background: #10b981; border-radius: 50%; display: inline-block; animation: pulse 2s infinite;"></span>
+                            All systems operational
+                        </div>
+                        <p style="font-size: 0.85rem; color: #6b7280; margin-top: 10px;">Database connected and storage at 45% capacity.</p>
+                    </div>
+                </div>
             </div>
         </div>
 
