@@ -132,39 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Theme Switching Logic
-    const themeCards = document.querySelectorAll('.theme-card');
-    themeCards.forEach(card => {
-        card.addEventListener('click', () => {
-            const theme = card.getAttribute('data-theme');
-            
-            // Update active card
-            themeCards.forEach(c => c.classList.remove('active'));
-            card.classList.add('active');
 
-            // Apply theme (basic implementation)
-            if (theme === 'dark') {
-                document.body.classList.add('dark-theme');
-                // Normally you'd update CSS variables here
-                document.documentElement.style.setProperty('--bg', '#1A5276'); // Dark Blue
-                document.documentElement.style.setProperty('--text', '#FFFFFF');
-                document.querySelectorAll('.stat-card, .settings-container, #staff-tab div, #parents-tab div').forEach(el => {
-                    el.style.background = '#1f2937';
-                    el.style.color = '#f9fafb';
-                });
-            } else {
-                document.body.classList.remove('dark-theme');
-                document.documentElement.style.setProperty('--bg', '#FFFFFF');
-                document.documentElement.style.setProperty('--text', '#1A202C');
-                document.querySelectorAll('.stat-card, .settings-container, #staff-tab div, #parents-tab div').forEach(el => {
-                    el.style.background = 'white';
-                    el.style.color = '#1f2937';
-                });
-            }
-            
-            localStorage.setItem('dashboard-theme', theme);
-        });
-    });
 
     // Feedback Rating Stars
     const stars = document.querySelectorAll('.rating-stars i');
@@ -183,10 +151,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Load saved theme
-    const savedTheme = localStorage.getItem('dashboard-theme');
-    if (savedTheme) {
-        const targetCard = document.querySelector(`.theme-card[data-theme="${savedTheme}"]`);
-        if (targetCard) targetCard.click();
-    }
+
 });

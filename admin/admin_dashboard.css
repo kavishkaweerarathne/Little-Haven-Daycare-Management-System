@@ -321,6 +321,11 @@ tr:hover {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.form-grid .form-group {
+    margin-bottom: 0;
 }
 
 .form-group.full-width {
@@ -478,83 +483,7 @@ input:checked+.slider:before {
     background: #fef2f2 !important;
 }
 
-/* Theme Options */
-.theme-options {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-}
 
-.theme-card {
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 1.5rem;
-    cursor: pointer;
-    transition: all 0.3s;
-    text-align: center;
-}
-
-.theme-card:hover {
-    border-color: var(--primary);
-    background: #f9fafb;
-}
-
-.theme-card.active {
-    border-color: var(--primary);
-    background: rgba(38, 198, 218, 0.05);
-}
-
-.theme-preview {
-    height: 120px;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    display: flex;
-    overflow: hidden;
-    border: 1px solid #e2e8f0;
-}
-
-.theme-preview.light {
-    background: #f3f4f6;
-}
-
-.theme-preview.dark {
-    background: #1e1b4b;
-}
-
-.preview-sidebar {
-    width: 30px;
-    height: 100%;
-}
-
-.light .preview-sidebar {
-    background: #1e1b4b;
-}
-
-.dark .preview-sidebar {
-    background: #111827;
-}
-
-.preview-content {
-    flex: 1;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.preview-line {
-    height: 6px;
-    border-radius: 3px;
-    width: 100%;
-}
-
-.light .preview-line {
-    background: #e2e8f0;
-}
-
-.dark .preview-line {
-    background: #374151;
-}
 
 /* FAQ Styles */
 .faq-list {

@@ -186,10 +186,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                         <i class="fas fa-shield-halved"></i>
                         <span>Security & Privacy</span>
                     </div>
-                    <div class="settings-nav-item" data-settings-tab="theme">
-                        <i class="fas fa-moon"></i>
-                        <span>Theme & Appearance</span>
-                    </div>
+
                     <div class="settings-nav-item" data-settings-tab="help">
                         <i class="fas fa-circle-question"></i>
                         <span>Help & Support</span>
@@ -331,37 +328,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                         </form>
                     </div>
 
-                    <!-- Theme Tab -->
-                    <div id="settings-theme" class="settings-content" style="display: none;">
-                        <div class="settings-header">
-                            <h2>Theme & Appearance</h2>
-                            <p>Customize how the dashboard looks and feels.</p>
-                        </div>
-                        <div class="theme-options">
-                            <div class="theme-card active" data-theme="light">
-                                <div class="theme-preview light">
-                                    <div class="preview-sidebar"></div>
-                                    <div class="preview-content">
-                                        <div class="preview-line"></div>
-                                        <div class="preview-line"></div>
-                                    </div>
-                                </div>
-                                <h4>Light Mode</h4>
-                                <p>Clean and bright interface</p>
-                            </div>
-                            <div class="theme-card" data-theme="dark">
-                                <div class="theme-preview dark">
-                                    <div class="preview-sidebar"></div>
-                                    <div class="preview-content">
-                                        <div class="preview-line"></div>
-                                        <div class="preview-line"></div>
-                                    </div>
-                                </div>
-                                <h4>Dark Mode</h4>
-                                <p>Easier on the eyes in low light</p>
-                            </div>
-                        </div>
-                    </div>
+
 
                     <!-- Help Tab -->
                     <div id="settings-help" class="settings-content" style="display: none;">
