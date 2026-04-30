@@ -52,6 +52,13 @@
                             <span>Staff</span>
                         </div>
                     </label>
+                    <label class="role-option">
+                        <input type="radio" name="role" value="finance">
+                        <div class="role-card">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            <span>Finance</span>
+                        </div>
+                    </label>
                 </div>
 
                 <div class="form-row">
