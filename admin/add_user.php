@@ -127,6 +127,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <select name="role">
                     <option value="parent" <?php if($default_role == 'parent') echo 'selected'; ?>>Parent</option>
                     <option value="staff" <?php if($default_role == 'staff') echo 'selected'; ?>>Staff</option>
+                    <option value="finance" <?php if($default_role == 'finance') echo 'selected'; ?>>Finance Manager</option>
                 </select>
             </div>
             <button type="submit" class="btn-save">Create User</button>

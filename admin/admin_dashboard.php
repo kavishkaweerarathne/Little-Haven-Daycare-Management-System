@@ -23,6 +23,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             <p class="active" data-tab="dashboard"><i class="fas fa-chart-line"></i> Dashboard</p>
             <p data-tab="staff"><i class="fas fa-users"></i> Manage Staff</p>
             <p data-tab="parents"><i class="fas fa-user-group"></i> Manage Parents</p>
+            <p data-tab="finance"><i class="fas fa-file-invoice-dollar"></i> Manage Finance</p>
             <p data-tab="children"><i class="fas fa-baby"></i> Manage Children</p>
             <p data-tab="billing"><i class="fas fa-file-invoice-dollar"></i> Billing and Payment</p>
             <p data-tab="inventory"><i class="fas fa-boxes-stacked"></i> Inventory</p>
@@ -46,6 +47,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             $parent_count_query = "SELECT COUNT(*) as total FROM users WHERE role = 'parent'";
             $parent_count_res = mysqli_query($con, $parent_count_query);
             $parent_count = mysqli_fetch_assoc($parent_count_res)['total'];
+
+            $finance_count_query = "SELECT COUNT(*) as total FROM users WHERE role = 'finance'";
+            $finance_count_res = mysqli_query($con, $finance_count_query);
+            $finance_count = mysqli_fetch_assoc($finance_count_res)['total'];
             ?>
 
             <div class="welcome-banner">
@@ -84,12 +89,12 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                         <span class="trend-down"><i class="fas fa-caret-down"></i> 2% decrease</span>
                     </div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="document.querySelector('[data-tab=\'finance\']').click()" style="cursor: pointer;">
                     <div class="stat-icon" style="background: #10b981;"><i class="fas fa-file-invoice-dollar"></i></div>
                     <div>
-                        <h3 style="margin:0; font-size: 0.85rem; color: #6b7280; font-weight: 600;">Revenue</h3>
-                        <p style="margin:0; font-size: 1.5rem; font-weight: 700;">$4,250</p>
-                        <span class="trend-up"><i class="fas fa-caret-up"></i> 8% growth</span>
+                        <h3 style="margin:0; font-size: 0.85rem; color: #6b7280; font-weight: 600;">Finance Team</h3>
+                        <p style="margin:0; font-size: 1.5rem; font-weight: 700;"><?php echo $finance_count; ?></p>
+                        <span class="trend-up"><i class="fas fa-caret-up"></i> Active</span>
                     </div>
                 </div>
             </div>
@@ -256,6 +261,52 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                                     <a href='view_user.php?id=".$row['id']."&tab=parents' class='action-btn view-btn' style='color: #10b981; margin-right: 10px;'><i class='fas fa-eye'></i></a>
                                     <a href='edit_user.php?id=".$row['id']."&tab=parents' class='action-btn edit-btn'><i class='fas fa-edit'></i></a>
                                     <a href='#' onclick='confirmDelete(".$row['id'].", \"parents\")' class='action-btn delete-btn'><i class='fas fa-trash'></i></a>
+                                  </td>";
+                            echo "</tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Manage Finance Section -->
+        <div id="finance-tab" class="tab-content" style="display: none;">
+            <div style="background: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2>Finance Management</h2>
+                    <div style="display: flex; gap: 1rem;">
+                        <div style="position: relative;">
+                            <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8;"></i>
+                            <input type="text" id="finance-search" placeholder="Search finance team..." style="padding: 10px 10px 10px 35px; border: 1px solid #e2e8f0; border-radius: 8px; width: 250px;">
+                        </div>
+                        <a href="add_user.php?role=finance&tab=finance" class="logout-btn" style="background: var(--primary); text-decoration: none;">+ Add Finance Manager</a>
+                    </div>
+                </div>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="text-align: left; border-bottom: 2px solid #f3f4f6;">
+                            <th style="padding: 1rem;">ID</th>
+                            <th style="padding: 1rem;">Name</th>
+                            <th style="padding: 1rem;">Email</th>
+                            <th style="padding: 1rem;">Phone</th>
+                            <th style="padding: 1rem;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $sql = "SELECT * FROM users WHERE role = 'finance'";
+                        $result = mysqli_query($con, $sql);
+                        while($row = mysqli_fetch_assoc($result)) {
+                            echo "<tr style='border-bottom: 1px solid #f3f4f6;'>";
+                            echo "<td style='padding: 1rem;'>#".$row['id']."</td>";
+                            echo "<td style='padding: 1rem;'>".$row['fullname']."</td>";
+                            echo "<td style='padding: 1rem;'>".$row['email']."</td>";
+                            echo "<td style='padding: 1rem;'>".$row['phone']."</td>";
+                            echo "<td style='padding: 1rem;'>
+                                    <a href='view_user.php?id=".$row['id']."&tab=finance' class='action-btn view-btn' style='color: #10b981; margin-right: 10px;'><i class='fas fa-eye'></i></a>
+                                    <a href='edit_user.php?id=".$row['id']."&tab=finance' class='action-btn edit-btn'><i class='fas fa-edit'></i></a>
+                                    <a href='#' onclick='confirmDelete(".$row['id'].", \"finance\")' class='action-btn delete-btn'><i class='fas fa-trash'></i></a>
                                   </td>";
                             echo "</tr>";
                         }
