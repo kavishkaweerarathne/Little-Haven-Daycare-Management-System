@@ -1,14 +1,16 @@
 :root {
-    --primary: #4f46e5;
-    --secondary: #10b981;
-    --bg: #f3f4f6;
-    --text: #1f2937;
-    --sidebar: #1e1b4b;
+    --primary: #26C6DA;
+    --secondary: #1A5276;
+    --bg: #FFFFFF;
+    --bg-alt: #F7FAFC;
+    --text: #1A202C;
+    --sidebar: #1A5276;
+    --sidebar-hover: rgba(255, 255, 255, 0.1);
 }
 
 body {
     font-family: 'Outfit', sans-serif;
-    background-color: var(--bg);
+    background-color: var(--bg-alt);
     color: var(--text);
     margin: 0;
     display: flex;
@@ -137,11 +139,21 @@ tr:hover {
     transition: background 0.2s;
 }
 
-.edit-btn { color: #4f46e5; }
-.delete-btn { color: #ef4444; }
+.edit-btn {
+    color: var(--primary);
+}
 
-.edit-btn:hover { background: #eef2ff; }
-.delete-btn:hover { background: #fef2f2; }
+.delete-btn {
+    color: #ef4444;
+}
+
+.edit-btn:hover {
+    background: rgba(38, 198, 218, 0.1);
+}
+
+.delete-btn:hover {
+    background: #fef2f2;
+}
 
 /* Settings Styles */
 .settings-container {
@@ -150,15 +162,17 @@ tr:hover {
     border-radius: 1rem;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     min-height: 600px;
-    overflow: hidden; /* Ensure rounded corners clip the sidebar background */
+    overflow: hidden;
+    /* Ensure rounded corners clip the sidebar background */
 }
 
 .settings-sidebar {
     width: 280px;
-    background: #f0f7ff; /* Light blue background */
+    background: var(--bg-alt);
+    /* Changed from soft blue */
     padding: 1.5rem;
     border-radius: 12px 0 0 12px;
-    border-right: 1px solid #e0e7ff;
+    border-right: 1px solid rgba(26, 82, 118, 0.1);
 }
 
 .settings-nav-item {
@@ -189,20 +203,40 @@ tr:hover {
 }
 
 .settings-nav-item.active {
-    background: #eef2ff;
+    background: rgba(38, 198, 218, 0.1);
     color: var(--primary);
-    border-color: rgba(79, 70, 229, 0.2);
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+    border-color: rgba(38, 198, 218, 0.2);
+    box-shadow: 0 4px 12px rgba(38, 198, 218, 0.1);
 }
 
 /* Individual Icon Colors */
-[data-settings-tab="profile"] i { color: #6366f1; }
-[data-settings-tab="system"] i { color: #10b981; }
-[data-settings-tab="security"] i { color: #f59e0b; }
-[data-settings-tab="theme"] i { color: #8b5cf6; }
-[data-settings-tab="help"] i { color: #3b82f6; }
-[data-settings-tab="feedback"] i { color: #ec4899; }
-[data-settings-tab="logout"] i { color: #ef4444; }
+[data-settings-tab="profile"] i {
+    color: var(--primary);
+}
+
+[data-settings-tab="system"] i {
+    color: #10b981;
+}
+
+[data-settings-tab="security"] i {
+    color: #f59e0b;
+}
+
+[data-settings-tab="theme"] i {
+    color: #8b5cf6;
+}
+
+[data-settings-tab="help"] i {
+    color: #3b82f6;
+}
+
+[data-settings-tab="feedback"] i {
+    color: #ec4899;
+}
+
+[data-settings-tab="logout"] i {
+    color: #ef4444;
+}
 
 .settings-nav-item.active i {
     transform: scale(1.1);
@@ -308,7 +342,7 @@ tr:hover {
 .form-group input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    box-shadow: 0 0 0 3px rgba(38, 198, 218, 0.1);
 }
 
 .form-group input[readonly] {
@@ -417,15 +451,15 @@ tr:hover {
     transition: .4s;
 }
 
-input:checked + .slider {
+input:checked+.slider {
     background-color: var(--primary);
 }
 
-input:focus + .slider {
+input:focus+.slider {
     box-shadow: 0 0 1px var(--primary);
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
     transform: translateX(26px);
 }
 
@@ -465,7 +499,7 @@ input:checked + .slider:before {
 
 .theme-card.active {
     border-color: var(--primary);
-    background: #eef2ff;
+    background: rgba(38, 198, 218, 0.05);
 }
 
 .theme-preview {
@@ -477,15 +511,26 @@ input:checked + .slider:before {
     border: 1px solid #e2e8f0;
 }
 
-.theme-preview.light { background: #f3f4f6; }
-.theme-preview.dark { background: #1e1b4b; }
+.theme-preview.light {
+    background: #f3f4f6;
+}
+
+.theme-preview.dark {
+    background: #1e1b4b;
+}
 
 .preview-sidebar {
     width: 30px;
     height: 100%;
 }
-.light .preview-sidebar { background: #1e1b4b; }
-.dark .preview-sidebar { background: #111827; }
+
+.light .preview-sidebar {
+    background: #1e1b4b;
+}
+
+.dark .preview-sidebar {
+    background: #111827;
+}
 
 .preview-content {
     flex: 1;
@@ -500,8 +545,14 @@ input:checked + .slider:before {
     border-radius: 3px;
     width: 100%;
 }
-.light .preview-line { background: #e2e8f0; }
-.dark .preview-line { background: #374151; }
+
+.light .preview-line {
+    background: #e2e8f0;
+}
+
+.dark .preview-line {
+    background: #374151;
+}
 
 /* FAQ Styles */
 .faq-list {

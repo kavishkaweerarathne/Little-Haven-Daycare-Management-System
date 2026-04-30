@@ -46,9 +46,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #4f46e5;
-            --bg: #f3f4f6;
-            --text: #1f2937;
+            --primary: #26C6DA;
+            --bg: #F7FAFC;
+            --text: #1A202C;
         }
         body {
             font-family: 'Outfit', sans-serif;

@@ -49,21 +49,21 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             ?>
             <div class="stats-grid">
                 <div class="stat-card" onclick="document.querySelector('[data-tab=\'staff\']').click()" style="cursor: pointer;">
-                    <div class="stat-icon" style="background: #6366f1;"><i class="fas fa-users"></i></div>
+                    <div class="stat-icon" style="background: var(--primary);"><i class="fas fa-users"></i></div>
                     <div>
                         <h3 style="margin:0; font-size: 0.9rem; color: #6b7280;">Total Staff</h3>
                         <p style="margin:0; font-size: 1.5rem; font-weight: 700;"><?php echo $staff_count; ?></p>
                     </div>
                 </div>
                 <div class="stat-card" onclick="document.querySelector('[data-tab=\'parents\']').click()" style="cursor: pointer;">
-                    <div class="stat-icon" style="background: #10b981;"><i class="fas fa-user-group"></i></div>
+                    <div class="stat-icon" style="background: var(--secondary);"><i class="fas fa-user-group"></i></div>
                     <div>
                         <h3 style="margin:0; font-size: 0.9rem; color: #6b7280;">Total Parents</h3>
                         <p style="margin:0; font-size: 1.5rem; font-weight: 700;"><?php echo $parent_count; ?></p>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon" style="background: #f59e0b;"><i class="fas fa-baby"></i></div>
+                    <div class="stat-icon" style="background: #FFD166;"><i class="fas fa-baby"></i></div>
                     <div>
                         <h3 style="margin:0; font-size: 0.9rem; color: #6b7280;">Active Kids</h3>
                         <p style="margin:0; font-size: 1.5rem; font-weight: 700;">56</p>
@@ -214,7 +214,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                         <form class="settings-form">
                             <div class="profile-upload">
                                 <div class="avatar-preview">
-                                    <img src="https://ui-avatars.com/api/?name=Admin&background=4f46e5&color=fff" alt="Profile">
+                                    <img src="https://ui-avatars.com/api/?name=Admin&background=26C6DA&color=fff" alt="Profile">
                                     <div class="avatar-edit">
                                         <i class="fas fa-camera"></i>
                                     </div>

@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             setTimeout(() => {
                 btn.textContent = 'Changes Saved!';
-                btn.style.background = '#10b981';
+                btn.style.background = '#26C6DA'; // Changed to primary teal
                 
                 setTimeout(() => {
                     btn.disabled = false;
@@ -146,16 +146,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if (theme === 'dark') {
                 document.body.classList.add('dark-theme');
                 // Normally you'd update CSS variables here
-                document.documentElement.style.setProperty('--bg', '#111827');
-                document.documentElement.style.setProperty('--text', '#f9fafb');
+                document.documentElement.style.setProperty('--bg', '#1A5276'); // Dark Blue
+                document.documentElement.style.setProperty('--text', '#FFFFFF');
                 document.querySelectorAll('.stat-card, .settings-container, #staff-tab div, #parents-tab div').forEach(el => {
                     el.style.background = '#1f2937';
                     el.style.color = '#f9fafb';
                 });
             } else {
                 document.body.classList.remove('dark-theme');
-                document.documentElement.style.setProperty('--bg', '#f3f4f6');
-                document.documentElement.style.setProperty('--text', '#1f2937');
+                document.documentElement.style.setProperty('--bg', '#FFFFFF');
+                document.documentElement.style.setProperty('--text', '#1A202C');
                 document.querySelectorAll('.stat-card, .settings-container, #staff-tab div, #parents-tab div').forEach(el => {
                     el.style.background = 'white';
                     el.style.color = '#1f2937';

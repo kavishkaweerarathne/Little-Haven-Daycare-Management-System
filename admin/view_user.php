@@ -34,9 +34,9 @@ if (!$user) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #4f46e5;
-            --bg: #f8fafc;
-            --text: #1e293b;
+            --primary: #26C6DA;
+            --bg: #F7FAFC;
+            --text: #1A202C;
         }
         body {
             font-family: 'Outfit', sans-serif;
@@ -74,7 +74,7 @@ if (!$user) {
         .avatar {
             width: 120px;
             height: 120px;
-            background: #e0e7ff;
+            background: rgba(38, 198, 218, 0.1);
             color: var(--primary);
             border-radius: 50%;
             display: flex;
@@ -84,7 +84,7 @@ if (!$user) {
             margin: 0 auto 1.5rem;
         }
         .role-badge {
-            background: #4f46e5;
+            background: var(--primary);
             color: white;
             padding: 6px 16px;
             border-radius: 20px;
