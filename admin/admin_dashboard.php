@@ -51,6 +51,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             $finance_count_query = "SELECT COUNT(*) as total FROM users WHERE role = 'finance'";
             $finance_count_res = mysqli_query($con, $finance_count_query);
             $finance_count = mysqli_fetch_assoc($finance_count_res)['total'];
+
+            $inventory_count_query = "SELECT COUNT(*) as total FROM users WHERE role = 'inventory'";
+            $inventory_count_res = mysqli_query($con, $inventory_count_query);
+            $inventory_count = mysqli_fetch_assoc($inventory_count_res)['total'];
             ?>
 
             <div class="welcome-banner">
@@ -94,6 +98,14 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                     <div>
                         <h3 style="margin:0; font-size: 0.85rem; color: #6b7280; font-weight: 600;">Finance Team</h3>
                         <p style="margin:0; font-size: 1.5rem; font-weight: 700;"><?php echo $finance_count; ?></p>
+                        <span class="trend-up"><i class="fas fa-caret-up"></i> Active</span>
+                    </div>
+                </div>
+                <div class="stat-card" onclick="document.querySelector('[data-tab=\'inventory\']').click()" style="cursor: pointer;">
+                    <div class="stat-icon" style="background: #f59e0b;"><i class="fas fa-boxes-stacked"></i></div>
+                    <div>
+                        <h3 style="margin:0; font-size: 0.85rem; color: #6b7280; font-weight: 600;">Inventory Team</h3>
+                        <p style="margin:0; font-size: 1.5rem; font-weight: 700;"><?php echo $inventory_count; ?></p>
                         <span class="trend-up"><i class="fas fa-caret-up"></i> Active</span>
                     </div>
                 </div>
@@ -154,9 +166,13 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                                 <i class="fas fa-user-group"></i>
                                 <span>Add Parent</span>
                             </div>
-                            <div class="action-card">
-                                <i class="fas fa-file-pdf"></i>
-                                <span>Reports</span>
+                            <div class="action-card" onclick="location.href='add_user.php?role=finance&tab=finance'">
+                                <i class="fas fa-file-invoice-dollar"></i>
+                                <span>Add Finance</span>
+                            </div>
+                            <div class="action-card" onclick="location.href='add_user.php?role=inventory&tab=inventory'">
+                                <i class="fas fa-boxes-stacked"></i>
+                                <span>Add Inventory</span>
                             </div>
                             <div class="action-card" onclick="document.querySelector('[data-tab=\'settings\']').click()">
                                 <i class="fas fa-gear"></i>
@@ -307,6 +323,52 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                                     <a href='view_user.php?id=".$row['id']."&tab=finance' class='action-btn view-btn' style='color: #10b981; margin-right: 10px;'><i class='fas fa-eye'></i></a>
                                     <a href='edit_user.php?id=".$row['id']."&tab=finance' class='action-btn edit-btn'><i class='fas fa-edit'></i></a>
                                     <a href='#' onclick='confirmDelete(".$row['id'].", \"finance\")' class='action-btn delete-btn'><i class='fas fa-trash'></i></a>
+                                  </td>";
+                            echo "</tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Manage Inventory Section -->
+        <div id="inventory-tab" class="tab-content" style="display: none;">
+            <div style="background: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2>Inventory Management</h2>
+                    <div style="display: flex; gap: 1rem;">
+                        <div style="position: relative;">
+                            <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8;"></i>
+                            <input type="text" id="inventory-search" placeholder="Search inventory team..." style="padding: 10px 10px 10px 35px; border: 1px solid #e2e8f0; border-radius: 8px; width: 250px;">
+                        </div>
+                        <a href="add_user.php?role=inventory&tab=inventory" class="logout-btn" style="background: var(--primary); text-decoration: none;">+ Add Inventory Manager</a>
+                    </div>
+                </div>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="text-align: left; border-bottom: 2px solid #f3f4f6;">
+                            <th style="padding: 1rem;">ID</th>
+                            <th style="padding: 1rem;">Name</th>
+                            <th style="padding: 1rem;">Email</th>
+                            <th style="padding: 1rem;">Phone</th>
+                            <th style="padding: 1rem;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $sql = "SELECT * FROM users WHERE role = 'inventory'";
+                        $result = mysqli_query($con, $sql);
+                        while($row = mysqli_fetch_assoc($result)) {
+                            echo "<tr style='border-bottom: 1px solid #f3f4f6;'>";
+                            echo "<td style='padding: 1rem;'>#".$row['id']."</td>";
+                            echo "<td style='padding: 1rem;'>".$row['fullname']."</td>";
+                            echo "<td style='padding: 1rem;'>".$row['email']."</td>";
+                            echo "<td style='padding: 1rem;'>".$row['phone']."</td>";
+                            echo "<td style='padding: 1rem;'>
+                                    <a href='view_user.php?id=".$row['id']."&tab=inventory' class='action-btn view-btn' style='color: #10b981; margin-right: 10px;'><i class='fas fa-eye'></i></a>
+                                    <a href='edit_user.php?id=".$row['id']."&tab=inventory' class='action-btn edit-btn'><i class='fas fa-edit'></i></a>
+                                    <a href='#' onclick='confirmDelete(".$row['id'].", \"inventory\")' class='action-btn delete-btn'><i class='fas fa-trash'></i></a>
                                   </td>";
                             echo "</tr>";
                         }

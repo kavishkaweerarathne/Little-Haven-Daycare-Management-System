@@ -85,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initSearch('staff-search', 'staff-tab');
     initSearch('parents-search', 'parents-tab');
     initSearch('finance-search', 'finance-tab');
+    initSearch('inventory-search', 'inventory-tab');
 
     // Settings Sub-tab Switching
     const settingsNavItems = document.querySelectorAll('.settings-nav-item');

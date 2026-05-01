@@ -124,6 +124,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <select name="role">
                     <option value="parent" <?php if($user['role'] == 'parent') echo 'selected'; ?>>Parent</option>
                     <option value="staff" <?php if($user['role'] == 'staff') echo 'selected'; ?>>Staff</option>
+                    <option value="finance" <?php if($user['role'] == 'finance') echo 'selected'; ?>>Finance Manager</option>
+                    <option value="inventory" <?php if($user['role'] == 'inventory') echo 'selected'; ?>>Inventory Manager</option>
                 </select>
             </div>
             <button type="submit" class="btn-save">Save Changes</button>
