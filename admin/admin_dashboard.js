@@ -26,7 +26,6 @@ document.querySelectorAll('.sidebar nav p').forEach(item => {
             'staff': 'Manage Staff Members',
             'parents': 'Manage Parents',
             'finance': 'Finance Management',
-            'inventory_mgr': 'Inventory Management',
             'children': 'Manage Children',
             'billing': 'Billing and Payments',
             'inventory': 'Inventory Management',
@@ -86,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initSearch('staff-search', 'staff-tab');
     initSearch('parents-search', 'parents-tab');
     initSearch('finance-search', 'finance-tab');
-    initSearch('inventory-search', 'inventory_mgr-tab');
 
     // Settings Sub-tab Switching
     const settingsNavItems = document.querySelectorAll('.settings-nav-item');
