@@ -1,9 +1,19 @@
 <?php
 session_start();
+require_once('../config.php');
+
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'inventory') {
     header("Location: ../login/login.php");
     exit();
 }
+
+// Fetch stats
+$total_items = $con->query("SELECT COUNT(*) as count FROM inventory")->fetch_assoc()['count'];
+$low_stock = $con->query("SELECT COUNT(*) as count FROM inventory WHERE quantity <= reorder_threshold AND quantity > 0")->fetch_assoc()['count'];
+$out_of_stock = $con->query("SELECT COUNT(*) as count FROM inventory WHERE quantity <= 0")->fetch_assoc()['count'];
+
+// Fetch inventory list
+$inventory_result = $con->query("SELECT * FROM inventory ORDER BY created_at DESC");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,7 +37,11 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'inventory') {
             --text-main: #1A202C;
             --text-muted: #718096;
             --radius-md: 20px;
+            --radius-sm: 12px;
             --shadow-soft: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+            --danger: #E63946;
+            --success: #2A9D8F;
+            --warning: #FF9F1C;
         }
 
         * {
@@ -52,6 +66,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'inventory') {
             display: flex;
             flex-direction: column;
             gap: 40px;
+            position: fixed;
+            height: 100vh;
         }
 
         .sidebar h2 {
@@ -86,6 +102,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'inventory') {
 
         .main-content {
             flex: 1;
+            margin-left: 280px;
             padding: 40px;
         }
 
@@ -131,6 +148,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'inventory') {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 25px;
+            margin-bottom: 40px;
         }
 
         .stat-card {
@@ -141,6 +159,11 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'inventory') {
             display: flex;
             align-items: center;
             gap: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
         }
 
         .stat-icon {
@@ -154,21 +177,132 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'inventory') {
             color: white;
         }
 
-        .placeholder-section {
-            margin-top: 40px;
-            text-align: center;
-            padding: 60px;
-            background: white;
-            border-radius: var(--radius-md);
-            border: 2px dashed #e2e8f0;
+        /* Inventory Management Styles */
+        .inventory-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 20px;
         }
 
-        .placeholder-section i {
-            font-size: 4rem;
-            color: var(--primary);
-            margin-bottom: 20px;
-            opacity: 0.5;
+        .search-box {
+            background: white;
+            padding: 12px 20px;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            max-width: 400px;
         }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .add-btn {
+            background: var(--secondary);
+            color: white;
+            padding: 12px 25px;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .add-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-soft);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background: #f8fafc;
+            padding: 18px 25px;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            padding: 18px 25px;
+            border-bottom: 1px solid #edf2f7;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-category {
+            background: #EBF8FF;
+            color: #3182CE;
+        }
+
+        .stock-ok {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .stock-low {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .edit-btn { background: #EBF8FF; color: #3182CE; }
+        .edit-btn:hover { background: #3182CE; color: white; }
+
+        .delete-btn { background: #FFF5F5; color: var(--danger); }
+        .delete-btn:hover { background: var(--danger); color: white; }
     </style>
 </head>
 <body>
@@ -176,7 +310,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'inventory') {
     <div class="sidebar">
         <h2><i class="fas fa-hands-holding-child"></i> Little Haven</h2>
         <div class="nav-links">
-            <a href="#" class="nav-item active"><i class="fas fa-boxes-stacked"></i> Inventory</a>
+            <a href="inventory_dashboard.php" class="nav-item active"><i class="fas fa-boxes-stacked"></i> Inventory</a>
             <a href="#" class="nav-item"><i class="fas fa-cart-plus"></i> Orders</a>
             <a href="#" class="nav-item"><i class="fas fa-truck-ramp-box"></i> Suppliers</a>
             <a href="#" class="nav-item"><i class="fas fa-warehouse"></i> Stock Level</a>
@@ -204,31 +338,96 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'inventory') {
                 <div class="stat-icon" style="background: #FF9F1C;"><i class="fas fa-box-open"></i></div>
                 <div>
                     <h3 style="font-size: 0.9rem; color: var(--text-muted);">Total Items</h3>
-                    <p style="font-size: 1.5rem; font-weight: 700;">0</p>
+                    <p style="font-size: 1.5rem; font-weight: 700;"><?php echo $total_items; ?></p>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon" style="background: #E76F51;"><i class="fas fa-triangle-exclamation"></i></div>
                 <div>
                     <h3 style="font-size: 0.9rem; color: var(--text-muted);">Low Stock Alerts</h3>
-                    <p style="font-size: 1.5rem; font-weight: 700;">0</p>
+                    <p style="font-size: 1.5rem; font-weight: 700;"><?php echo $low_stock; ?></p>
                 </div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon" style="background: #2A9D8F;"><i class="fas fa-truck-fast"></i></div>
+                <div class="stat-icon" style="background: #2A9D8F;"><i class="fas fa-circle-xmark"></i></div>
                 <div>
-                    <h3 style="font-size: 0.9rem; color: var(--text-muted);">Incoming Orders</h3>
-                    <p style="font-size: 1.5rem; font-weight: 700;">0</p>
+                    <h3 style="font-size: 0.9rem; color: var(--text-muted);">Out of Stock</h3>
+                    <p style="font-size: 1.5rem; font-weight: 700;"><?php echo $out_of_stock; ?></p>
                 </div>
             </div>
         </div>
 
-        <div class="placeholder-section">
-            <i class="fas fa-boxes-packing"></i>
-            <h3>Inventory Modules Coming Soon</h3>
-            <p>The stock tracking and ordering system is currently being optimized for daycare needs. Stay tuned!</p>
+        <div class="inventory-controls">
+            <div class="search-box">
+                <i class="fas fa-search text-muted"></i>
+                <input type="text" id="inventorySearch" placeholder="Search inventory items...">
+            </div>
+            <a href="add_item.php" class="add-btn">
+                <i class="fas fa-plus"></i> Add New Item
+            </a>
+        </div>
+
+        <div class="table-container">
+            <table id="inventoryTable">
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Category</th>
+                        <th>Stock Level</th>
+                        <th>Supplier</th>
+                        <th>Expiry Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($inventory_result->num_rows > 0): ?>
+                        <?php while ($item = $inventory_result->fetch_assoc()): ?>
+                            <?php $isLowStock = ($item['quantity'] <= $item['reorder_threshold']); ?>
+                            <tr>
+                                <td><?php echo $item['item_name']; ?></td>
+                                <td><span class="badge badge-category"><?php echo $item['category'] ?: 'N/A'; ?></span></td>
+                                <td>
+                                    <span class="<?php echo $isLowStock ? 'stock-low' : 'stock-ok'; ?>">
+                                        <?php echo $item['quantity'] . " " . $item['unit']; ?>
+                                    </span>
+                                    <?php if ($isLowStock): ?>
+                                        <i class="fas fa-exclamation-triangle text-warning" title="Low Stock"></i>
+                                    <?php endif; ?>
+                                </td>
+                                <td><?php echo $item['supplier_name'] ?: '-'; ?></td>
+                                <td><?php echo $item['expiry_date'] ?: 'No Expiry'; ?></td>
+                                <td>
+                                    <div class="actions">
+                                        <a href="edit_item.php?id=<?php echo $item['id']; ?>" class="btn-icon edit-btn"><i class="fas fa-edit"></i></a>
+                                        <a href="javascript:void(0)" onclick="confirmDeleteItem(<?php echo $item['id']; ?>)" class="btn-icon delete-btn"><i class="fas fa-trash"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <tr><td colspan="6" style="text-align: center; padding: 40px;">No items found.</td></tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
         </div>
     </main>
 
+    <script>
+        function confirmDeleteItem(id) {
+            if (confirm('Are you sure you want to delete this item? It will be moved to the archive.')) {
+                window.location.href = 'delete_item.php?id=' + id;
+            }
+        }
+
+        // Simple Search Filtering
+        document.getElementById('inventorySearch').addEventListener('input', function() {
+            const term = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#inventoryTable tbody tr');
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(term) ? '' : 'none';
+            });
+        });
+    </script>
 </body>
 </html>
