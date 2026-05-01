@@ -314,7 +314,7 @@ $inventory_result = $con->query("SELECT * FROM inventory ORDER BY created_at DES
             <a href="#" class="nav-item"><i class="fas fa-cart-plus"></i> Orders</a>
             <a href="#" class="nav-item"><i class="fas fa-truck-ramp-box"></i> Suppliers</a>
             <a href="#" class="nav-item"><i class="fas fa-warehouse"></i> Stock Level</a>
-            <a href="#" class="nav-item"><i class="fas fa-file-lines"></i> Reports</a>
+            <a href="reports.php" class="nav-item"><i class="fas fa-file-pdf"></i> Reports</a>
             <a href="#" class="nav-item"><i class="fas fa-gear"></i> Settings</a>
         </div>
     </div>
@@ -362,6 +362,9 @@ $inventory_result = $con->query("SELECT * FROM inventory ORDER BY created_at DES
                 <i class="fas fa-search text-muted"></i>
                 <input type="text" id="inventorySearch" placeholder="Search inventory items...">
             </div>
+            <a href="reports.php" class="add-btn" style="background: #E2E8F0; color: var(--text-main);">
+                <i class="fas fa-file-pdf"></i> Download PDF
+            </a>
             <a href="add_item.php" class="add-btn">
                 <i class="fas fa-plus"></i> Add New Item
             </a>
