@@ -38,6 +38,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header("Location: ../staff/staff_dashboard.php");
             } elseif ($user['role'] === 'finance') {
                 header("Location: ../finance/finance_dashboard.php");
+            } elseif ($user['role'] === 'inventory') {
+                header("Location: ../inventory/inventory_dashboard.php");
             } else {
                 // Default redirection if role is unknown
                 header("Location: ../home/home.php");
