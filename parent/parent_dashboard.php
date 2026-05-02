@@ -81,6 +81,7 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
             <p class="<?php echo $tab == 'dashboard' ? 'active' : ''; ?>" data-tab="dashboard"><i class="fas fa-chart-line"></i> <span>Dashboard</span></p>
             <p class="<?php echo $tab == 'children' ? 'active' : ''; ?>" data-tab="children"><i class="fas fa-baby"></i> <span>My Children</span></p>
             <p class="<?php echo $tab == 'attendance' ? 'active' : ''; ?>" data-tab="attendance"><i class="fas fa-calendar-check"></i> <span>Attendance</span></p>
+            <p class="<?php echo $tab == 'activities' ? 'active' : ''; ?>" data-tab="activities"><i class="fas fa-book-open"></i> <span>Daily Activities</span></p>
             <p class="<?php echo $tab == 'billing' ? 'active' : ''; ?>" data-tab="billing"><i class="fas fa-file-invoice-dollar"></i> <span>Billing</span></p>
             <p class="<?php echo $tab == 'settings' ? 'active' : ''; ?>" data-tab="settings"><i class="fas fa-user-gear"></i> <span>Settings</span></p>
         </nav>
@@ -311,6 +312,81 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                             ?>
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activities Tab -->
+        <div id="activities-tab" class="tab-content <?php echo $tab == 'activities' ? 'active' : ''; ?>">
+            <div class="card">
+                <div class="section-header">
+                    <h2>Daily Activities History</h2>
+                    <p style="color: #64748b; font-size: 0.9rem;">Review your children's growth and daily updates</p>
+                </div>
+                
+                <div class="activities-stream" style="display: flex; flex-direction: column; gap: 2rem; margin-top: 2rem;">
+                    <?php 
+                    if(!empty($children)) {
+                        $cids = array_column($children, 'id');
+                        $cid_list = implode(',', $cids);
+                        $full_act_query = "SELECT da.*, c.name as child_name FROM daily_activities da 
+                                          JOIN children c ON da.child_id = c.id 
+                                          WHERE da.child_id IN ($cid_list) 
+                                          ORDER BY da.activity_date DESC, da.id DESC";
+                        $full_act_res = mysqli_query($con, $full_act_query);
+                        
+                        if($full_act_res && mysqli_num_rows($full_act_res) > 0) {
+                            while($act = mysqli_fetch_assoc($full_act_res)) {
+                                ?>
+                                <div class="activity-log-card" style="background: #f8fafc; border-radius: 24px; border: 1px solid #e2e8f0; overflow: hidden; transition: transform 0.3s;">
+                                    <div style="background: var(--secondary); color: white; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center;">
+                                        <h4 style="margin: 0;"><i class="fas fa-child"></i> <?php echo $act['child_name']; ?></h4>
+                                        <span style="font-weight: 600; opacity: 0.9;"><i class="fas fa-calendar-alt"></i> <?php echo date('d M Y', strtotime($act['activity_date'])); ?></span>
+                                    </div>
+                                    <div style="padding: 25px; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                                        <div>
+                                            <div style="margin-bottom: 20px;">
+                                                <h5 style="color: #64748b; text-transform: uppercase; font-size: 0.75rem; margin-bottom: 8px; letter-spacing: 1px;">General Mood</h5>
+                                                <?php 
+                                                    $m_cl = '#166534'; $m_bg = '#dcfce7'; $m_ic = '😊';
+                                                    if($act['mood'] == 'Fussy') { $m_cl = '#991b1b'; $m_bg = '#fee2e2'; $m_ic = '😢'; }
+                                                    elseif($act['mood'] == 'Calm') { $m_cl = '#1e40af'; $m_bg = '#dbeafe'; $m_ic = '😐'; }
+                                                    elseif($act['mood'] == 'Excited') { $m_cl = '#854d0e'; $m_bg = '#fef3c7'; $m_ic = '🤩'; }
+                                                ?>
+                                                <span class="badge" style="background: <?php echo $m_bg; ?>; color: <?php echo $m_cl; ?>; padding: 8px 16px; font-size: 1rem;">
+                                                    <?php echo $m_ic . ' ' . $act['mood']; ?>
+                                                </span>
+                                            </div>
+                                            <div style="margin-bottom: 20px;">
+                                                <h5 style="color: #64748b; text-transform: uppercase; font-size: 0.75rem; margin-bottom: 8px; letter-spacing: 1px;">Nutrition & Meals</h5>
+                                                <p style="margin: 0; line-height: 1.6; font-weight: 500;"><?php echo $act['meal_details'] ?: 'No meal details recorded.'; ?></p>
+                                            </div>
+                                            <div>
+                                                <h5 style="color: #64748b; text-transform: uppercase; font-size: 0.75rem; margin-bottom: 8px; letter-spacing: 1px;">Nap / Rest Time</h5>
+                                                <p style="margin: 0; line-height: 1.6; font-weight: 500;"><i class="fas fa-moon" style="color: #6366f1;"></i> <?php echo $act['nap_details'] ?: 'Not recorded.'; ?></p>
+                                            </div>
+                                        </div>
+                                        <div style="border-left: 1px solid #e2e8f0; padding-left: 2rem;">
+                                            <div style="margin-bottom: 20px;">
+                                                <h5 style="color: #64748b; text-transform: uppercase; font-size: 0.75rem; margin-bottom: 8px; letter-spacing: 1px;">Activities Participated</h5>
+                                                <p style="margin: 0; line-height: 1.6; font-weight: 500;"><?php echo $act['activities'] ?: 'No specific activities recorded.'; ?></p>
+                                            </div>
+                                            <div style="background: white; padding: 20px; border-radius: 16px; border: 1px dashed #cbd5e1;">
+                                                <h5 style="color: var(--primary); text-transform: uppercase; font-size: 0.75rem; margin-bottom: 10px; letter-spacing: 1px;"><i class="fas fa-comment-dots"></i> Teacher's Note</h5>
+                                                <p style="margin: 0; font-style: italic; color: #475569; line-height: 1.6;"><?php echo $act['notes'] ?: 'No additional notes.'; ?></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php
+                            }
+                        } else {
+                            echo "<div style='text-align: center; padding: 5rem; background: #f8fafc; border-radius: 30px; color: #94a3b8;'><i class='fas fa-book-open' style='font-size: 4rem; margin-bottom: 1.5rem; opacity: 0.5;'></i><h3>No Activity Logs Yet</h3><p>Your children's daily updates will appear here once recorded by the staff.</p></div>";
+                        }
+                    } else {
+                        echo "<div style='text-align: center; padding: 5rem; background: #f8fafc; border-radius: 30px; color: #94a3b8;'><h3>No Children Linked</h3><p>Please link your children to see their activities.</p></div>";
+                    }
+                    ?>
                 </div>
             </div>
         </div>
