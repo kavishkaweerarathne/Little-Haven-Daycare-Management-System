@@ -80,7 +80,6 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
         <nav>
             <p class="<?php echo $tab == 'dashboard' ? 'active' : ''; ?>" data-tab="dashboard"><i class="fas fa-chart-line"></i> <span>Dashboard</span></p>
             <p class="<?php echo $tab == 'children' ? 'active' : ''; ?>" data-tab="children"><i class="fas fa-baby"></i> <span>My Children</span></p>
-            <p class="<?php echo $tab == 'attendance' ? 'active' : ''; ?>" data-tab="attendance"><i class="fas fa-calendar-check"></i> <span>Attendance</span></p>
             <p class="<?php echo $tab == 'activities' ? 'active' : ''; ?>" data-tab="activities"><i class="fas fa-book-open"></i> <span>Daily Activities</span></p>
             <p class="<?php echo $tab == 'billing' ? 'active' : ''; ?>" data-tab="billing"><i class="fas fa-file-invoice-dollar"></i> <span>Billing</span></p>
             <p class="<?php echo $tab == 'settings' ? 'active' : ''; ?>" data-tab="settings"><i class="fas fa-user-gear"></i> <span>Settings</span></p>
@@ -261,60 +260,7 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
             </div>
         </div>
 
-        <!-- Attendance Tab -->
-        <div id="attendance-tab" class="tab-content <?php echo $tab == 'attendance' ? 'active' : ''; ?>">
-            <div class="card">
-                <div class="section-header">
-                    <h2>Attendance Records</h2>
-                    <div class="badge" style="background: #f1f5f9; color: #64748b; padding: 10px 20px;">Last 30 Days</div>
-                </div>
-                
-                <div class="table-container" style="margin-top: 1rem;">
-                    <table style="width: 100%; border-collapse: collapse;">
-                        <thead>
-                            <tr style="text-align: left; border-bottom: 2px solid #f1f5f9;">
-                                <th style="padding: 1.25rem;">Child</th>
-                                <th style="padding: 1.25rem;">Date</th>
-                                <th style="padding: 1.25rem;">Status</th>
-                                <th style="padding: 1.25rem;">Check In</th>
-                                <th style="padding: 1.25rem;">Note</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php 
-                            if(!empty($children)) {
-                                $att_history_query = "SELECT a.*, c.name as child_name FROM attendance a 
-                                                     JOIN children c ON a.child_id = c.id 
-                                                     WHERE c.parent_id = $user_id 
-                                                     AND a.attendance_date >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
-                                                     ORDER BY a.attendance_date DESC, c.name ASC";
-                                $att_history_res = mysqli_query($con, $att_history_query);
-                                if($att_history_res && mysqli_num_rows($att_history_res) > 0) {
-                                    while($att = mysqli_fetch_assoc($att_history_res)) {
-                                        $status_bg = '#dcfce7'; $status_color = '#166534';
-                                        if($att['status'] == 'Absent') { $status_bg = '#fee2e2'; $status_color = '#ef4444'; }
-                                        if($att['status'] == 'Late') { $status_bg = '#fef3c7'; $status_color = '#92400E'; }
-                                        
-                                        echo "<tr style='border-bottom: 1px solid #f8fafc;'>";
-                                        echo "<td style='padding: 1.25rem;'><strong>".$att['child_name']."</strong></td>";
-                                        echo "<td style='padding: 1.25rem;'>".date('d M Y', strtotime($att['attendance_date']))."</td>";
-                                        echo "<td style='padding: 1.25rem;'><span class='badge' style='background: $status_bg; color: $status_color;'>".$att['status']."</span></td>";
-                                        echo "<td style='padding: 1.25rem;'>".($att['check_in_time'] ? date('h:i A', strtotime($att['check_in_time'])) : '-')."</td>";
-                                        echo "<td style='padding: 1.25rem; font-size: 0.85rem; color: #64748b;'>".$att['notes']."</td>";
-                                        echo "</tr>";
-                                    }
-                                } else {
-                                    echo "<tr><td colspan='5' style='text-align: center; padding: 4rem; color: #94a3b8;'>No attendance records found for the last 30 days.</td></tr>";
-                                }
-                            } else {
-                                echo "<tr><td colspan='5' style='text-align: center; padding: 4rem; color: #94a3b8;'>No children linked.</td></tr>";
-                            }
-                            ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+
 
         <!-- Activities Tab -->
         <div id="activities-tab" class="tab-content <?php echo $tab == 'activities' ? 'active' : ''; ?>">
