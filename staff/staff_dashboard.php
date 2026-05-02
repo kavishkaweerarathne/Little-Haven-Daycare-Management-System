@@ -291,6 +291,10 @@ if ($tab == 'my_class') {
                 <i class="fas fa-school"></i>
                 <span>My Class</span>
             </a>
+            <a href="staff_dashboard.php?tab=search" class="nav-item <?php echo $tab == 'search' ? 'active' : ''; ?>">
+                <i class="fas fa-search"></i>
+                <span>Search Student</span>
+            </a>
             <a href="staff_dashboard.php?tab=attendance" class="nav-item <?php echo $tab == 'attendance' ? 'active' : ''; ?>">
                 <i class="fas fa-clipboard-user"></i>
                 <span>Attendance</span>
@@ -595,6 +599,81 @@ if ($tab == 'my_class') {
                 </div>
             </div>
 
+        <?php elseif ($tab == 'search'): 
+            $search_query = isset($_GET['q']) ? mysqli_real_escape_string($con, $_GET['q']) : '';
+            $search_result = null;
+            if (!empty($search_query)) {
+                $q = "SELECT c.*, u.fullname as parent_name, u.email as parent_email, u.phone as parent_phone 
+                      FROM children c 
+                      LEFT JOIN users u ON c.parent_id = u.id 
+                      WHERE c.id = '$search_query' OR c.name LIKE '%$search_query%'";
+                $search_result = $con->query($q);
+            }
+        ?>
+            <div class="card" style="max-width: 900px; margin: 0 auto;">
+                <div class="section-header" style="text-align: center; flex-direction: column; gap: 15px;">
+                    <h2 style="font-size: 1.8rem; color: var(--secondary);"><i class="fas fa-user-zoom"></i> Find a Student</h2>
+                    <p style="color: var(--text-muted);">Enter Student ID or Full Name to retrieve records</p>
+                </div>
+                
+                <form action="" method="GET" style="margin-top: 20px;">
+                    <input type="hidden" name="tab" value="search">
+                    <div style="display: flex; gap: 10px; background: var(--bg-alt); padding: 8px; border-radius: 16px; border: 1.5px solid #E2E8F0;">
+                        <input type="text" name="q" value="<?php echo htmlspecialchars($search_query); ?>" placeholder="Search by ID or Name..." style="flex: 1; border: none; background: transparent; padding: 12px 20px; font-size: 1.1rem; outline: none;" required>
+                        <button type="submit" style="background: var(--primary); color: white; border: none; padding: 12px 30px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s;"><i class="fas fa-search"></i> Search</button>
+                    </div>
+                </form>
+
+                <?php if ($search_result): ?>
+                    <div style="margin-top: 40px;">
+                        <?php if ($search_result->num_rows > 0): ?>
+                            <?php while($child = $search_result->fetch_assoc()): ?>
+                                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; padding: 30px; margin-bottom: 25px; display: grid; grid-template-columns: 100px 1fr; gap: 30px;">
+                                    <div style="width: 100px; height: 100px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: white; font-weight: 700;">
+                                        <?php echo strtoupper(substr($child['name'], 0, 1)); ?>
+                                    </div>
+                                    <div>
+                                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                                            <div>
+                                                <h3 style="font-size: 1.5rem; color: var(--secondary); margin-bottom: 5px;"><?php echo $child['name']; ?></h3>
+                                                <span class="badge badge-success">Child ID: #C-<?php echo $child['id']; ?></span>
+                                            </div>
+                                            <div style="text-align: right;">
+                                                <a href="manage_activities.php?child_id=<?php echo $child['id']; ?>" class="btn-action btn-primary"><i class="fas fa-notes-medical"></i> Daily Log</a>
+                                            </div>
+                                        </div>
+
+                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+                                            <div>
+                                                <h4 style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 12px;">Student Details</h4>
+                                                <p style="margin-bottom: 8px;"><strong>Age:</strong> <?php echo $child['age']; ?> Years</p>
+                                                <p style="margin-bottom: 8px;"><strong>Gender:</strong> <?php echo ucfirst($child['gender']); ?></p>
+                                                <p style="margin-bottom: 8px;"><strong>Enrolled:</strong> <?php echo date('d M Y', strtotime($child['enrolled_date'])); ?></p>
+                                            </div>
+                                            <div>
+                                                <h4 style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 12px;">Parent Contact</h4>
+                                                <?php if($child['parent_name']): ?>
+                                                    <p style="margin-bottom: 8px;"><strong>Name:</strong> <?php echo $child['parent_name']; ?></p>
+                                                    <p style="margin-bottom: 8px;"><strong>Phone:</strong> <?php echo $child['parent_phone']; ?></p>
+                                                    <p style="margin-bottom: 8px;"><strong>Email:</strong> <?php echo $child['parent_email']; ?></p>
+                                                <?php else: ?>
+                                                    <p style="color: var(--danger); font-style: italic;">No parent linked to this account.</p>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <div style="text-align: center; padding: 50px; background: #fff5f5; border-radius: 20px; border: 1px solid #fed7d7;">
+                                <i class="fas fa-user-slash" style="font-size: 3rem; color: #f56565; margin-bottom: 15px;"></i>
+                                <h3 style="color: #c53030;">No Student Found</h3>
+                                <p style="color: #9b2c2c;">We couldn't find any student matching "<?php echo htmlspecialchars($search_query); ?>". Please check the ID or spelling.</p>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
         <?php elseif ($tab == 'settings'): ?>
             <div class="card" style="max-width: 600px;">
                 <h3 style="margin-bottom: 25px;">Profile Settings</h3>
