@@ -287,25 +287,13 @@ if ($tab == 'my_class') {
                 <i class="fas fa-chart-pie"></i>
                 <span>Overview</span>
             </a>
-            <a href="staff_dashboard.php?tab=my_class" class="nav-item <?php echo $tab == 'my_class' ? 'active' : ''; ?>">
-                <i class="fas fa-school"></i>
-                <span>My Class</span>
-            </a>
             <a href="staff_dashboard.php?tab=search" class="nav-item <?php echo $tab == 'search' ? 'active' : ''; ?>">
                 <i class="fas fa-search"></i>
                 <span>Search Student</span>
             </a>
-            <a href="staff_dashboard.php?tab=attendance" class="nav-item <?php echo $tab == 'attendance' ? 'active' : ''; ?>">
-                <i class="fas fa-clipboard-user"></i>
-                <span>Attendance</span>
-            </a>
             <a href="staff_dashboard.php?tab=schedule" class="nav-item <?php echo $tab == 'schedule' ? 'active' : ''; ?>">
                 <i class="fas fa-calendar-alt"></i>
                 <span>Schedule</span>
-            </a>
-            <a href="staff_dashboard.php?tab=daily_log" class="nav-item <?php echo $tab == 'daily_log' ? 'active' : ''; ?>">
-                <i class="fas fa-book"></i>
-                <span>Daily Logs</span>
             </a>
             <a href="staff_dashboard.php?tab=settings" class="nav-item <?php echo $tab == 'settings' ? 'active' : ''; ?>">
                 <i class="fas fa-user-gear"></i>
@@ -391,102 +379,9 @@ if ($tab == 'my_class') {
                 </div>
             </div>
 
-        <?php elseif ($tab == 'my_class'): ?>
-            <div class="card">
-                <div class="section-header">
-                    <h3>My Students (<?php echo $total_children; ?> Total)</h3>
-                    <div style="display: flex; gap: 15px;">
-                        <div class="search-box" style="background: var(--bg-alt); padding: 10px 20px; border-radius: 12px; display: flex; align-items: center; gap: 10px;">
-                            <i class="fas fa-search" style="color: var(--text-muted);"></i>
-                            <input type="text" id="studentSearch" placeholder="Search students..." style="border: none; background: transparent; outline: none; width: 150px;">
-                        </div>
-                        <a href="add_child.php" class="btn-action btn-primary"><i class="fas fa-plus"></i> Add Student</a>
-                    </div>
-                </div>
-                <div class="table-container">
-                    <table id="studentTable">
-                        <thead>
-                            <tr>
-                                <th>Student Name</th>
-                                <th>Age</th>
-                                <th>Gender</th>
-                                <th>Enrolled Date</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if ($children_result->num_rows > 0): ?>
-                                <?php while ($child = $children_result->fetch_assoc()): ?>
-                                    <tr>
-                                        <td><strong><?php echo $child['name']; ?></strong></td>
-                                        <td><?php echo $child['age']; ?> Years</td>
-                                        <td><?php echo ucfirst($child['gender']); ?></td>
-                                        <td><?php echo date('d M Y', strtotime($child['enrolled_date'])); ?></td>
-                                        <td>
-                                            <div style="display: flex; gap: 8px;">
-                                                <a href="edit_child.php?id=<?php echo $child['id']; ?>" class="btn-action btn-primary" title="Edit Profile"><i class="fas fa-user-edit"></i></a>
-                                                <a href="manage_activities.php?child_id=<?php echo $child['id']; ?>" class="btn-action btn-success" title="Daily Activities"><i class="fas fa-notes-medical"></i></a>
-                                                <a href="javascript:void(0)" onclick="confirmDeleteChild(<?php echo $child['id']; ?>)" class="btn-action btn-danger" title="Delete"><i class="fas fa-trash"></i></a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <?php endwhile; ?>
-                            <?php else: ?>
-                                <tr><td colspan="5" style="text-align: center; padding: 40px;">No students found in your class.</td></tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
 
-        <?php elseif ($tab == 'attendance'): 
-            $attendance_date = date('Y-m-d');
-            $children_result = $con->query("SELECT * FROM children WHERE staff_id = $staff_id ORDER BY name ASC");
-        ?>
-            <div class="card">
-                <form action="save_attendance.php" method="POST">
-                    <div class="section-header">
-                        <div>
-                            <h3>Mark Attendance</h3>
-                            <p style="color: var(--text-muted); font-size: 0.9rem;"><?php echo date('l, d F Y'); ?></p>
-                        </div>
-                        <button type="submit" class="btn-action btn-primary" style="padding: 12px 25px;"><i class="fas fa-save"></i> Save Attendance</button>
-                    </div>
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Student</th>
-                                    <th>Status</th>
-                                    <th>Check-in Time</th>
-                                    <th>Notes</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if ($children_result->num_rows > 0): ?>
-                                    <?php while ($child = $children_result->fetch_assoc()): ?>
-                                        <tr>
-                                            <td><strong><?php echo $child['name']; ?></strong></td>
-                                            <td>
-                                                <input type="hidden" name="child_ids[]" value="<?php echo $child['id']; ?>">
-                                                <select name="status[]" style="padding: 8px; border-radius: 8px; border: 1.5px solid #E2E8F0; outline: none;">
-                                                    <option value="Present">Present</option>
-                                                    <option value="Absent">Absent</option>
-                                                    <option value="Late">Late</option>
-                                                </select>
-                                            </td>
-                                            <td><input type="time" name="check_in_time[]" value="<?php echo date('H:i'); ?>" style="padding: 8px; border-radius: 8px; border: 1.5px solid #E2E8F0;"></td>
-                                            <td><input type="text" name="notes[]" placeholder="Add note..." style="padding: 8px; border-radius: 8px; border: 1.5px solid #E2E8F0; width: 100%;"></td>
-                                        </tr>
-                                    <?php endwhile; ?>
-                                <?php else: ?>
-                                    <tr><td colspan="4" style="text-align: center; padding: 40px;">No students found to mark attendance.</td></tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </form>
-            </div>
+
+
 
         <?php elseif ($tab == 'schedule'): 
             $schedule_result = $con->query("SELECT * FROM staff_schedule WHERE staff_id = $staff_id ORDER BY activity_date ASC, start_time ASC");
@@ -539,65 +434,7 @@ if ($tab == 'my_class') {
                     </table>
                 </div>
             </div>
-        <?php elseif ($tab == 'daily_log'): 
-            $logs_result = $con->query("
-                SELECT da.*, c.name as child_name 
-                FROM daily_activities da 
-                JOIN children c ON da.child_id = c.id 
-                WHERE c.staff_id = $staff_id 
-                ORDER BY da.activity_date DESC, c.name ASC
-            ");
-        ?>
-            <div class="card">
-                <div class="section-header">
-                    <h3>Activity History</h3>
-                    <div style="display: flex; gap: 15px;">
-                        <div class="search-box" style="background: var(--bg-alt); padding: 10px 20px; border-radius: 12px; display: flex; align-items: center; gap: 10px;">
-                            <i class="fas fa-calendar-day" style="color: var(--text-muted);"></i>
-                            <input type="date" id="dateFilter" style="border: none; background: transparent; outline: none;">
-                        </div>
-                    </div>
-                </div>
-                <div class="table-container">
-                    <table id="activityTable">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Student</th>
-                                <th>Mood</th>
-                                <th>Activities</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if ($logs_result->num_rows > 0): ?>
-                                <?php while ($log = $logs_result->fetch_assoc()): ?>
-                                    <tr>
-                                        <td><?php echo date('d M Y', strtotime($log['activity_date'])); ?></td>
-                                        <td><strong><?php echo $log['child_name']; ?></strong></td>
-                                        <td>
-                                            <?php 
-                                                $mood_class = 'badge-warning';
-                                                $icon = '😐';
-                                                if ($log['mood'] == 'Happy') { $mood_class = 'badge-success'; $icon = '😊'; }
-                                                elseif ($log['mood'] == 'Excited') { $mood_class = 'badge-success'; $icon = '🤩'; }
-                                                elseif ($log['mood'] == 'Fussy') { $mood_class = 'badge-danger'; $icon = '😢'; }
-                                            ?>
-                                            <span class="badge <?php echo $mood_class; ?>"><?php echo $icon . ' ' . $log['mood']; ?></span>
-                                        </td>
-                                        <td><div style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><?php echo $log['activities']; ?></div></td>
-                                        <td>
-                                            <a href="manage_activities.php?child_id=<?php echo $log['child_id']; ?>" class="btn-action btn-primary" title="Edit/View"><i class="fas fa-eye"></i> View</a>
-                                        </td>
-                                    </tr>
-                                <?php endwhile; ?>
-                            <?php else: ?>
-                                <tr><td colspan="5" style="text-align: center; padding: 40px;">No activity logs found. Start by marking activities in 'My Class'.</td></tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+
 
         <?php elseif ($tab == 'search'): 
             $search_query = isset($_GET['q']) ? mysqli_real_escape_string($con, $_GET['q']) : '';
