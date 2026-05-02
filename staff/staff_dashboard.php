@@ -601,14 +601,21 @@ if ($tab == 'my_class') {
 
         <?php elseif ($tab == 'search'): 
             $search_query = isset($_GET['q']) ? mysqli_real_escape_string($con, $_GET['q']) : '';
-            $search_result = null;
-            if (!empty($search_query)) {
+            
+            // If query is empty, fetch all. Otherwise filter.
+            if (empty($search_query)) {
                 $q = "SELECT c.*, u.fullname as parent_name, u.email as parent_email, u.phone as parent_phone 
                       FROM children c 
                       LEFT JOIN users u ON c.parent_id = u.id 
-                      WHERE c.id = '$search_query' OR c.name LIKE '%$search_query%'";
-                $search_result = $con->query($q);
+                      ORDER BY c.name ASC";
+            } else {
+                $q = "SELECT c.*, u.fullname as parent_name, u.email as parent_email, u.phone as parent_phone 
+                      FROM children c 
+                      LEFT JOIN users u ON c.parent_id = u.id 
+                      WHERE c.id = '$search_query' OR c.name LIKE '%$search_query%'
+                      ORDER BY c.name ASC";
             }
+            $search_result = $con->query($q);
         ?>
             <div class="card" style="max-width: 900px; margin: 0 auto;">
                 <div class="section-header" style="text-align: center; flex-direction: column; gap: 15px;">
@@ -619,7 +626,7 @@ if ($tab == 'my_class') {
                 <form action="" method="GET" style="margin-top: 20px;">
                     <input type="hidden" name="tab" value="search">
                     <div style="display: flex; gap: 10px; background: var(--bg-alt); padding: 8px; border-radius: 16px; border: 1.5px solid #E2E8F0;">
-                        <input type="text" name="q" value="<?php echo htmlspecialchars($search_query); ?>" placeholder="Search by ID or Name..." style="flex: 1; border: none; background: transparent; padding: 12px 20px; font-size: 1.1rem; outline: none;" required>
+                        <input type="text" name="q" value="<?php echo htmlspecialchars($search_query); ?>" placeholder="Search by Student ID or Name..." style="flex: 1; border: none; background: transparent; padding: 12px 20px; font-size: 1.1rem; outline: none;">
                         <button type="submit" style="background: var(--primary); color: white; border: none; padding: 12px 30px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s;"><i class="fas fa-search"></i> Search</button>
                     </div>
                 </form>
