@@ -442,10 +442,6 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                 <span id="modalGender" class="detail-value"></span>
             </div>
             <div class="detail-row">
-                <span class="detail-label">Assigned Teacher</span>
-                <span id="modalTeacher" class="detail-value"></span>
-            </div>
-            <div class="detail-row">
                 <span class="detail-label">Enrolled Date</span>
                 <span id="modalEnrollment" class="detail-value"></span>
             </div>
@@ -463,7 +459,6 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
             document.getElementById('modalID').textContent = 'Student ID: #C-' + child.id;
             document.getElementById('modalAge').textContent = child.age + ' Years';
             document.getElementById('modalGender').textContent = child.gender.charAt(0).toUpperCase() + child.gender.slice(1);
-            document.getElementById('modalTeacher').textContent = child.staff_name || 'Not Assigned';
             document.getElementById('modalEnrollment').textContent = new Date(child.enrolled_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
             
             document.getElementById('profileModal').style.display = 'flex';
