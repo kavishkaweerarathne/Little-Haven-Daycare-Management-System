@@ -295,6 +295,10 @@ if ($tab == 'my_class') {
                 <i class="fas fa-calendar-alt"></i>
                 <span>Schedule</span>
             </a>
+            <a href="staff_dashboard.php?tab=activities" class="nav-item <?php echo $tab == 'activities' ? 'active' : ''; ?>">
+                <i class="fas fa-list-check"></i>
+                <span>Activity Logs</span>
+            </a>
             <a href="staff_dashboard.php?tab=settings" class="nav-item <?php echo $tab == 'settings' ? 'active' : ''; ?>">
                 <i class="fas fa-user-gear"></i>
                 <span>Settings</span>
@@ -517,6 +521,82 @@ if ($tab == 'my_class') {
                         <?php endif; ?>
                     </div>
                 <?php endif; ?>
+            </div>
+        <?php elseif ($tab == 'activities'): 
+            $search_log = isset($_GET['log_q']) ? mysqli_real_escape_string($con, $_GET['log_q']) : '';
+            $date_filter = isset($_GET['log_date']) ? mysqli_real_escape_string($con, $_GET['log_date']) : '';
+            
+            $where_clauses = [];
+            if (!empty($search_log)) $where_clauses[] = "(c.name LIKE '%$search_log%' OR c.id = '$search_log')";
+            if (!empty($date_filter)) $where_clauses[] = "da.activity_date = '$date_filter'";
+            
+            $where_sql = !empty($where_clauses) ? "WHERE " . implode(" AND ", $where_clauses) : "";
+            
+            $logs_q = "SELECT da.*, c.name as child_name 
+                      FROM daily_activities da 
+                      JOIN children c ON da.child_id = c.id 
+                      $where_sql
+                      ORDER BY da.activity_date DESC, da.id DESC";
+            $logs_res = $con->query($logs_q);
+        ?>
+            <div class="card">
+                <div class="section-header" style="flex-direction: column; align-items: stretch; gap: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2 style="font-size: 1.5rem;"><i class="fas fa-history"></i> Student Activity History</h2>
+                        <span class="badge badge-success"><?php echo $logs_res->num_rows; ?> Total Logs</span>
+                    </div>
+                    
+                    <form action="" method="GET" style="display: grid; grid-template-columns: 1fr 200px 150px; gap: 15px; background: #f8fafc; padding: 20px; border-radius: 20px; border: 1px solid #e2e8f0;">
+                        <input type="hidden" name="tab" value="activities">
+                        <div style="position: relative;">
+                            <i class="fas fa-search" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #94a3b8;"></i>
+                            <input type="text" name="log_q" value="<?php echo htmlspecialchars($search_log); ?>" placeholder="Search by student name or ID..." style="width: 100%; padding: 12px 12px 12px 45px; border-radius: 12px; border: 1.5px solid #e2e8f0; outline: none;">
+                        </div>
+                        <input type="date" name="log_date" value="<?php echo htmlspecialchars($date_filter); ?>" style="padding: 12px; border-radius: 12px; border: 1.5px solid #e2e8f0; outline: none;">
+                        <button type="submit" style="background: var(--secondary); color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s;">Filter Logs</button>
+                    </form>
+                </div>
+
+                <div class="table-container" style="margin-top: 20px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Student</th>
+                                <th>Mood</th>
+                                <th>Meal Details</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if ($logs_res->num_rows > 0): ?>
+                                <?php while($log = $logs_res->fetch_assoc()): ?>
+                                    <tr>
+                                        <td><strong><?php echo date('d M Y', strtotime($log['activity_date'])); ?></strong></td>
+                                        <td><span style="font-weight: 600; color: var(--secondary);"><?php echo $log['child_name']; ?></span></td>
+                                        <td>
+                                            <?php 
+                                                $m_bg = '#fef3c7'; $m_cl = '#92400e'; $m_ic = '😐';
+                                                if($log['mood'] == 'Happy') { $m_bg = '#dcfce7'; $m_cl = '#166534'; $m_ic = '😊'; }
+                                                elseif($log['mood'] == 'Excited') { $m_bg = '#e0f2fe'; $m_cl = '#0369a1'; $m_ic = '🤩'; }
+                                                elseif($log['mood'] == 'Fussy') { $m_bg = '#fee2e2'; $m_cl = '#ef4444'; $m_ic = '😢'; }
+                                            ?>
+                                            <span class="badge" style="background: <?php echo $m_bg; ?>; color: <?php echo $m_cl; ?>;">
+                                                <?php echo $m_ic . ' ' . $log['mood']; ?>
+                                            </span>
+                                        </td>
+                                        <td><div style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.9rem; color: var(--text-muted);"><?php echo $log['meal_details']; ?></div></td>
+                                        <td>
+                                            <a href="manage_activities.php?child_id=<?php echo $log['child_id']; ?>&date=<?php echo $log['activity_date']; ?>" class="btn-action btn-primary"><i class="fas fa-edit"></i> Edit Log</a>
+                                        </td>
+                                    </tr>
+                                <?php endwhile; ?>
+                            <?php else: ?>
+                                <tr><td colspan="5" style="text-align: center; padding: 60px; color: #94a3b8;">No activity logs match your criteria.</td></tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         <?php elseif ($tab == 'settings'): ?>
             <div class="card" style="max-width: 600px;">
