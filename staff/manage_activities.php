@@ -69,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <div class="container">
-        <a href="staff_dashboard.php?tab=daily_log" class="back-link"><i class="fas fa-arrow-left"></i> Back to History</a>
+        <a href="staff_dashboard.php?tab=activities" class="back-link"><i class="fas fa-arrow-left"></i> Back to Activity History</a>
         
         <div class="header">
             <div class="header-text">
