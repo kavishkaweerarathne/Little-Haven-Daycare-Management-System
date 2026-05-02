@@ -321,7 +321,7 @@ if ($tab == 'my_class') {
 
         <?php if ($tab == 'overview'): ?>
             <div class="welcome-card">
-                <h2>Hello, Teacher <?php echo explode(' ', $fullname)[0]; ?>!</h2>
+                <h2>Hello, <?php echo explode(' ', $fullname)[0]; ?>!</h2>
                 <p>Ready for another day of shaping little minds? Here's what's happening today in your class.</p>
                 <i class="fas fa-graduation-cap bg-icon"></i>
             </div>
