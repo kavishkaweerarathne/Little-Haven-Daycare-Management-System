@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if ($stmt->execute()) {
-        echo "<script>alert('Daily log saved successfully!'); window.location.href='staff_dashboard.php?tab=daily_log';</script>";
+        echo "<script>alert('Daily log saved successfully!'); window.location.href='staff_dashboard.php?tab=activities';</script>";
     } else {
         echo "<script>alert('Error saving log: " . $con->error . "');</script>";
     }
