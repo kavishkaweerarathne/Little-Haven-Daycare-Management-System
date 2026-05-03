@@ -57,7 +57,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 
             <div class="welcome-banner">
                 <div class="welcome-text">
-                    <h2>Hello, Administrator! 👋</h2>
+                    <h2>Hello, Kavishka Weerarathne! 👋</h2>
                     <p>Welcome back to Little Haven. Here's what's happening today.</p>
                 </div>
                 <div class="welcome-date" style="text-align: right;">
@@ -429,7 +429,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label>Full Name</label>
-                                    <input type="text" value="Administrator" placeholder="Enter full name">
+                                    <input type="text" value="Kavishka Weerarathne" placeholder="Enter full name">
                                 </div>
                                 <div class="form-group">
                                     <label>Email Address</label>
