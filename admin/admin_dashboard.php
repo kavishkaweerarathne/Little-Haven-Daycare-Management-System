@@ -24,8 +24,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             <p data-tab="staff"><i class="fas fa-users"></i> Manage Staff</p>
             <p data-tab="parents"><i class="fas fa-user-group"></i> Manage Parents</p>
             <p data-tab="finance"><i class="fas fa-file-invoice-dollar"></i> Manage Finance</p>
-            <p data-tab="children"><i class="fas fa-baby"></i> Manage Children</p>
-            <p data-tab="billing"><i class="fas fa-file-invoice-dollar"></i> Billing and Payment</p>
             <p data-tab="inventory"><i class="fas fa-boxes-stacked"></i> Inventory</p>
             <p data-tab="settings"><i class="fas fa-gear"></i> Settings</p>
         </nav>
@@ -85,14 +83,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                         <span class="trend-up"><i class="fas fa-caret-up"></i> 5% growth</span>
                     </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: #FFD166;"><i class="fas fa-baby"></i></div>
-                    <div>
-                        <h3 style="margin:0; font-size: 0.85rem; color: #6b7280; font-weight: 600;">Active Kids</h3>
-                        <p style="margin:0; font-size: 1.5rem; font-weight: 700;">56</p>
-                        <span class="trend-down"><i class="fas fa-caret-down"></i> 2% decrease</span>
-                    </div>
-                </div>
+
                 <div class="stat-card" onclick="document.querySelector('[data-tab=\'finance\']').click()" style="cursor: pointer;">
                     <div class="stat-icon" style="background: #10b981;"><i class="fas fa-file-invoice-dollar"></i></div>
                     <div>

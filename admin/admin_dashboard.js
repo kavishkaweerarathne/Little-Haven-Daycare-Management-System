@@ -26,8 +26,6 @@ document.querySelectorAll('.sidebar nav p').forEach(item => {
             'staff': 'Manage Staff Members',
             'parents': 'Manage Parents',
             'finance': 'Finance Management',
-            'children': 'Manage Children',
-            'billing': 'Billing and Payments',
             'inventory': 'Inventory Management',
             'settings': 'System Settings'
         };
