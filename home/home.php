@@ -33,8 +33,8 @@
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#services">Services</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="about.php">About</a></li>
+                <li><a href="contact.php">Contact</a></li>
             </ul>
             <div class="nav-cta">
                 <a href="../login/login.php" class="btn btn-primary btn-nav">Login</a>
@@ -50,7 +50,7 @@
                 <p>Safe & Caring Daycare for Your Little Ones</p>
                 <p><i>"An elite educational environment where play meets purpose. We nurture the next generation of leaders with love and expert care."</i></p>
                 <div class="hero-btns">
-                    <a href="#contact" class="btn btn-primary">Enroll Your Child</a>
+                    <a href="contact.php" class="btn btn-primary">Enroll Your Child</a>
                     <a href="#services" class="btn btn-outline" style="margin-left: 15px;">Discover Programs</a>
                 </div>
             </div>
@@ -138,7 +138,7 @@
                 <ul class="footer-links">
                     <li><a href="#home">Our Philosophy</a></li>
                     <li><a href="#services">Learning Paths</a></li>
-                    <li><a href="#about">The Facility</a></li>
+                    <li><a href="about.php">The Facility</a></li>
                 </ul>
             </div>
             <div class="footer-column">
