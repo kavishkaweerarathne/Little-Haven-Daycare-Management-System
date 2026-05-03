@@ -106,40 +106,46 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                 <div class="left-col">
                     <div class="card">
                         <div class="card-header">
-                            <h3>Recent Activity</h3>
-                            <a href="#" style="color: var(--primary); text-decoration: none; font-size: 0.85rem; font-weight: 600;">View All</a>
+                            <h3>System-wide Activities</h3>
+                            <a href="activity_report.php" target="_blank" class="btn-action" style="background: var(--primary); color: white; text-decoration: none; padding: 8px 15px; border-radius: 8px; font-size: 0.85rem; display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-file-pdf"></i> Generate Report
+                            </a>
                         </div>
                         <div class="activity-list">
-                            <div class="activity-item">
-                                <div class="activity-icon" style="background: rgba(38, 198, 218, 0.1); color: var(--primary);">
-                                    <i class="fas fa-user-plus"></i>
+                            <?php
+                            // Dynamic Activity Feed using UNION - Simplified and Powerful
+                            $activity_q = "(SELECT 'User Registration' as type, fullname as description, created_at as activity_date, role as meta, 'user-plus' as icon, 'var(--primary)' as color FROM users)
+                                          UNION
+                                          (SELECT 'Child Enrollment' as type, name as description, enrolled_date as activity_date, 'child' as meta, 'baby' as icon, '#f59e0b' as color FROM children)
+                                          UNION
+                                          (SELECT 'Daily Update' as type, CONCAT(c.name, ': ', da.mood) as description, da.activity_date as activity_date, 'activity' as meta, 'notes-medical' as icon, '#10b981' as color FROM daily_activities da JOIN children c ON da.child_id = c.id)
+                                          UNION
+                                          (SELECT 'Invoice Issued' as type, CONCAT('Inv #', invoice_number, ' - ', amount) as description, issue_date as activity_date, 'billing' as meta, 'file-invoice-dollar' as icon, '#ef4444' as color FROM invoices)
+                                          ORDER BY activity_date DESC LIMIT 5";
+                            $activity_res = mysqli_query($con, $activity_q);
+                            
+                            if ($activity_res && mysqli_num_rows($activity_res) > 0):
+                                while ($act = mysqli_fetch_assoc($activity_res)):
+                                    $bg_color = str_replace('var(--primary)', 'rgba(38, 198, 218, 0.1)', $act['color']);
+                                    if ($act['color'] == '#f59e0b') $bg_color = 'rgba(245, 158, 11, 0.1)';
+                                    if ($act['color'] == '#10b981') $bg_color = 'rgba(16, 185, 129, 0.1)';
+                            ?>
+                                <div class="activity-item">
+                                    <div class="activity-icon" style="background: <?php echo $bg_color; ?>; color: <?php echo $act['color']; ?>;">
+                                        <i class="fas fa-<?php echo $act['icon']; ?>"></i>
+                                    </div>
+                                    <div class="activity-details">
+                                        <h4><?php echo $act['type']; ?></h4>
+                                        <p><?php echo $act['description']; ?> <span style="font-size: 0.7rem; color: #94a3b8;">(<?php echo ucfirst($act['meta']); ?>)</span></p>
+                                        <span style="font-size: 0.75rem; color: #94a3b8;"><?php echo date('d M Y', strtotime($act['activity_date'])); ?></span>
+                                    </div>
                                 </div>
-                                <div class="activity-details">
-                                    <h4>New Staff Registered</h4>
-                                    <p>Samantha Perera joined the teaching team.</p>
-                                    <span style="font-size: 0.75rem; color: #94a3b8;">2 hours ago</span>
-                                </div>
-                            </div>
-                            <div class="activity-item">
-                                <div class="activity-icon" style="background: rgba(26, 82, 118, 0.1); color: var(--secondary);">
-                                    <i class="fas fa-file-invoice"></i>
-                                </div>
-                                <div class="activity-details">
-                                    <h4>Payment Received</h4>
-                                    <p>Invoice #INV-8820 was paid by Kamal Gunasekara.</p>
-                                    <span style="font-size: 0.75rem; color: #94a3b8;">5 hours ago</span>
-                                </div>
-                            </div>
-                            <div class="activity-item">
-                                <div class="activity-icon" style="background: rgba(255, 209, 102, 0.1); color: #f59e0b;">
-                                    <i class="fas fa-baby"></i>
-                                </div>
-                                <div class="activity-details">
-                                    <h4>New Enrollment</h4>
-                                    <p>Little Aryan has been enrolled in the Playgroup.</p>
-                                    <span style="font-size: 0.75rem; color: #94a3b8;">Yesterday</span>
-                                </div>
-                            </div>
+                            <?php 
+                                endwhile;
+                            else:
+                                echo "<p style='padding: 20px; text-align: center; color: #94a3b8;'>No recent activities found.</p>";
+                            endif;
+                            ?>
                         </div>
                     </div>
                 </div>
