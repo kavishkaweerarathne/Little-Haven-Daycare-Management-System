@@ -47,7 +47,8 @@
         <div class="container hero-container">
             <div class="hero-content reveal fade-up">
                 <h1>Crafting <br><span>Bright Futures</span></h1>
-                <p>An elite educational environment where play meets purpose. We nurture the next generation of leaders with love and expert care.</p>
+                <p>Safe & Caring Daycare for Your Little Ones</p>
+                <p><i>"An elite educational environment where play meets purpose. We nurture the next generation of leaders with love and expert care."</i></p>
                 <div class="hero-btns">
                     <a href="#contact" class="btn btn-primary">Enroll Your Child</a>
                     <a href="#services" class="btn btn-outline" style="margin-left: 15px;">Discover Programs</a>
