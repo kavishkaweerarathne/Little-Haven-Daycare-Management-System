@@ -10,6 +10,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
 
+    // Restricted Roles Check
+    $allowed_roles = ['parent', 'staff'];
+    if (!in_array($role, $allowed_roles)) {
+        die("<script>alert('Unauthorized role selection!'); window.history.back();</script>");
+    }
+
     // Basic Validation
     if ($password !== $confirm_password) {
         die("<script>alert('Passwords do not match!'); window.history.back();</script>");
