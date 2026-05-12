@@ -18,7 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Basic Validation
     if ($password !== $confirm_password) {
-        die("<script>alert('Passwords do not match!'); window.history.back();</script>");
+        header("Location: register.php?error=" . urlencode('Passwords do not match!'));
+        exit();
     }
 
     // Check if email already exists
@@ -26,7 +27,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = mysqli_query($con, $check_email);
 
     if (mysqli_num_rows($result) > 0) {
-        die("<script>alert('Email already registered!'); window.history.back();</script>");
+        header("Location: register.php?error=" . urlencode('Email already registered!'));
+        exit();
     }
 
 
@@ -34,7 +36,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "INSERT INTO users (fullname, email, phone, password, role) VALUES ('$fullname', '$email', '$phone', '$password', '$role')";
 
     if (mysqli_query($con, $sql)) {
-        echo "<script>alert('Registration successful! Please login.'); window.location.href='../login/login.php';</script>";
+        header("Location: ../login/login.php?success=" . urlencode('Registration successful! Please login.'));
+        exit();
+    }
     } else {
         echo "Error: " . $sql . "<br>" . mysqli_error($con);
     }

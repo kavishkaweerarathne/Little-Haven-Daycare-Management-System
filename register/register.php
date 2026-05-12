@@ -68,6 +68,7 @@
                             <i class="fas fa-envelope"></i>
                             <input type="email" id="email" name="email" class="form-control" placeholder="john@example.com" required>
                         </div>
+                        <span class="error-text" id="email-error"></span>
                     </div>
                 </div>
 
@@ -76,8 +77,9 @@
                         <label for="phone">Phone Number</label>
                         <div class="input-wrapper">
                             <i class="fas fa-phone"></i>
-                            <input type="tel" id="phone" name="phone" class="form-control" placeholder="+1 (555) 000-0000" required>
+                            <input type="tel" id="phone" name="phone" class="form-control" placeholder="07XXXXXXXX" required>
                         </div>
+                        <span class="error-text" id="phone-error"></span>
                     </div>
                 </div>
 
@@ -88,6 +90,7 @@
                             <i class="fas fa-lock"></i>
                             <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required>
                         </div>
+                        <span class="error-text" id="password-error"></span>
                     </div>
                     <div class="form-group">
                         <label for="confirm_password">Confirm Password</label>
@@ -95,6 +98,7 @@
                             <i class="fas fa-shield-halved"></i>
                             <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="••••••••" required>
                         </div>
+                        <span class="error-text" id="confirm_password-error"></span>
                     </div>
                 </div>
 
@@ -110,5 +114,6 @@
         </div>
     </main>
 
+    <script src="register.js"></script>
 </body>
 </html>
