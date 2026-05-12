@@ -50,11 +50,12 @@ if (isset($_SESSION['user_id'])) {
 
             <form action="login_process.php" method="POST">
                 <div class="form-group">
-                    <label for="username">Username or Email</label>
+                    <label for="username">Username</label>
                     <div class="input-wrapper">
                         <i class="fas fa-envelope"></i>
-                        <input type="text" id="username" name="username" class="form-control" placeholder="admin@littlehaven.com" required>
+                        <input type="text" id="username" name="username" class="form-control" placeholder="Type Your Email Address Here.." required>
                     </div>
+                    <span class="error-text" id="username-error"></span>
                 </div>
 
                 <div class="form-group">
@@ -63,6 +64,7 @@ if (isset($_SESSION['user_id'])) {
                         <i class="fas fa-lock"></i>
                         <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required>
                     </div>
+                    <span class="error-text" id="password-error"></span>
                 </div>
 
                 <div class="form-utils">

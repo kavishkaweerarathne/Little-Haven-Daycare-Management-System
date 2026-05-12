@@ -270,6 +270,30 @@ body {
     }
 }
 
+/* Error Text */
+.error-text {
+    color: #ff4d4d;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-top: 5px;
+    display: block;
+    height: 0;
+    overflow: hidden;
+    transition: var(--transition-smooth);
+    opacity: 0;
+}
+
+.error-text.show {
+    height: auto;
+    margin-top: 8px;
+    opacity: 1;
+}
+
+.form-control.error {
+    border-color: #ff4d4d;
+    box-shadow: 0 0 0 4px rgba(255, 77, 77, 0.1);
+}
+
 /* Responsive */
 @media (max-width: 480px) {
     .login-card {

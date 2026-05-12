@@ -5,49 +5,105 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.querySelector('form');
+    const emailInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
+    const emailError = document.getElementById('username-error');
+    const passwordError = document.getElementById('password-error');
 
-    // 2. Input Focus Animations
+    // --- Validation Functions ---
+
+    const validateEmail = (email) => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email) return "Email address is required.";
+        if (!regex.test(email)) return "Please enter a valid email address.";
+        return "";
+    };
+
+    const validatePassword = (password) => {
+        if (!password) return "Password is required.";
+        if (password.length < 4) return "Password must be at least 4 characters.";
+        
+        // Example of special character check (Rule 6)
+        // If you want to ensure at least one special char, uncomment below:
+        // const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+        // if (!specialCharRegex.test(password)) return "Password should contain at least one special character.";
+        
+        return "";
+    };
+
+    const showError = (input, errorElement, message) => {
+        if (message) {
+            input.classList.add('error');
+            errorElement.textContent = message;
+            errorElement.classList.add('show');
+        } else {
+            input.classList.remove('error');
+            errorElement.classList.remove('show');
+            errorElement.textContent = "";
+        }
+    };
+
+    // --- Real-time Validation (Rule 5) ---
+
+    emailInput.addEventListener('input', () => {
+        const error = validateEmail(emailInput.value);
+        showError(emailInput, emailError, error);
+    });
+
+    passwordInput.addEventListener('input', () => {
+        const error = validatePassword(passwordInput.value);
+        showError(passwordInput, passwordError, error);
+    });
+
+    // --- Input Focus Animations ---
+
     const inputs = document.querySelectorAll('.form-control');
     inputs.forEach(input => {
+        const icon = input.parentElement.querySelector('i');
         input.addEventListener('focus', () => {
-            input.parentElement.querySelector('i').style.color = 'var(--primary-dark)';
-            input.parentElement.querySelector('i').style.transform = 'translateY(-50%) scale(1.1)';
+            if (icon) {
+                icon.style.color = 'var(--primary-dark)';
+                icon.style.transform = 'translateY(-50%) scale(1.1)';
+            }
         });
         
         input.addEventListener('blur', () => {
-            input.parentElement.querySelector('i').style.color = 'var(--primary)';
-            input.parentElement.querySelector('i').style.transform = 'translateY(-50%) scale(1)';
+            if (icon) {
+                icon.style.color = 'var(--primary)';
+                icon.style.transform = 'translateY(-50%) scale(1)';
+            }
         });
     });
 
-    // 3. Form Submission Loading State
+    // --- Form Submission (Rule 1, 2, 3, 6) ---
+
     if (loginForm) {
         loginForm.addEventListener('submit', (e) => {
-            const btn = loginForm.querySelector('.btn-login');
-            const originalText = btn.innerHTML;
-            
-            // Basic validation
-            const username = document.getElementById('username').value;
-            const password = passwordInput.value;
+            const emailErr = validateEmail(emailInput.value);
+            const passErr = validatePassword(passwordInput.value);
 
-            if (!username || !password) {
+            if (emailErr || passErr) {
                 e.preventDefault();
+                showError(emailInput, emailError, emailErr);
+                showError(passwordInput, passwordError, passErr);
+                
+                // Show a main notification as well
+                showNotification("Please fix the errors in the form.", "error");
                 return;
             }
 
             // Show loading state
+            const btn = loginForm.querySelector('.btn-login');
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Signing In...';
             btn.style.opacity = '0.8';
         });
     }
 
+    // --- Handle URL Errors ---
 
-    // 5. Handle Error Messages (if passed via URL)
     const urlParams = new URLSearchParams(window.location.search);
     const error = urlParams.get('error');
-    
     if (error) {
         showNotification(decodeURIComponent(error), 'error');
     }
@@ -55,10 +111,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /**
  * Show Premium Notification
- * @param {string} message 
- * @param {string} type 
  */
 function showNotification(message, type = 'error') {
+    // Remove existing notifications
+    const existing = document.querySelector('.notification');
+    if (existing) existing.remove();
+
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
     notification.innerHTML = `
@@ -66,7 +124,7 @@ function showNotification(message, type = 'error') {
         <span>${message}</span>
     `;
     
-    // Add styles if not present in CSS
+    // Notification Styles
     if (!document.getElementById('notification-styles')) {
         const style = document.createElement('style');
         style.id = 'notification-styles';
@@ -79,29 +137,25 @@ function showNotification(message, type = 'error') {
                 background: white;
                 padding: 15px 25px;
                 border-radius: 12px;
-                box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+                box-shadow: 0 15px 35px rgba(0,0,0,0.15);
                 display: flex;
                 align-items: center;
                 gap: 12px;
                 z-index: 9999;
                 transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                border-left: 4px solid var(--primary);
+                border-left: 5px solid var(--primary);
             }
             .notification.error { border-left-color: #ff4d4d; }
             .notification.show { transform: translateX(-50%) translateY(0); }
-            .notification i { font-size: 1.2rem; }
+            .notification i { font-size: 1.3rem; }
             .notification.error i { color: #ff4d4d; }
-            .notification span { font-weight: 500; color: var(--secondary); }
+            .notification span { font-weight: 600; color: var(--secondary); font-size: 0.95rem; }
         `;
         document.head.appendChild(style);
     }
     
     document.body.appendChild(notification);
-    
-    // Trigger animation
     setTimeout(() => notification.classList.add('show'), 100);
-    
-    // Remove after 4 seconds
     setTimeout(() => {
         notification.classList.remove('show');
         setTimeout(() => notification.remove(), 500);
