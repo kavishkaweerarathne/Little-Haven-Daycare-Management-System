@@ -62,10 +62,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     phoneInput.addEventListener('input', (e) => {
-        // Remove any non-numeric characters immediately (Rule 1)
-        phoneInput.value = phoneInput.value.replace(/\D/g, '');
+        // Remove non-numeric and limit to 10 chars
+        let val = phoneInput.value.replace(/\D/g, '');
+        if (val.length > 10) val = val.substring(0, 10);
+        phoneInput.value = val;
         
-        // Check length (Rule 2)
         showError(phoneInput, phoneError, validatePhone(phoneInput.value));
     });
 

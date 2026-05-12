@@ -77,7 +77,7 @@
                         <label for="phone">Phone Number</label>
                         <div class="input-wrapper">
                             <i class="fas fa-phone"></i>
-                            <input type="tel" id="phone" name="phone" class="form-control" placeholder="07XXXXXXXX" required>
+                            <input type="tel" id="phone" name="phone" class="form-control" placeholder="07XXXXXXXX" maxlength="10" required>
                         </div>
                         <span class="error-text" id="phone-error"></span>
                     </div>
