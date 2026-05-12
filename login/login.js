@@ -100,12 +100,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Handle URL Errors ---
-
+    // --- Handle URL Errors/Success ---
     const urlParams = new URLSearchParams(window.location.search);
     const error = urlParams.get('error');
+    const success = urlParams.get('success');
+
     if (error) {
         showNotification(decodeURIComponent(error), 'error');
+    }
+    if (success) {
+        showNotification(decodeURIComponent(success), 'success');
     }
 });
 
@@ -146,9 +150,11 @@ function showNotification(message, type = 'error') {
                 border-left: 5px solid var(--primary);
             }
             .notification.error { border-left-color: #ff4d4d; }
+            .notification.success { border-left-color: #2ecc71; }
             .notification.show { transform: translateX(-50%) translateY(0); }
             .notification i { font-size: 1.3rem; }
             .notification.error i { color: #ff4d4d; }
+            .notification.success i { color: #2ecc71; }
             .notification span { font-weight: 600; color: var(--secondary); font-size: 0.95rem; }
         `;
         document.head.appendChild(style);
