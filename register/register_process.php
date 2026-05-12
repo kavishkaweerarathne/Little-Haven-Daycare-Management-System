@@ -13,7 +13,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Restricted Roles Check
     $allowed_roles = ['parent', 'staff'];
     if (!in_array($role, $allowed_roles)) {
-        die("<script>alert('Unauthorized role selection!'); window.history.back();</script>");
+        header("Location: register.php?error=" . urlencode('Unauthorized role selection!'));
+        exit();
     }
 
     // Basic Validation
@@ -38,7 +39,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (mysqli_query($con, $sql)) {
         header("Location: ../login/login.php?success=" . urlencode('Registration successful! Please login.'));
         exit();
-    }
     } else {
         echo "Error: " . $sql . "<br>" . mysqli_error($con);
     }
