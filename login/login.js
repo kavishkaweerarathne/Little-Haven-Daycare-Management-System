@@ -6,34 +6,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.querySelector('form');
     const passwordInput = document.getElementById('password');
-    const togglePassword = document.createElement('i');
-    
-    // 1. Password Visibility Toggle
-    if (passwordInput) {
-        togglePassword.className = 'fas fa-eye password-toggle';
-        togglePassword.style.cssText = `
-            position: absolute;
-            right: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: var(--text-muted);
-            transition: var(--transition-smooth);
-            z-index: 10;
-        `;
-        
-        const wrapper = passwordInput.parentElement;
-        wrapper.style.position = 'relative';
-        wrapper.appendChild(togglePassword);
-
-        togglePassword.addEventListener('click', () => {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            togglePassword.classList.toggle('fa-eye');
-            togglePassword.classList.toggle('fa-eye-slash');
-            togglePassword.style.color = type === 'text' ? 'var(--primary)' : 'var(--text-muted)';
-        });
-    }
 
     // 2. Input Focus Animations
     const inputs = document.querySelectorAll('.form-control');
