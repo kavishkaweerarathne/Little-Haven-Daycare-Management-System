@@ -46,10 +46,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             exit();
         } else {
-            echo "<script>alert('Invalid password!'); window.history.back();</script>";
+            header("Location: login.php?error=" . urlencode('Invalid password! Please try again.'));
+            exit();
         }
     } else {
-        echo "<script>alert('User not found!'); window.history.back();</script>";
+        header("Location: login.php?error=" . urlencode('User not found! Please register or check your credentials.'));
+        exit();
     }
 } else {
     header("Location: login.php");
