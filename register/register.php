@@ -61,6 +61,7 @@
                             <i class="fas fa-user"></i>
                             <input type="text" id="fullname" name="fullname" class="form-control" placeholder="John Doe" required>
                         </div>
+                        <span class="error-text" id="fullname-error"></span>
                     </div>
                     <div class="form-group">
                         <label for="email">Email Address</label>

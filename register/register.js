@@ -14,8 +14,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const phoneError = document.getElementById('phone-error');
     const passwordError = document.getElementById('password-error');
     const confirmPasswordError = document.getElementById('confirm_password-error');
+    const fullnameInput = document.getElementById('fullname');
+    const fullnameError = document.getElementById('fullname-error');
 
     // --- Validation Functions ---
+
+    const validateFullname = (name) => {
+        if (!name.trim()) return "Full name is required.";
+        if (name.trim().length < 3) return "Name must be at least 3 characters.";
+        if (!/^[a-zA-Z\s]+$/.test(name.trim())) return "Name can only contain letters and spaces.";
+        return "";
+    };
 
     const validateEmail = (email) => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -56,6 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- Real-time Validation ---
+
+    fullnameInput.addEventListener('input', () => {
+        showError(fullnameInput, fullnameError, validateFullname(fullnameInput.value));
+    });
 
     emailInput.addEventListener('input', () => {
         showError(emailInput, emailError, validateEmail(emailInput.value));
@@ -105,13 +118,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (registerForm) {
         registerForm.addEventListener('submit', (e) => {
+            const nameErr = validateFullname(fullnameInput.value);
             const emailErr = validateEmail(emailInput.value);
             const phoneErr = validatePhone(phoneInput.value);
             const passErr = validatePassword(passwordInput.value);
             const confErr = validateConfirmPassword(passwordInput.value, confirmPasswordInput.value);
 
-            if (emailErr || phoneErr || passErr || confErr) {
+            if (nameErr || emailErr || phoneErr || passErr || confErr) {
                 e.preventDefault();
+                showError(fullnameInput, fullnameError, nameErr);
                 showError(emailInput, emailError, emailErr);
                 showError(phoneInput, phoneError, phoneErr);
                 showError(passwordInput, passwordError, passErr);
