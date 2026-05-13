@@ -67,6 +67,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Real-time Validation ---
 
     fullnameInput.addEventListener('input', () => {
+        // Remove numbers and special characters (Keep only letters and spaces)
+        fullnameInput.value = fullnameInput.value.replace(/[^a-zA-Z\s]/g, '');
         showError(fullnameInput, fullnameError, validateFullname(fullnameInput.value));
     });
 

@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const validateFullname = (name) => {
         if (!name.trim()) return "Full name is required.";
         if (name.trim().length < 3) return "Name must be at least 3 characters.";
+        if (!/^[a-zA-Z\s]+$/.test(name.trim())) return "Name can only contain letters and spaces.";
         return "";
     };
 
@@ -50,6 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Real-time Validation ---
 
     fullnameInput.addEventListener('input', () => {
+        // Remove numbers and special characters (Keep only letters and spaces)
+        fullnameInput.value = fullnameInput.value.replace(/[^a-zA-Z\s]/g, '');
         showError(fullnameInput, fullnameError, validateFullname(fullnameInput.value));
     });
 
