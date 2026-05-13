@@ -100,6 +100,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin-top: 1rem;
             color: #6b7280;
             text-decoration: none;
+            font-size: 0.9rem;
+        }
+        /* Error Styles */
+        .error-text {
+            color: #ff4d4d;
+            font-size: 0.82rem;
+            font-weight: 500;
+            margin-top: 5px;
+            display: block;
+            height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+        .error-text.show {
+            height: auto;
+            margin-top: 5px;
+            opacity: 1;
+        }
+        input.error, select.error {
+            border-color: #ff4d4d;
+            background-color: #fffafa;
         }
     </style>
 </head>
@@ -109,15 +131,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form method="POST">
             <div class="form-group">
                 <label>Full Name</label>
-                <input type="text" name="fullname" value="<?php echo htmlspecialchars($user['fullname']); ?>" required>
+                <input type="text" id="fullname" name="fullname" value="<?php echo htmlspecialchars($user['fullname']); ?>" required>
+                <span class="error-text" id="fullname-error"></span>
             </div>
             <div class="form-group">
                 <label>Email Address</label>
-                <input type="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+                <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+                <span class="error-text" id="email-error"></span>
             </div>
             <div class="form-group">
                 <label>Phone Number</label>
-                <input type="text" name="phone" value="<?php echo htmlspecialchars($user['phone']); ?>" required>
+                <input type="text" id="phone" name="phone" value="<?php echo htmlspecialchars($user['phone']); ?>" maxlength="10" required>
+                <span class="error-text" id="phone-error"></span>
             </div>
             <div class="form-group">
                 <label>Role</label>
@@ -132,5 +157,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <a href="admin_dashboard.php?tab=<?php echo $tab; ?>" class="btn-cancel">Cancel</a>
         </form>
     </div>
+    <script src="edit_user.js"></script>
 </body>
 </html>
