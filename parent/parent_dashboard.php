@@ -400,24 +400,72 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                 </div>
                 <div class="settings-main">
                     <div id="settings-profile" class="settings-content active">
-                        <h3 style="margin-bottom: 2rem;">Profile Information</h3>
-                        <form action="update_profile.php" method="POST">
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                                <div style="display: flex; flex-direction: column; gap: 8px;">
-                                    <label style="font-weight: 600; font-size: 0.9rem; color: #64748b;">Full Name</label>
-                                    <input type="text" name="fullname" value="<?php echo $fullname; ?>" style="padding: 14px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-family: inherit;">
+                        <div class="profile-card">
+                            <div class="profile-header">
+                                <div class="profile-avatar-large">
+                                    <?php echo strtoupper(substr($fullname, 0, 1)); ?>
                                 </div>
-                                <div style="display: flex; flex-direction: column; gap: 8px;">
-                                    <label style="font-weight: 600; font-size: 0.9rem; color: #64748b;">Email Address</label>
-                                    <input type="email" value="<?php echo $_SESSION['email'] ?? 'parent@gmail.com'; ?>" style="padding: 14px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-family: inherit; background: #f8fafc;" readonly>
-                                </div>
-                                <div style="display: flex; flex-direction: column; gap: 8px;">
-                                    <label style="font-weight: 600; font-size: 0.9rem; color: #64748b;">Phone Number</label>
-                                    <input type="text" name="phone" value="<?php echo $_SESSION['phone'] ?? ''; ?>" style="padding: 14px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-family: inherit;">
+                                <div class="profile-info-header">
+                                    <h4>My Profile</h4>
+                                    <p>Manage your personal information and contact details.</p>
                                 </div>
                             </div>
-                            <button type="submit" style="margin-top: 2rem; padding: 14px 28px; background: var(--primary); color: white; border: none; border-radius: 14px; font-weight: 700; cursor: pointer; transition: all 0.3s;">Save Profile Changes</button>
-                        </form>
+
+                            <?php if(isset($_GET['success'])): ?>
+                                <div class="alert alert-success">
+                                    <i class="fas fa-check-circle"></i> <?php echo htmlspecialchars($_GET['success']); ?>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php if(isset($_GET['error'])): ?>
+                                <div class="alert alert-error">
+                                    <i class="fas fa-exclamation-circle"></i> <?php echo htmlspecialchars($_GET['error']); ?>
+                                </div>
+                            <?php endif; ?>
+
+                            <form action="update_profile.php" method="POST">
+                                <div style="display: flex; flex-direction: column; gap: 2rem;">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label><i class="fas fa-user-tag"></i> Full Name</label>
+                                            <div class="input-with-icon">
+                                                <i class="fas fa-user"></i>
+                                                <input type="text" name="fullname" value="<?php echo htmlspecialchars($fullname); ?>" placeholder="Enter your full name" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><i class="fas fa-envelope"></i> Email Address</label>
+                                            <div class="input-with-icon">
+                                                <i class="fas fa-at"></i>
+                                                <input type="email" name="email" value="<?php echo htmlspecialchars($_SESSION['email'] ?? ''); ?>" placeholder="Enter your email" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label><i class="fas fa-phone-volume"></i> Phone Number</label>
+                                            <div class="input-with-icon">
+                                                <i class="fas fa-phone"></i>
+                                                <input type="text" name="phone" value="<?php echo htmlspecialchars($_SESSION['phone'] ?? ''); ?>" placeholder="Enter your phone number" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><i class="fas fa-user-shield"></i> Account Role</label>
+                                            <div class="input-with-icon">
+                                                <i class="fas fa-shield"></i>
+                                                <input type="text" value="Parent" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="padding-top: 1rem; border-top: 1px solid #f1f5f9; margin-top: 1rem;">
+                                        <button type="submit" class="btn-save">
+                                            <i class="fas fa-save"></i> Save Profile Changes
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
