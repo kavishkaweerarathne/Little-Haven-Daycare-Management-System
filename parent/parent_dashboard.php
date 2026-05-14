@@ -467,10 +467,99 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                             </form>
                         </div>
                     </div>
+                    <div id="settings-security" class="settings-content" style="display: none;">
+                        <div class="profile-card">
+                            <div class="profile-header">
+                                <div class="profile-avatar-large" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div class="profile-info-header">
+                                    <h4>Security Settings</h4>
+                                    <p>Update your password to keep your account secure.</p>
+                                </div>
+                            </div>
+
+                            <?php if(isset($_GET['set_tab']) && $_GET['set_tab'] == 'security'): ?>
+                                <?php if(isset($_GET['success'])): ?>
+                                    <div class="alert alert-success">
+                                        <i class="fas fa-check-circle"></i> <?php echo htmlspecialchars($_GET['success']); ?>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if(isset($_GET['error'])): ?>
+                                    <div class="alert alert-error">
+                                        <i class="fas fa-exclamation-circle"></i> <?php echo htmlspecialchars($_GET['error']); ?>
+                                    </div>
+                                <?php endif; ?>
+                            <?php endif; ?>
+
+                            <form action="update_password.php" method="POST" id="passwordForm">
+                                <div style="display: flex; flex-direction: column; gap: 2rem;">
+                                    <div class="form-group">
+                                        <label><i class="fas fa-key"></i> Current Password</label>
+                                        <div class="input-with-icon">
+                                            <i class="fas fa-lock-open"></i>
+                                            <input type="password" name="old_password" placeholder="Enter current password" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label><i class="fas fa-lock"></i> New Password</label>
+                                            <div class="input-with-icon">
+                                                <i class="fas fa-shield-check"></i>
+                                                <input type="password" name="new_password" id="new_password" placeholder="Minimum 4 characters" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><i class="fas fa-check-double"></i> Confirm New Password</label>
+                                            <div class="input-with-icon">
+                                                <i class="fas fa-shield-halved"></i>
+                                                <input type="password" name="confirm_password" id="confirm_password" placeholder="Repeat new password" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="padding-top: 1rem; border-top: 1px solid #f1f5f9; margin-top: 1rem;">
+                                        <button type="submit" class="btn-save" style="background: #4f46e5;">
+                                            <i class="fas fa-shield-alt"></i> Update Password
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        // Auto-switch to security tab if requested
+        <?php if(isset($_GET['set_tab']) && $_GET['set_tab'] == 'security'): ?>
+        document.addEventListener('DOMContentLoaded', () => {
+            const securityTabBtn = document.querySelector('[data-settings-tab="security"]');
+            if(securityTabBtn) securityTabBtn.click();
+        });
+        <?php endif; ?>
+
+        // Password matching validation
+        const passwordForm = document.getElementById('passwordForm');
+        if(passwordForm) {
+            passwordForm.addEventListener('submit', function(e) {
+                const newPass = document.getElementById('new_password').value;
+                const confPass = document.getElementById('confirm_password').value;
+                
+                if(newPass.length < 4) {
+                    e.preventDefault();
+                    alert('New password must be at least 4 characters long.');
+                } else if(newPass !== confPass) {
+                    e.preventDefault();
+                    alert('New passwords do not match!');
+                }
+            });
+        }
+    </script>
 
     <!-- Child Profile Modal -->
     <div id="profileModal" class="profile-modal">
