@@ -586,7 +586,10 @@ if ($tab == 'my_class') {
                                             <span class="badge <?php echo $s_badge; ?>"><?php echo $row['status']; ?></span>
                                         </td>
                                         <td>
-                                            <a href="delete_schedule.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Delete this event?')" class="btn-action btn-danger" style="padding: 8px 12px;"><i class="fas fa-trash"></i></a>
+                                            <div style="display: flex; gap: 8px;">
+                                                <a href="edit_schedule.php?id=<?php echo $row['id']; ?>" class="btn-action btn-primary" style="padding: 8px 12px;" title="Edit"><i class="fas fa-edit"></i></a>
+                                                <a href="delete_schedule.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Delete this event?')" class="btn-action btn-danger" style="padding: 8px 12px;" title="Delete"><i class="fas fa-trash"></i></a>
+                                            </div>
                                         </td>
                                     </tr>
                                 <?php endwhile; ?>
