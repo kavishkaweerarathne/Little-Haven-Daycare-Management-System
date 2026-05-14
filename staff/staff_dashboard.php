@@ -702,7 +702,10 @@ if ($tab == 'my_class') {
                 <div class="section-header" style="flex-direction: column; align-items: stretch; gap: 20px;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <h2 style="font-size: 1.5rem;"><i class="fas fa-history"></i> Student Activity History</h2>
-                        <span class="badge badge-success"><?php echo $logs_res->num_rows; ?> Total Logs</span>
+                        <div style="display: flex; gap: 15px; align-items: center;">
+                            <span class="badge badge-success"><?php echo $logs_res->num_rows; ?> Total Logs</span>
+                            <a href="staff_dashboard.php?tab=search" class="btn-action btn-primary"><i class="fas fa-plus"></i> Add Daily Activity</a>
+                        </div>
                     </div>
                     
                     <form action="" method="GET" style="display: grid; grid-template-columns: 1fr 200px 150px; gap: 15px; background: #f8fafc; padding: 20px; border-radius: 20px; border: 1px solid #e2e8f0;">
@@ -746,7 +749,10 @@ if ($tab == 'my_class') {
                                         </td>
                                         <td><div style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.9rem; color: var(--text-muted);"><?php echo $log['meal_details']; ?></div></td>
                                         <td>
-                                            <a href="manage_activities.php?child_id=<?php echo $log['child_id']; ?>&date=<?php echo $log['activity_date']; ?>" class="btn-action btn-primary"><i class="fas fa-edit"></i> Edit Log</a>
+                                            <div style="display: flex; gap: 8px;">
+                                                <a href="manage_activities.php?child_id=<?php echo $log['child_id']; ?>&date=<?php echo $log['activity_date']; ?>" class="btn-action btn-primary" title="Edit"><i class="fas fa-edit"></i></a>
+                                                <a href="delete_activity.php?id=<?php echo $log['id']; ?>" onclick="return confirm('Are you sure you want to delete this activity log?')" class="btn-action btn-danger" title="Delete"><i class="fas fa-trash"></i></a>
+                                            </div>
                                         </td>
                                     </tr>
                                 <?php endwhile; ?>
