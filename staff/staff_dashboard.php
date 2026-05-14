@@ -268,6 +268,165 @@ if ($tab == 'my_class') {
         .btn-success { background: #DCFCE7; color: #166534; }
         .btn-success:hover { background: #166534; color: white; }
 
+        /* Settings Container */
+        .settings-container {
+            display: flex;
+            background: white;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-soft);
+            min-height: 550px;
+            overflow: hidden;
+            border: 1px solid #F1F5F9;
+        }
+
+        .settings-sidebar {
+            width: 260px;
+            background: #F8FAFC;
+            padding: 30px 20px;
+            border-right: 1px solid #F1F5F9;
+        }
+
+        .settings-nav-item {
+            padding: 14px 20px;
+            border-radius: 14px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--text-muted);
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .settings-nav-item:hover { background: white; color: var(--primary); }
+        .settings-nav-item.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .settings-main { flex: 1; padding: 40px; }
+        .settings-content { display: none; animation: fadeIn 0.4s ease; }
+        .settings-content.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Profile & Security Specifics */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #F1F5F9;
+        }
+
+        .avatar-lg {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.2rem;
+            font-weight: 700;
+            box-shadow: 0 10px 20px rgba(14, 165, 233, 0.2);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .form-group label {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-group { position: relative; }
+        .input-group i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94A3B8;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px 15px 15px 50px;
+            border: 1.5px solid #E2E8F0;
+            border-radius: 14px;
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            background: #F8FAFC;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+        }
+
+        .input-group input[readonly] { background: #F1F5F9; color: #94A3B8; cursor: not-allowed; }
+
+        .error-text {
+            color: var(--danger);
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 5px;
+            display: none;
+        }
+        .error-text.show { display: block; }
+
+        .btn-save {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px 35px;
+            border-radius: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 20px rgba(14, 165, 233, 0.2);
+        }
+
+        .btn-save:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(14, 165, 233, 0.3); }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+        }
+        .alert-success { background: #DCFCE7; color: #166534; border: 1px solid #BBF7D0; }
+        .alert-error { background: #FEE2E2; color: #991B1B; border: 1px solid #FECACA; }
+
         @media (max-width: 1024px) {
             .sidebar { width: 80px; padding: 30px 15px; }
             .sidebar span, .logo span { display: none; }
@@ -599,25 +758,150 @@ if ($tab == 'my_class') {
                 </div>
             </div>
         <?php elseif ($tab == 'settings'): ?>
-            <div class="card" style="max-width: 600px;">
-                <h3 style="margin-bottom: 25px;">Profile Settings</h3>
-                <form action="update_settings.php" method="POST">
-                    <div style="display: flex; flex-direction: column; gap: 20px;">
-                        <div style="display: flex; flex-direction: column; gap: 8px;">
-                            <label style="font-weight: 600; font-size: 0.9rem;">Full Name</label>
-                            <input type="text" name="fullname" value="<?php echo $fullname; ?>" required style="padding: 14px; border-radius: 12px; border: 1.5px solid #E2E8F0; width: 100%;">
-                        </div>
-                        <div style="display: flex; flex-direction: column; gap: 8px;">
-                            <label style="font-weight: 600; font-size: 0.9rem;">Current Password</label>
-                            <input type="password" name="current_password" placeholder="Enter current password" style="padding: 14px; border-radius: 12px; border: 1.5px solid #E2E8F0; width: 100%;">
-                        </div>
-                        <div style="display: flex; flex-direction: column; gap: 8px;">
-                            <label style="font-weight: 600; font-size: 0.9rem;">New Password</label>
-                            <input type="password" name="new_password" placeholder="Enter new password" style="padding: 14px; border-radius: 12px; border: 1.5px solid #E2E8F0; width: 100%;">
-                        </div>
-                        <button type="submit" style="background: var(--secondary); color: white; padding: 16px; border-radius: 14px; border: none; font-weight: 700; cursor: pointer; margin-top: 10px;">Update Profile</button>
+            <div class="settings-container">
+                <div class="settings-sidebar">
+                    <div class="settings-nav-item active" data-settings-tab="profile">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Profile</span>
                     </div>
-                </form>
+                    <div class="settings-nav-item" data-settings-tab="security">
+                        <i class="fas fa-shield-halved"></i>
+                        <span>Security</span>
+                    </div>
+                </div>
+                <div class="settings-main">
+                    <!-- Profile Section -->
+                    <div id="settings-profile" class="settings-content active">
+                        <div class="profile-header">
+                            <div class="avatar-lg">
+                                <?php echo strtoupper(substr($fullname, 0, 1)); ?>
+                            </div>
+                            <div>
+                                <h2 style="font-size: 1.5rem; color: var(--secondary); margin-bottom: 5px;">My Profile</h2>
+                                <p style="color: var(--text-muted); font-size: 0.95rem;">Update your personal information and contact details.</p>
+                            </div>
+                        </div>
+
+                        <?php if(isset($_GET['success']) && !isset($_GET['set_tab'])): ?>
+                            <div class="alert alert-success">
+                                <i class="fas fa-check-circle"></i> <?php echo htmlspecialchars($_GET['success']); ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if(isset($_GET['error']) && !isset($_GET['set_tab'])): ?>
+                            <div class="alert alert-error">
+                                <i class="fas fa-exclamation-circle"></i> <?php echo htmlspecialchars($_GET['error']); ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <form action="update_profile.php" method="POST" id="profileForm">
+                            <div style="display: flex; flex-direction: column; gap: 25px;">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label><i class="fas fa-user-tag"></i> Full Name</label>
+                                        <div class="input-group">
+                                            <i class="fas fa-user"></i>
+                                            <input type="text" id="staff_fullname" name="fullname" value="<?php echo htmlspecialchars($fullname); ?>" required>
+                                        </div>
+                                        <span class="error-text" id="fullname-error"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label><i class="fas fa-envelope"></i> Email Address</label>
+                                        <div class="input-group">
+                                            <i class="fas fa-at"></i>
+                                            <input type="email" id="staff_email" name="email" value="<?php echo htmlspecialchars($_SESSION['email'] ?? ''); ?>" required>
+                                        </div>
+                                        <span class="error-text" id="email-error"></span>
+                                    </div>
+                                </div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label><i class="fas fa-phone-volume"></i> Phone Number</label>
+                                        <div class="input-group">
+                                            <i class="fas fa-phone"></i>
+                                            <input type="text" id="staff_phone" name="phone" value="<?php echo htmlspecialchars($_SESSION['phone'] ?? ''); ?>" maxlength="10" required>
+                                        </div>
+                                        <span class="error-text" id="phone-error"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label><i class="fas fa-user-shield"></i> Account Role</label>
+                                        <div class="input-group">
+                                            <i class="fas fa-shield"></i>
+                                            <input type="text" value="Staff / Teacher" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 15px; border-top: 1px solid #F1F5F9; padding-top: 25px;">
+                                    <button type="submit" class="btn-save">
+                                        <i class="fas fa-save"></i> Save Profile Changes
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Security Section -->
+                    <div id="settings-security" class="settings-content">
+                        <div class="profile-header">
+                            <div class="avatar-lg" style="background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <div>
+                                <h2 style="font-size: 1.5rem; color: var(--secondary); margin-bottom: 5px;">Security Settings</h2>
+                                <p style="color: var(--text-muted); font-size: 0.95rem;">Update your password to keep your account safe.</p>
+                            </div>
+                        </div>
+
+                        <?php if(isset($_GET['set_tab']) && $_GET['set_tab'] == 'security'): ?>
+                            <?php if(isset($_GET['success'])): ?>
+                                <div class="alert alert-success">
+                                    <i class="fas fa-check-circle"></i> <?php echo htmlspecialchars($_GET['success']); ?>
+                                </div>
+                            <?php endif; ?>
+                            <?php if(isset($_GET['error'])): ?>
+                                <div class="alert alert-error">
+                                    <i class="fas fa-exclamation-circle"></i> <?php echo htmlspecialchars($_GET['error']); ?>
+                                </div>
+                            <?php endif; ?>
+                        <?php endif; ?>
+
+                        <form action="update_password.php" method="POST" id="passwordForm">
+                            <div style="display: flex; flex-direction: column; gap: 25px;">
+                                <div class="form-group">
+                                    <label><i class="fas fa-key"></i> Current Password</label>
+                                    <div class="input-group">
+                                        <i class="fas fa-lock-open"></i>
+                                        <input type="password" id="old_password" name="old_password" placeholder="Enter current password" required>
+                                    </div>
+                                    <span class="error-text" id="old-password-error"></span>
+                                </div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label><i class="fas fa-lock"></i> New Password</label>
+                                        <div class="input-group">
+                                            <i class="fas fa-shield-check"></i>
+                                            <input type="password" id="new_password" name="new_password" placeholder="Min 4 characters" required>
+                                        </div>
+                                        <span class="error-text" id="new-password-error"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label><i class="fas fa-check-double"></i> Confirm Password</label>
+                                        <div class="input-group">
+                                            <i class="fas fa-shield-halved"></i>
+                                            <input type="password" id="confirm_password" name="confirm_password" placeholder="Repeat new password" required>
+                                        </div>
+                                        <span class="error-text" id="confirm-password-error"></span>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 15px; border-top: 1px solid #F1F5F9; padding-top: 25px;">
+                                    <button type="submit" class="btn-save" style="background: #4F46E5;">
+                                        <i class="fas fa-shield-alt"></i> Update Password
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         <?php else: ?>
             <div class="card" style="text-align: center; padding: 100px;">
@@ -629,46 +913,115 @@ if ($tab == 'my_class') {
     </main>
 
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Settings Tab Switching
+            const settingsTabs = document.querySelectorAll('.settings-nav-item');
+            const settingsContents = document.querySelectorAll('.settings-content');
+
+            settingsTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const target = tab.getAttribute('data-settings-tab');
+                    
+                    settingsTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    settingsContents.forEach(content => content.classList.remove('active'));
+                    document.getElementById('settings-' + target).classList.add('active');
+                });
+            });
+
+            // Auto-switch to security tab if requested
+            <?php if(isset($_GET['set_tab']) && $_GET['set_tab'] == 'security'): ?>
+                const securityTabBtn = document.querySelector('[data-settings-tab="security"]');
+                if(securityTabBtn) securityTabBtn.click();
+            <?php endif; ?>
+
+            // --- Form Validations ---
+            const showError = (input, errorElement, message) => {
+                if (message) {
+                    input.style.borderColor = 'var(--danger)';
+                    errorElement.textContent = message;
+                    errorElement.classList.add('show');
+                } else {
+                    input.style.borderColor = '#E2E8F0';
+                    errorElement.classList.remove('show');
+                    errorElement.textContent = "";
+                }
+            };
+
+            // Profile Validation
+            const profileForm = document.getElementById('profileForm');
+            if (profileForm) {
+                const fullnameInput = document.getElementById('staff_fullname');
+                const phoneInput = document.getElementById('staff_phone');
+                const fullnameError = document.getElementById('fullname-error');
+                const phoneError = document.getElementById('phone-error');
+
+                fullnameInput.addEventListener('input', () => {
+                    fullnameInput.value = fullnameInput.value.replace(/[^a-zA-Z\s]/g, '');
+                    if (fullnameInput.value.trim().length < 3) {
+                        showError(fullnameInput, fullnameError, "Name must be at least 3 characters.");
+                    } else {
+                        showError(fullnameInput, fullnameError, "");
+                    }
+                });
+
+                phoneInput.addEventListener('input', () => {
+                    let val = phoneInput.value.replace(/\D/g, '');
+                    if (val.length > 10) val = val.substring(0, 10);
+                    phoneInput.value = val;
+                    if (val.length !== 10) {
+                        showError(phoneInput, phoneError, "Phone number must be 10 digits.");
+                    } else {
+                        showError(phoneInput, phoneError, "");
+                    }
+                });
+
+                profileForm.addEventListener('submit', (e) => {
+                    if (fullnameInput.value.trim().length < 3 || phoneInput.value.length !== 10) {
+                        e.preventDefault();
+                        alert("Please fix the errors in the profile form.");
+                    }
+                });
+            }
+
+            // Password Validation
+            const passwordForm = document.getElementById('passwordForm');
+            if (passwordForm) {
+                const newPassInput = document.getElementById('new_password');
+                const confPassInput = document.getElementById('confirm_password');
+                const newPassErr = document.getElementById('new-password-error');
+                const confPassErr = document.getElementById('confirm-password-error');
+
+                newPassInput.addEventListener('input', () => {
+                    if (newPassInput.value.length < 4) {
+                        showError(newPassInput, newPassErr, "Password must be at least 4 characters.");
+                    } else {
+                        showError(newPassInput, newPassErr, "");
+                    }
+                });
+
+                confPassInput.addEventListener('input', () => {
+                    if (confPassInput.value !== newPassInput.value) {
+                        showError(confPassInput, confPassErr, "Passwords do not match.");
+                    } else {
+                        showError(confPassInput, confPassErr, "");
+                    }
+                });
+
+                passwordForm.addEventListener('submit', (e) => {
+                    if (newPassInput.value.length < 4 || newPassInput.value !== confPassInput.value) {
+                        e.preventDefault();
+                        alert("Please fix the errors in the security form.");
+                    }
+                });
+            }
+        });
+
         function confirmDeleteChild(id) {
             if (confirm('Are you sure you want to remove this student from your class? This action cannot be undone.')) {
                 window.location.href = 'delete_child.php?id=' + id;
             }
-        }
-
-        const studentSearch = document.getElementById('studentSearch');
-        if (studentSearch) {
-            studentSearch.addEventListener('input', function() {
-                const term = this.value.toLowerCase();
-                const rows = document.querySelectorAll('#studentTable tbody tr');
-                rows.forEach(row => {
-                    const text = row.textContent.toLowerCase();
-                    row.style.display = text.includes(term) ? '' : 'none';
-                });
-            });
-        }
-
-        const dateFilter = document.getElementById('dateFilter');
-        if (dateFilter) {
-            dateFilter.addEventListener('change', function() {
-                const selectedDate = this.value; // YYYY-MM-DD
-                const rows = document.querySelectorAll('#activityTable tbody tr');
-                rows.forEach(row => {
-                    const dateText = row.cells[0].textContent.trim();
-                    // Need to match date formats or use data attributes
-                    // Simple approach: show all if empty, else match (assuming display is 'd M Y')
-                    // For better matching, let's just check if the row content includes the year/month/day
-                    if (!selectedDate) {
-                        row.style.display = '';
-                        return;
-                    }
-                    // Extracting parts from YYYY-MM-DD
-                    const [y, m, d] = selectedDate.split('-');
-                    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                    const formattedDate = `${d} ${months[parseInt(m)-1]} ${y}`;
-                    
-                    row.style.display = dateText === formattedDate ? '' : 'none';
-                });
-            });
         }
     </script>
 </body>
