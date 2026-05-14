@@ -198,13 +198,13 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                         </div>
                         <div style="display: flex; flex-direction: column; gap: 12px;">
                             <button onclick="document.querySelector('[data-tab=\'children\']').click()" style="width:100%; padding: 15px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; font-weight: 600; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 12px; transition: all 0.3s;">
-                                <i class="fas fa-id-card" style="color: var(--primary);"></i> View Full Profile
+                                <i class="fas fa-baby" style="color: var(--primary);"></i> My Children
                             </button>
-                            <button onclick="document.querySelector('[data-tab=\'attendance\']').click()" style="width:100%; padding: 15px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; font-weight: 600; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 12px; transition: all 0.3s;">
-                                <i class="fas fa-calendar-day" style="color: #10b981;"></i> Attendance Records
+                            <button onclick="document.querySelector('[data-tab=\'activities\']').click()" style="width:100%; padding: 15px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; font-weight: 600; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 12px; transition: all 0.3s;">
+                                <i class="fas fa-book-open" style="color: #10b981;"></i> Daily Activities
                             </button>
                             <button onclick="document.querySelector('[data-tab=\'billing\']').click()" style="width:100%; padding: 15px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; font-weight: 600; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 12px; transition: all 0.3s;">
-                                <i class="fas fa-money-bill-transfer" style="color: #f59e0b;"></i> Billing & Payments
+                                <i class="fas fa-file-invoice-dollar" style="color: #f59e0b;"></i> Billing & Invoices
                             </button>
                         </div>
                     </div>
