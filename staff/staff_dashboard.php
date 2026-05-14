@@ -458,6 +458,10 @@ if ($tab == 'my_class') {
                 <i class="fas fa-list-check"></i>
                 <span>Activity Logs</span>
             </a>
+            <a href="staff_dashboard.php?tab=attendance" class="nav-item <?php echo $tab == 'attendance' ? 'active' : ''; ?>">
+                <i class="fas fa-clipboard-user"></i>
+                <span>Attendance</span>
+            </a>
             <a href="staff_dashboard.php?tab=settings" class="nav-item <?php echo $tab == 'settings' ? 'active' : ''; ?>">
                 <i class="fas fa-user-gear"></i>
                 <span>Settings</span>
@@ -766,6 +770,77 @@ if ($tab == 'my_class') {
                     </table>
                 </div>
             </div>
+        <?php elseif ($tab == 'attendance'): 
+            $today = date('Y-m-d');
+            // Fetch all children (removing staff_id filter to show all students as requested)
+            $children_res = $con->query("SELECT c.*, a.status as att_status, a.check_in_time, a.notes as att_notes 
+                                        FROM children c 
+                                        LEFT JOIN attendance a ON c.id = a.child_id AND a.attendance_date = '$today'
+                                        ORDER BY c.name ASC");
+        ?>
+            <div class="card">
+                <div class="section-header">
+                    <div>
+                        <h2 style="font-size: 1.5rem;"><i class="fas fa-clipboard-check"></i> Daily Attendance</h2>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Mark attendance for <strong><?php echo date('d M Y'); ?></strong></p>
+                    </div>
+                    <span class="badge badge-success"><?php echo $children_res->num_rows; ?> Students Total</span>
+                </div>
+
+                <form action="save_attendance.php" method="POST">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Student Name</th>
+                                    <th>Status</th>
+                                    <th>Check-in Time</th>
+                                    <th>Notes / Observations</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if ($children_res->num_rows > 0): ?>
+                                    <?php while($child = $children_res->fetch_assoc()): ?>
+                                        <tr>
+                                            <td>
+                                                <input type="hidden" name="child_ids[]" value="<?php echo $child['id']; ?>">
+                                                <div style="display: flex; align-items: center; gap: 12px;">
+                                                    <div style="width: 35px; height: 35px; background: var(--bg-alt); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--primary); font-size: 0.8rem; border: 1px solid #E2E8F0;">
+                                                        <?php echo strtoupper(substr($child['name'], 0, 1)); ?>
+                                                    </div>
+                                                    <span style="font-weight: 600; color: var(--secondary);"><?php echo $child['name']; ?></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <select name="status[]" class="attendance-status" style="padding: 8px 12px; border-radius: 8px; border: 1.5px solid #E2E8F0; outline: none; font-size: 0.9rem;">
+                                                    <option value="Present" <?php echo $child['att_status'] == 'Present' ? 'selected' : ''; ?>>✅ Present</option>
+                                                    <option value="Absent" <?php echo $child['att_status'] == 'Absent' ? 'selected' : ''; ?>>❌ Absent</option>
+                                                    <option value="Late" <?php echo $child['att_status'] == 'Late' ? 'selected' : ''; ?>>⏰ Late</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="time" name="check_in_time[]" class="attendance-time" value="<?php echo $child['check_in_time'] ?: '08:00'; ?>" style="padding: 8px; border-radius: 8px; border: 1.5px solid #E2E8F0; outline: none; font-size: 0.9rem;" <?php echo $child['att_status'] == 'Absent' ? 'disabled' : ''; ?>>
+                                            </td>
+                                            <td>
+                                                <input type="text" name="notes[]" value="<?php echo htmlspecialchars($child['att_notes'] ?? ''); ?>" placeholder="Optional notes..." style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1.5px solid #E2E8F0; outline: none; font-size: 0.9rem;">
+                                            </td>
+                                        </tr>
+                                    <?php endwhile; ?>
+                                <?php else: ?>
+                                    <tr><td colspan="4" style="text-align: center; padding: 50px; color: var(--text-muted);">No students assigned to your class yet.</td></tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <?php if ($children_res->num_rows > 0): ?>
+                        <div style="margin-top: 30px; display: flex; justify-content: flex-end;">
+                            <button type="submit" class="btn-action btn-primary" style="padding: 15px 40px; border-radius: 14px; font-size: 1rem;">
+                                <i class="fas fa-cloud-upload-alt"></i> Save Today's Attendance
+                            </button>
+                        </div>
+                    <?php endif; ?>
+                </form>
+            </div>
         <?php elseif ($tab == 'settings'): ?>
             <div class="settings-container">
                 <div class="settings-sidebar">
@@ -1025,6 +1100,21 @@ if ($tab == 'my_class') {
                     }
                 });
             }
+
+            // Attendance Real-time Logic
+            const statusSelects = document.querySelectorAll('.attendance-status');
+            statusSelects.forEach(select => {
+                select.addEventListener('change', function() {
+                    const timeInput = this.closest('tr').querySelector('.attendance-time');
+                    if (this.value === 'Absent') {
+                        timeInput.disabled = true;
+                        timeInput.style.opacity = '0.5';
+                    } else {
+                        timeInput.disabled = false;
+                        timeInput.style.opacity = '1';
+                    }
+                });
+            });
         });
 
         function confirmDeleteChild(id) {
