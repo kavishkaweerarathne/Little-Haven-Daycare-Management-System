@@ -430,15 +430,17 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                                             <label><i class="fas fa-user-tag"></i> Full Name</label>
                                             <div class="input-with-icon">
                                                 <i class="fas fa-user"></i>
-                                                <input type="text" name="fullname" value="<?php echo htmlspecialchars($fullname); ?>" placeholder="Enter your full name" required>
+                                                <input type="text" id="settings_fullname" name="fullname" value="<?php echo htmlspecialchars($fullname); ?>" placeholder="Enter your full name" required>
                                             </div>
+                                            <span class="error-text" id="fullname-error"></span>
                                         </div>
                                         <div class="form-group">
                                             <label><i class="fas fa-envelope"></i> Email Address</label>
                                             <div class="input-with-icon">
                                                 <i class="fas fa-at"></i>
-                                                <input type="email" name="email" value="<?php echo htmlspecialchars($_SESSION['email'] ?? ''); ?>" placeholder="Enter your email" required>
+                                                <input type="email" id="settings_email" name="email" value="<?php echo htmlspecialchars($_SESSION['email'] ?? ''); ?>" placeholder="Enter your email" required>
                                             </div>
+                                            <span class="error-text" id="email-error"></span>
                                         </div>
                                     </div>
                                     <div class="form-row">
@@ -446,8 +448,9 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                                             <label><i class="fas fa-phone-volume"></i> Phone Number</label>
                                             <div class="input-with-icon">
                                                 <i class="fas fa-phone"></i>
-                                                <input type="text" name="phone" value="<?php echo htmlspecialchars($_SESSION['phone'] ?? ''); ?>" placeholder="Enter your phone number" required>
+                                                <input type="text" id="settings_phone" name="phone" value="<?php echo htmlspecialchars($_SESSION['phone'] ?? ''); ?>" placeholder="Enter your phone number" maxlength="10" required>
                                             </div>
+                                            <span class="error-text" id="phone-error"></span>
                                         </div>
                                         <div class="form-group">
                                             <label><i class="fas fa-user-shield"></i> Account Role</label>
@@ -499,8 +502,9 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                                         <label><i class="fas fa-key"></i> Current Password</label>
                                         <div class="input-with-icon">
                                             <i class="fas fa-lock-open"></i>
-                                            <input type="password" name="old_password" placeholder="Enter current password" required>
+                                            <input type="password" id="old_password" name="old_password" placeholder="Enter current password" required>
                                         </div>
+                                        <span class="error-text" id="old-password-error"></span>
                                     </div>
                                     
                                     <div class="form-row">
@@ -510,6 +514,7 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                                                 <i class="fas fa-shield-check"></i>
                                                 <input type="password" name="new_password" id="new_password" placeholder="Minimum 4 characters" required>
                                             </div>
+                                            <span class="error-text" id="new-password-error"></span>
                                         </div>
                                         <div class="form-group">
                                             <label><i class="fas fa-check-double"></i> Confirm New Password</label>
@@ -517,6 +522,7 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                                                 <i class="fas fa-shield-halved"></i>
                                                 <input type="password" name="confirm_password" id="confirm_password" placeholder="Repeat new password" required>
                                             </div>
+                                            <span class="error-text" id="confirm-password-error"></span>
                                         </div>
                                     </div>
                                     
@@ -543,22 +549,94 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
         });
         <?php endif; ?>
 
-        // Password matching validation
-        const passwordForm = document.getElementById('passwordForm');
-        if(passwordForm) {
-            passwordForm.addEventListener('submit', function(e) {
-                const newPass = document.getElementById('new_password').value;
-                const confPass = document.getElementById('confirm_password').value;
-                
-                if(newPass.length < 4) {
-                    e.preventDefault();
-                    alert('New password must be at least 4 characters long.');
-                } else if(newPass !== confPass) {
-                    e.preventDefault();
-                    alert('New passwords do not match!');
+        // Settings Validation Patterns
+        document.addEventListener('DOMContentLoaded', () => {
+            const profileForm = document.querySelector('form[action="update_profile.php"]');
+            const passwordForm = document.getElementById('passwordForm');
+
+            // --- Shared Helper Functions ---
+            const showError = (input, errorElement, message) => {
+                if (message) {
+                    input.classList.add('error');
+                    errorElement.textContent = message;
+                    errorElement.classList.add('show');
+                } else {
+                    input.classList.remove('error');
+                    errorElement.classList.remove('show');
+                    errorElement.textContent = "";
                 }
-            });
-        }
+            };
+
+            // --- Profile Validations ---
+            if (profileForm) {
+                const fullnameInput = document.getElementById('settings_fullname');
+                const phoneInput = document.getElementById('settings_phone');
+                const fullnameError = document.getElementById('fullname-error');
+                const phoneError = document.getElementById('phone-error');
+
+                fullnameInput.addEventListener('input', () => {
+                    fullnameInput.value = fullnameInput.value.replace(/[^a-zA-Z\s]/g, '');
+                    if (fullnameInput.value.trim().length < 3) {
+                        showError(fullnameInput, fullnameError, "Name must be at least 3 characters.");
+                    } else {
+                        showError(fullnameInput, fullnameError, "");
+                    }
+                });
+
+                phoneInput.addEventListener('input', () => {
+                    let val = phoneInput.value.replace(/\D/g, '');
+                    if (val.length > 10) val = val.substring(0, 10);
+                    phoneInput.value = val;
+                    
+                    if (val.length !== 10) {
+                        showError(phoneInput, phoneError, "Phone number must be exactly 10 digits.");
+                    } else {
+                        showError(phoneInput, phoneError, "");
+                    }
+                });
+
+                profileForm.addEventListener('submit', (e) => {
+                    if (fullnameInput.value.trim().length < 3 || phoneInput.value.length !== 10) {
+                        e.preventDefault();
+                        alert("Please fix the errors in the profile form.");
+                    }
+                });
+            }
+
+            // --- Password Validations ---
+            if (passwordForm) {
+                const oldPassInput = document.getElementById('old_password');
+                const newPassInput = document.getElementById('new_password');
+                const confPassInput = document.getElementById('confirm_password');
+                
+                const oldPassErr = document.getElementById('old-password-error');
+                const newPassErr = document.getElementById('new-password-error');
+                const confPassErr = document.getElementById('confirm-password-error');
+
+                newPassInput.addEventListener('input', () => {
+                    if (newPassInput.value.length < 4) {
+                        showError(newPassInput, newPassErr, "Password must be at least 4 characters.");
+                    } else {
+                        showError(newPassInput, newPassErr, "");
+                    }
+                });
+
+                confPassInput.addEventListener('input', () => {
+                    if (confPassInput.value !== newPassInput.value) {
+                        showError(confPassInput, confPassErr, "Passwords do not match.");
+                    } else {
+                        showError(confPassInput, confPassErr, "");
+                    }
+                });
+
+                passwordForm.addEventListener('submit', (e) => {
+                    if (newPassInput.value.length < 4 || newPassInput.value !== confPassInput.value) {
+                        e.preventDefault();
+                        alert("Please ensure your new passwords match and are at least 4 characters long.");
+                    }
+                });
+            }
+        });
     </script>
 
     <!-- Child Profile Modal -->
