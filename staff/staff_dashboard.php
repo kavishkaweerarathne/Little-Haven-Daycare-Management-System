@@ -570,7 +570,6 @@ if ($tab == 'my_class') {
                 <div class="section-header">
                     <h3>Class Schedule & Events</h3>
                     <div style="display: flex; gap: 15px;">
-                        <a href="schedule_report.php" class="btn-action btn-success"><i class="fas fa-file-pdf"></i> Download Report</a>
                         <a href="add_schedule.php" class="btn-action btn-primary"><i class="fas fa-calendar-plus"></i> Add Event</a>
                     </div>
                 </div>
