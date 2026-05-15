@@ -33,6 +33,8 @@
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#services">Services</a></li>
+                <li><a href="#why-choose-us">Why Us</a></li>
+                <li><a href="#facilities">Facilities</a></li>
                 <li><a href="about.php">About</a></li>
                 <li><a href="contact.php">Contact</a></li>
             </ul>
@@ -61,29 +63,105 @@
         </div>
     </section>
 
-    <!-- Features Section -->
+    <!-- Services Section -->
     <section id="services" class="section-padding bg-alt" style="border-radius: 100px 100px 0 0;">
         <div class="container">
             <div class="section-header reveal fade-up">
-                <h2>Excellence in <span>Every Detail</span></h2>
-                <p>Designed to stimulate growth, creativity, and absolute safety.</p>
+                <h2>Our <span>Premium Services</span></h2>
+                <p>Tailored programs designed for every stage of your child's early development.</p>
             </div>
             
             <div class="features-grid">
                 <div class="feature-card reveal fade-up" style="transition-delay: 0.1s;">
-                    <div class="icon"><i class="fas fa-shield-heart"></i></div>
-                    <h3>Premium Security</h3>
-                    <p>Advanced biometric access and 24/7 AI-monitored environments for total peace of mind.</p>
+                    <div class="icon"><i class="fas fa-sun"></i></div>
+                    <h3>Full Day Care</h3>
+                    <p>Comprehensive care from morning to evening, focusing on all-round development.</p>
                 </div>
                 <div class="feature-card reveal fade-up" style="transition-delay: 0.2s;">
-                    <div class="icon"><i class="fas fa-feather"></i></div>
-                    <h3>Holistic Care</h3>
-                    <p>A balanced approach focusing on emotional, physical, and cognitive development.</p>
+                    <div class="icon"><i class="fas fa-cloud-sun"></i></div>
+                    <h3>Half Day Care</h3>
+                    <p>Flexible morning or afternoon sessions perfect for transitional learning.</p>
                 </div>
                 <div class="feature-card reveal fade-up" style="transition-delay: 0.3s;">
-                    <div class="icon"><i class="fas fa-lightbulb"></i></div>
-                    <h3>Modern Curriculum</h3>
-                    <p>Innovative play-based learning that prepares children for a global future.</p>
+                    <div class="icon"><i class="fas fa-school"></i></div>
+                    <h3>After School Programs</h3>
+                    <p>Safe and engaging activities for school-goers, including homework support.</p>
+                </div>
+                <div class="feature-card reveal fade-up" style="transition-delay: 0.4s;">
+                    <div class="icon"><i class="fas fa-palette"></i></div>
+                    <h3>Early Learning Activities</h3>
+                    <p>Specialized sessions to spark creativity and cognitive skills in toddlers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section id="why-choose-us" class="section-padding">
+        <div class="container">
+            <div class="section-header reveal fade-up">
+                <h2>Why Choose <span>Little Haven?</span></h2>
+                <p>We set the standard for safety, education, and child development.</p>
+            </div>
+            
+            <div class="features-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                <div class="feature-card reveal fade-up" style="transition-delay: 0.1s;">
+                    <div class="icon" style="background: rgba(38, 198, 218, 0.1); color: var(--primary);"><i class="fas fa-user-graduate"></i></div>
+                    <h4 style="margin: 15px 0;">Qualified Staff</h4>
+                    <p style="font-size: 0.85rem;">Certified experts in early childhood education.</p>
+                </div>
+                <div class="feature-card reveal fade-up" style="transition-delay: 0.2s;">
+                    <div class="icon" style="background: rgba(38, 198, 218, 0.1); color: var(--primary);"><i class="fas fa-shield-check"></i></div>
+                    <h4 style="margin: 15px 0;">Safe Environment</h4>
+                    <p style="font-size: 0.85rem;">Designed with the highest safety standards.</p>
+                </div>
+                <div class="feature-card reveal fade-up" style="transition-delay: 0.3s;">
+                    <div class="icon" style="background: rgba(38, 198, 218, 0.1); color: var(--primary);"><i class="fas fa-video"></i></div>
+                    <h4 style="margin: 15px 0;">CCTV Monitoring</h4>
+                    <p style="font-size: 0.85rem;">24/7 surveillance for absolute transparency.</p>
+                </div>
+                <div class="feature-card reveal fade-up" style="transition-delay: 0.4s;">
+                    <div class="icon" style="background: rgba(38, 198, 218, 0.1); color: var(--primary);"><i class="fas fa-apple-whole"></i></div>
+                    <h4 style="margin: 15px 0;">Healthy Meals</h4>
+                    <p style="font-size: 0.85rem;">Nutritious, chef-prepared meals for growing bodies.</p>
+                </div>
+                <div class="feature-card reveal fade-up" style="transition-delay: 0.5s;">
+                    <div class="icon" style="background: rgba(38, 198, 218, 0.1); color: var(--primary);"><i class="fas fa-seedling"></i></div>
+                    <h4 style="margin: 15px 0;">Development Programs</h4>
+                    <p style="font-size: 0.85rem;">Curated activities for holistic growth.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Facilities Section -->
+    <section id="facilities" class="section-padding bg-alt">
+        <div class="container">
+            <div class="section-header reveal fade-up">
+                <h2>Elite <span>Facilities</span></h2>
+                <p>A world-class environment where children thrive and feel at home.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card reveal fade-up" style="transition-delay: 0.1s;">
+                    <div class="icon"><i class="fas fa-chalkboard-user"></i></div>
+                    <h3>Modern Classrooms</h3>
+                    <p>Bright, spacious, and equipped with the latest learning tools.</p>
+                </div>
+                <div class="feature-card reveal fade-up" style="transition-delay: 0.2s;">
+                    <div class="icon"><i class="fas fa-icons"></i></div>
+                    <h3>Creative Play Area</h3>
+                    <p>Indoor and outdoor spaces designed for safe, imaginative play.</p>
+                </div>
+                <div class="feature-card reveal fade-up" style="transition-delay: 0.3s;">
+                    <div class="icon"><i class="fas fa-bed"></i></div>
+                    <h3>Rest & Sleeping Area</h3>
+                    <p>Quiet, comfortable spaces for peaceful naps and relaxation.</p>
+                </div>
+                <div class="feature-card reveal fade-up" style="transition-delay: 0.4s;">
+                    <div class="icon"><i class="fas fa-lock"></i></div>
+                    <h3>Security System</h3>
+                    <p>Advanced entry controls and secure premises for every child.</p>
                 </div>
             </div>
         </div>
