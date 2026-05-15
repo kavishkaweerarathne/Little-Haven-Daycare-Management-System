@@ -364,7 +364,7 @@ tr:hover {
 
 .settings-sidebar {
     width: 260px;
-    background: #f8fafc;
+    background: #f0f7ff;
     padding: 2rem 1.5rem;
     border-radius: 1rem 0 0 1rem;
     border-right: 1px solid #e2e8f0;
@@ -379,8 +379,8 @@ tr:hover {
     display: flex;
     align-items: center;
     gap: 14px;
-    color: #64748b;
-    font-weight: 500;
+    color: #1a202c; /* Black text */
+    font-weight: 700; /* Bold */
 }
 
 .settings-nav-item i {
@@ -391,7 +391,7 @@ tr:hover {
 }
 
 .settings-nav-item:hover {
-    background: #eff6ff;
+    background: white;
     color: var(--primary);
     transform: translateX(5px);
 }
@@ -399,38 +399,38 @@ tr:hover {
 .settings-nav-item.active {
     background: white;
     color: var(--primary);
-    font-weight: 700;
+    font-weight: 800;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
     border: 1px solid #e2e8f0;
 }
 
-/* Individual Icon Colors */
+/* Individual Icon Colors - Darker Shades */
 [data-settings-tab="profile"] i {
-    color: var(--primary);
+    color: #0891b2;
 }
 
 [data-settings-tab="system"] i {
-    color: #10b981;
+    color: #059669;
 }
 
 [data-settings-tab="security"] i {
-    color: #f59e0b;
+    color: #d97706;
 }
 
 [data-settings-tab="theme"] i {
-    color: #8b5cf6;
+    color: #7c3aed;
 }
 
 [data-settings-tab="help"] i {
-    color: #3b82f6;
+    color: #2563eb;
 }
 
 [data-settings-tab="feedback"] i {
-    color: #ec4899;
+    color: #db2777;
 }
 
 [data-settings-tab="logout"] i {
-    color: #ef4444;
+    color: #dc2626;
 }
 
 .settings-nav-item.active i {
