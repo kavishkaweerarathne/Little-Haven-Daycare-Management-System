@@ -40,7 +40,7 @@ if (isset($_GET['id']) && isset($_GET['status'])) {
                         }
                     }
                     // Insert new item
-                    $con->query("INSERT INTO inventory (item_name, quantity, unit, reorder_threshold, supplier_name) VALUES ('$item_name', $quantity, 'Units', 10, '$s_name')");
+                    $con->query("INSERT INTO inventory (item_name, quantity, unit, supplier_name) VALUES ('$item_name', $quantity, 'Units', '$s_name')");
                 }
             }
             $con->commit();

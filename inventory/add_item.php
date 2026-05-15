@@ -12,13 +12,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $category = mysqli_real_escape_string($con, $_POST['category']);
     $quantity = (int)$_POST['quantity'];
     $unit = mysqli_real_escape_string($con, $_POST['unit']);
-    $reorder_threshold = (int)$_POST['reorder_threshold'];
     $supplier_name = mysqli_real_escape_string($con, $_POST['supplier_name']);
-    $supplier_contact = mysqli_real_escape_string($con, $_POST['supplier_contact']);
-    $expiry_date = $_POST['expiry_date'] ?: NULL;
 
-    $stmt = $con->prepare("INSERT INTO inventory (item_name, category, quantity, unit, reorder_threshold, supplier_name, supplier_contact, expiry_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssisssss", $item_name, $category, $quantity, $unit, $reorder_threshold, $supplier_name, $supplier_contact, $expiry_date);
+    $stmt = $con->prepare("INSERT INTO inventory (item_name, category, quantity, unit, supplier_name) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssiss", $item_name, $category, $quantity, $unit, $supplier_name);
 
     if ($stmt->execute()) {
         echo "<script>alert('Item added successfully!'); window.location.href='inventory_dashboard.php';</script>";
@@ -160,21 +157,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <label>Current Quantity</label>
                     <input type="number" name="quantity" required min="0">
                 </div>
-                <div class="form-group">
-                    <label>Reorder Threshold</label>
-                    <input type="number" name="reorder_threshold" value="10" required min="1">
-                </div>
-                <div class="form-group">
+                <div class="form-group full-width">
                     <label>Supplier Name</label>
                     <input type="text" name="supplier_name">
-                </div>
-                <div class="form-group">
-                    <label>Supplier Contact</label>
-                    <input type="text" name="supplier_contact">
-                </div>
-                <div class="form-group full-width">
-                    <label>Expiry Date (Optional)</label>
-                    <input type="date" name="expiry_date">
                 </div>
             </div>
             <button type="submit" class="submit-btn">Save Item</button>
