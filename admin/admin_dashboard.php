@@ -131,7 +131,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                                           (SELECT 'New Supplier' as type, name as description, CURDATE() as activity_date, 'supplier' as meta, 'truck-ramp-box' as icon, '#8B5CF6' as color FROM suppliers)
                                           UNION
                                           (SELECT 'Staff Schedule' as type, activity_name as description, activity_date as activity_date, 'event' as meta, 'calendar-check' as icon, '#EC4899' as color FROM staff_schedule)
-                                          ORDER BY activity_date DESC LIMIT 10";
+                                          ORDER BY activity_date DESC LIMIT 5";
                             
                             $activity_res = mysqli_query($con, $activity_q);
                             
@@ -168,6 +168,13 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                                 </div>
                             <?php 
                                 endwhile;
+                            ?>
+                                <div style="text-align: right; margin-top: 1.5rem;">
+                                    <a href="activity_report.php" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px;">
+                                        View More Activities <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            <?php
                             else:
                                 echo "<p style='padding: 20px; text-align: center; color: #94a3b8;'>No recent activities found.</p>";
                             endif;
