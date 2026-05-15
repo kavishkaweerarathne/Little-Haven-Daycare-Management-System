@@ -328,7 +328,6 @@ if ($tab == 'inventory') {
             <a href="inventory_dashboard.php?tab=orders" class="nav-item <?php echo $tab == 'orders' ? 'active' : ''; ?>"><i class="fas fa-cart-plus"></i> Orders</a>
             <a href="inventory_dashboard.php?tab=suppliers" class="nav-item <?php echo $tab == 'suppliers' ? 'active' : ''; ?>"><i class="fas fa-truck-ramp-box"></i> Suppliers</a>
             <a href="inventory_dashboard.php?tab=stock_level" class="nav-item <?php echo $tab == 'stock_level' ? 'active' : ''; ?>"><i class="fas fa-warehouse"></i> Stock Level</a>
-            <a href="reports.php" class="nav-item"><i class="fas fa-file-pdf"></i> Reports</a>
             <a href="inventory_dashboard.php?tab=settings" class="nav-item <?php echo $tab == 'settings' ? 'active' : ''; ?>"><i class="fas fa-gear"></i> Settings</a>
         </div>
     </div>
