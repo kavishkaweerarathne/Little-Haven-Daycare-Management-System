@@ -131,11 +131,19 @@ $report_res = mysqli_query($con, $report_q);
         }
 
         .no-print-actions {
-            position: fixed;
-            top: 20px;
-            right: 20px;
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 40px;
             display: flex;
-            gap: 10px;
+            justify-content: flex-end;
+            gap: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            z-index: 1000;
+            margin: -40px -40px 40px -40px;
         }
 
         .btn {
@@ -150,14 +158,22 @@ $report_res = mysqli_query($con, $report_q);
             gap: 8px;
             transition: 0.3s;
             text-decoration: none;
+            font-size: 0.9rem;
         }
 
         .btn-print { background: var(--secondary); color: white; }
         .btn-close { background: #f1f5f9; color: var(--text-dark); }
+        .btn-back { background: var(--primary); color: white; }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
 
         @media print {
             .no-print-actions { display: none; }
             body { padding: 0; }
+            .report-header { margin-top: 0; }
             @page { margin: 1cm; }
         }
     </style>
@@ -165,8 +181,8 @@ $report_res = mysqli_query($con, $report_q);
 <body>
 
     <div class="no-print-actions">
+        <a href="admin_dashboard.php" class="btn btn-back"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
         <button onclick="window.print()" class="btn btn-print"><i class="fas fa-print"></i> Print / Save PDF</button>
-        <button onclick="window.close()" class="btn btn-close">Close</button>
     </div>
 
     <div class="report-header">
