@@ -20,14 +20,10 @@ if (!$item) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $item_name = mysqli_real_escape_string($con, $_POST['item_name']);
-    $category = mysqli_real_escape_string($con, $_POST['category']);
     $quantity = (int)$_POST['quantity'];
-    $unit = mysqli_real_escape_string($con, $_POST['unit']);
-    $supplier_name = mysqli_real_escape_string($con, $_POST['supplier_name']);
-
-    $update_stmt = $con->prepare("UPDATE inventory SET item_name = ?, category = ?, quantity = ?, unit = ?, supplier_name = ? WHERE id = ?");
-    $update_stmt->bind_param("ssissi", $item_name, $category, $quantity, $unit, $supplier_name, $id);
+    
+    $update_stmt = $con->prepare("UPDATE inventory SET quantity = ? WHERE id = ?");
+    $update_stmt->bind_param("ii", $quantity, $id);
 
     if ($update_stmt->execute()) {
         echo "<script>alert('Item updated successfully!'); window.location.href='inventory_dashboard.php';</script>";
@@ -149,11 +145,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="form-grid">
                 <div class="form-group full-width">
                     <label>Item Name</label>
-                    <input type="text" name="item_name" value="<?php echo $item['item_name']; ?>" required>
+                    <input type="text" value="<?php echo $item['item_name']; ?>" readonly style="background: #f8fafc; color: #64748b; cursor: not-allowed;">
                 </div>
                 <div class="form-group">
                     <label>Category</label>
-                    <select name="category">
+                    <select disabled style="background: #f8fafc; color: #64748b; cursor: not-allowed;">
                         <option value="Food & Beverages" <?php echo $item['category'] == 'Food & Beverages' ? 'selected' : ''; ?>>Food & Beverages</option>
                         <option value="Toys & Games" <?php echo $item['category'] == 'Toys & Games' ? 'selected' : ''; ?>>Toys & Games</option>
                         <option value="Educational Materials" <?php echo $item['category'] == 'Educational Materials' ? 'selected' : ''; ?>>Educational Materials</option>
@@ -173,15 +169,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <div class="form-group">
                     <label>Unit</label>
-                    <input type="text" name="unit" value="<?php echo $item['unit']; ?>" required>
+                    <input type="text" value="<?php echo $item['unit']; ?>" readonly style="background: #f8fafc; color: #64748b; cursor: not-allowed;">
+                </div>
+                <div class="form-group">
+                    <label>Supplier Name</label>
+                    <input type="text" value="<?php echo $item['supplier_name']; ?>" readonly style="background: #f8fafc; color: #64748b; cursor: not-allowed;">
                 </div>
                 <div class="form-group">
                     <label>Current Quantity</label>
-                    <input type="number" name="quantity" value="<?php echo $item['quantity']; ?>" required min="0">
-                </div>
-                <div class="form-group full-width">
-                    <label>Supplier Name</label>
-                    <input type="text" name="supplier_name" value="<?php echo $item['supplier_name']; ?>">
+                    <input type="number" name="quantity" value="<?php echo $item['quantity']; ?>" required min="0" style="border: 2px solid var(--primary); font-weight: 700;">
                 </div>
             </div>
             <button type="submit" class="submit-btn">Update Item</button>
