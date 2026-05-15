@@ -65,10 +65,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="form-group">
                     <label>Category</label>
                     <select name="category">
-                        <option value="Supplies" <?php echo $supplier['category'] == 'Supplies' ? 'selected' : ''; ?>>Supplies</option>
-                        <option value="Food" <?php echo $supplier['category'] == 'Food' ? 'selected' : ''; ?>>Food</option>
-                        <option value="Cleaning" <?php echo $supplier['category'] == 'Cleaning' ? 'selected' : ''; ?>>Cleaning</option>
-                        <option value="Toys" <?php echo $supplier['category'] == 'Toys' ? 'selected' : ''; ?>>Toys</option>
+                        <option value="Food & Beverages" <?php echo $supplier['category'] == 'Food & Beverages' ? 'selected' : ''; ?>>Food & Beverages</option>
+                        <option value="Toys & Games" <?php echo $supplier['category'] == 'Toys & Games' ? 'selected' : ''; ?>>Toys & Games</option>
+                        <option value="Educational Materials" <?php echo $supplier['category'] == 'Educational Materials' ? 'selected' : ''; ?>>Educational Materials</option>
+                        <option value="Stationery Supplies" <?php echo $supplier['category'] == 'Stationery Supplies' ? 'selected' : ''; ?>>Stationery Supplies</option>
+                        <option value="Cleaning Supplies" <?php echo $supplier['category'] == 'Cleaning Supplies' ? 'selected' : ''; ?>>Cleaning Supplies</option>
+                        <option value="Hygiene & Sanitation Products" <?php echo $supplier['category'] == 'Hygiene & Sanitation Products' ? 'selected' : ''; ?>>Hygiene & Sanitation Products</option>
+                        <option value="Furniture & Equipment" <?php echo $supplier['category'] == 'Furniture & Equipment' ? 'selected' : ''; ?>>Furniture & Equipment</option>
+                        <option value="Medical & First Aid Supplies" <?php echo $supplier['category'] == 'Medical & First Aid Supplies' ? 'selected' : ''; ?>>Medical & First Aid Supplies</option>
+                        <option value="Baby Care Products" <?php echo $supplier['category'] == 'Baby Care Products' ? 'selected' : ''; ?>>Baby Care Products</option>
+                        <option value="Kitchen Supplies" <?php echo $supplier['category'] == 'Kitchen Supplies' ? 'selected' : ''; ?>>Kitchen Supplies</option>
+                        <option value="Sleeping & Rest Items" <?php echo $supplier['category'] == 'Sleeping & Rest Items' ? 'selected' : ''; ?>>Sleeping & Rest Items</option>
+                        <option value="Outdoor Play Equipment" <?php echo $supplier['category'] == 'Outdoor Play Equipment' ? 'selected' : ''; ?>>Outdoor Play Equipment</option>
+                        <option value="Arts & Crafts Materials" <?php echo $supplier['category'] == 'Arts & Crafts Materials' ? 'selected' : ''; ?>>Arts & Crafts Materials</option>
+                        <option value="Uniforms & Staff Essentials" <?php echo $supplier['category'] == 'Uniforms & Staff Essentials' ? 'selected' : ''; ?>>Uniforms & Staff Essentials</option>
+                        <option value="Safety & Security Equipment" <?php echo $supplier['category'] == 'Safety & Security Equipment' ? 'selected' : ''; ?>>Safety & Security Equipment</option>
                     </select>
                 </div>
                 <div class="form-group">

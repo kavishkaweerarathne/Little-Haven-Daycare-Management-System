@@ -57,10 +57,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="form-group">
                     <label>Category</label>
                     <select name="category">
-                        <option value="Supplies">Supplies</option>
-                        <option value="Food">Food</option>
-                        <option value="Cleaning">Cleaning</option>
-                        <option value="Toys">Toys</option>
+                        <option value="Food & Beverages">Food & Beverages</option>
+                        <option value="Toys & Games">Toys & Games</option>
+                        <option value="Educational Materials">Educational Materials</option>
+                        <option value="Stationery Supplies">Stationery Supplies</option>
+                        <option value="Cleaning Supplies">Cleaning Supplies</option>
+                        <option value="Hygiene & Sanitation Products">Hygiene & Sanitation Products</option>
+                        <option value="Furniture & Equipment">Furniture & Equipment</option>
+                        <option value="Medical & First Aid Supplies">Medical & First Aid Supplies</option>
+                        <option value="Baby Care Products">Baby Care Products</option>
+                        <option value="Kitchen Supplies">Kitchen Supplies</option>
+                        <option value="Sleeping & Rest Items">Sleeping & Rest Items</option>
+                        <option value="Outdoor Play Equipment">Outdoor Play Equipment</option>
+                        <option value="Arts & Crafts Materials">Arts & Crafts Materials</option>
+                        <option value="Uniforms & Staff Essentials">Uniforms & Staff Essentials</option>
+                        <option value="Safety & Security Equipment">Safety & Security Equipment</option>
                     </select>
                 </div>
                 <div class="form-group">
