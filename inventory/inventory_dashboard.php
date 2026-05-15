@@ -372,6 +372,7 @@ if ($tab == 'inventory') {
         .edit-btn { background: #EBF8FF; color: #3182CE; }
         .edit-btn:hover { background: #3182CE; color: white; }
 
+        .delete-btn { background: #FFF5F5; color: var(--danger); }
         .delete-btn:hover { background: var(--danger); color: white; }
 
         .logout-btn {
