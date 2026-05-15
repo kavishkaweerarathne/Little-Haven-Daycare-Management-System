@@ -69,34 +69,38 @@ h1, h2, h3, h4 {
     display: inline-block;
     padding: 16px 36px;
     border-radius: 100px;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 1rem;
     cursor: pointer;
     transition: var(--transition-smooth);
     border: none;
     text-align: center;
+    text-decoration: none; /* Remove underline */
 }
 
 .btn-primary {
     background: var(--secondary);
-    color: white;
+    color: white !important;
     box-shadow: 0 10px 20px rgba(26, 82, 118, 0.2);
 }
 
 .btn-primary:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(26, 82, 118, 0.3);
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 30px rgba(26, 82, 118, 0.4);
+    filter: brightness(1.1);
 }
 
 .btn-outline {
     background: transparent;
     border: 2px solid var(--primary);
-    color: var(--primary);
+    color: var(--primary) !important;
 }
 
 .btn-outline:hover {
     background: var(--primary);
-    color: white;
+    color: white !important;
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 30px rgba(38, 198, 218, 0.3);
 }
 
 /* Header Redesign - Floating Premium Navbar */
