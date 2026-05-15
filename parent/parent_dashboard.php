@@ -497,7 +497,7 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                                 <h3 style="font-size: 1.3rem; color: #f59e0b;">Rs. <?php echo number_format($b['additional_fee'] ?? 0, 2); ?></h3>
                             </div>
                             <div style="background: #f0fdf4; padding: 20px; border-radius: 16px; text-align: center; border: 2px solid #10b981; border-left: 8px solid #10b981;">
-                                <p style="color: #166534; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px;">Total Amount Due</p>
+                                <p style="color: #166534; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px;">Total Amount</p>
                                 <h3 style="font-size: 1.4rem; color: #10b981;">Rs. <?php echo number_format($b['total_monthly_fee'] ?? 0, 2); ?></h3>
                             </div>
                         </div>
