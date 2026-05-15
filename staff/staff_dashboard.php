@@ -12,14 +12,14 @@ $fullname = $_SESSION['fullname'];
 $staff_id = $_SESSION['user_id'];
 
 // Fetch real stats
-$total_children = $con->query("SELECT COUNT(*) as count FROM children WHERE staff_id = $staff_id")->fetch_assoc()['count'];
+$total_children = $con->query("SELECT COUNT(*) as count FROM children")->fetch_assoc()['count'];
 // For now, attendance is just a placeholder until we have an attendance table, but let's assume it's 0
 $today_attendance = 0; 
 $pending_tasks = 3;
 
 // Fetch data for specific tabs
 if ($tab == 'my_class') {
-    $children_result = $con->query("SELECT * FROM children WHERE staff_id = $staff_id ORDER BY name ASC");
+    $children_result = $con->query("SELECT * FROM children ORDER BY name ASC");
 }
 ?>
 <!DOCTYPE html>
@@ -489,7 +489,7 @@ if ($tab == 'my_class') {
                 <div class="stat-card">
                     <div class="stat-icon" style="background: #E0F2FE; color: var(--primary);"><i class="fas fa-children"></i></div>
                     <div class="stat-info">
-                        <h3>My Students</h3>
+                        <h3>Total Students</h3>
                         <p><?php echo $total_children; ?></p>
                     </div>
                 </div>
