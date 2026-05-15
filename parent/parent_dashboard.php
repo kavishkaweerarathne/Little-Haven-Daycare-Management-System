@@ -454,50 +454,100 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
 
         <!-- Billing Tab -->
         <div id="billing-tab" class="tab-content <?php echo $tab == 'billing' ? 'active' : ''; ?>">
-            <div class="card">
-                <div class="section-header">
-                    <h2>Billing & Invoices</h2>
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 1rem;">
-                    <?php 
-                    if(!empty($children)) {
-                        $billing_query = "SELECT b.*, c.name as child_name FROM billing b 
-                                         JOIN children c ON b.child_id = c.id 
-                                         WHERE c.parent_id = $user_id 
-                                         ORDER BY b.id DESC";
-                        $billing_res = mysqli_query($con, $billing_query);
-                        if($billing_res && mysqli_num_rows($billing_res) > 0) {
-                            while($bill = mysqli_fetch_assoc($billing_res)) {
-                                $status_class = $bill['payment_status'] == 'Paid' ? 'badge-success' : 'badge-warning';
-                                ?>
-                                <div style="background: #f8fafc; padding: 2rem; border-radius: 20px; border: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s;">
-                                    <div style="display: flex; align-items: center; gap: 20px;">
-                                        <div style="width: 60px; height: 60px; background: white; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--primary); box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                                            <i class="fas fa-file-invoice"></i>
-                                        </div>
-                                        <div>
-                                            <h4 style="margin: 0; font-size: 1.1rem;">Invoice #INV-<?php echo $bill['id']; ?></h4>
-                                            <p style="margin: 5px 0 0 0; color: #64748b; font-size: 0.9rem;">For <?php echo $bill['child_name']; ?> - <?php echo $bill['monthly_attendance']; ?> Days</p>
-                                        </div>
-                                    </div>
-                                    <div style="text-align: right;">
-                                        <h3 style="margin: 0; color: var(--secondary);">Rs. <?php echo number_format($bill['total_monthly_fee'], 2); ?></h3>
-                                        <div style="margin-top: 8px;">
-                                            <span class="badge <?php echo $status_class; ?>" style="padding: 6px 15px;"><?php echo ucfirst($bill['payment_status']); ?></span>
-                                        </div>
-                                    </div>
+            <?php if(!empty($children)): ?>
+                <?php foreach($children as $child): 
+                    $c_id = $child['id'];
+                    // Fetch latest billing info from billing table
+                    $billing_res = $con->query("SELECT * FROM billing WHERE child_id = $c_id ORDER BY created_at DESC LIMIT 1");
+                    $b = $billing_res->fetch_assoc();
+                    
+                    // Fetch recent invoices from invoices table
+                    $invoices_res = $con->query("SELECT * FROM invoices WHERE child_id = $c_id ORDER BY issue_date DESC LIMIT 5");
+                ?>
+                    <div class="card" style="margin-bottom: 2rem;">
+                        <div class="section-header">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div style="width: 45px; height: 45px; background: #eff6ff; color: #3b82f6; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                                    <i class="fas fa-file-invoice-dollar"></i>
                                 </div>
-                                <?php
-                            }
-                        } else {
-                            echo "<div style='text-align: center; padding: 4rem; background: #f8fafc; border-radius: 20px; color: #94a3b8;'><i class='fas fa-receipt' style='font-size: 3rem; margin-bottom: 1rem;'></i><p>No billing records found.</p></div>";
-                        }
-                    } else {
-                        echo "<div style='text-align: center; padding: 4rem; background: #f8fafc; border-radius: 20px; color: #94a3b8;'>No children linked.</div>";
-                    }
-                    ?>
+                                <div>
+                                    <h2 style="margin: 0;"><?php echo $child['name']; ?> - Billing Overview</h2>
+                                    <p style="color: #64748b; font-size: 0.9rem;">Fees and payment history</p>
+                                </div>
+                            </div>
+                            <?php if($b): ?>
+                                <span class="badge <?php echo (strtolower($b['payment_status']) == 'paid') ? 'badge-success' : 'badge-warning'; ?>" style="font-size: 0.9rem; padding: 8px 15px;">
+                                    <i class="fas <?php echo (strtolower($b['payment_status']) == 'paid') ? 'fa-check-circle' : 'fa-clock'; ?>"></i> 
+                                    <?php echo ucfirst($b['payment_status']); ?>
+                                </span>
+                            <?php endif; ?>
+                        </div>
+
+                        <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-top: 1.5rem; gap: 1rem;">
+                            <div style="background: #f8fafc; padding: 20px; border-radius: 16px; text-align: center; border: 1px solid #e2e8f0;">
+                                <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 5px;">Basic Monthly Fee</p>
+                                <h3 style="font-size: 1.3rem; color: var(--secondary);">Rs. <?php echo number_format($b['monthly_fee'] ?? 0, 2); ?></h3>
+                            </div>
+                            <div style="background: #f8fafc; padding: 20px; border-radius: 16px; text-align: center; border: 1px solid #e2e8f0;">
+                                <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 5px;">Extra Hours Fee</p>
+                                <h3 style="font-size: 1.3rem; color: #6366f1;">Rs. <?php echo number_format($b['extra_hours_fee'] ?? 0, 2); ?></h3>
+                            </div>
+                            <div style="background: #f8fafc; padding: 20px; border-radius: 16px; text-align: center; border: 1px solid #e2e8f0;">
+                                <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 5px;">Other Add-ons</p>
+                                <h3 style="font-size: 1.3rem; color: #f59e0b;">Rs. <?php echo number_format($b['additional_fee'] ?? 0, 2); ?></h3>
+                            </div>
+                            <div style="background: #f0fdf4; padding: 20px; border-radius: 16px; text-align: center; border: 2px solid #10b981; border-left: 8px solid #10b981;">
+                                <p style="color: #166534; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px;">Total Amount Due</p>
+                                <h3 style="font-size: 1.4rem; color: #10b981;">Rs. <?php echo number_format($b['total_monthly_fee'] ?? 0, 2); ?></h3>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 2.5rem;">
+                            <h4 style="margin-bottom: 1.2rem; color: var(--secondary); font-size: 1.1rem; display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-history" style="color: var(--primary);"></i> Recent Invoices
+                            </h4>
+                            <div class="table-container" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden;">
+                                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                                    <thead>
+                                        <tr style="background: #f1f5f9;">
+                                            <th style="padding: 15px; color: #475569; font-weight: 600;">Invoice #</th>
+                                            <th style="padding: 15px; color: #475569; font-weight: 600;">Issue Date</th>
+                                            <th style="padding: 15px; color: #475569; font-weight: 600;">Due Date</th>
+                                            <th style="padding: 15px; color: #475569; font-weight: 600;">Amount</th>
+                                            <th style="padding: 15px; color: #475569; font-weight: 600;">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php if($invoices_res && $invoices_res->num_rows > 0): ?>
+                                            <?php while($inv = $invoices_res->fetch_assoc()): ?>
+                                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                    <td style="padding: 15px;"><strong><?php echo $inv['invoice_number']; ?></strong></td>
+                                                    <td style="padding: 15px; color: #64748b;"><?php echo date('d M Y', strtotime($inv['issue_date'])); ?></td>
+                                                    <td style="padding: 15px; color: #64748b;"><?php echo date('d M Y', strtotime($inv['due_date'])); ?></td>
+                                                    <td style="padding: 15px; font-weight: 600;">Rs. <?php echo number_format($inv['amount'], 2); ?></td>
+                                                    <td style="padding: 15px;">
+                                                        <span class="badge <?php echo (strtolower($inv['status']) == 'paid') ? 'badge-success' : 'badge-warning'; ?>" style="padding: 6px 12px; border-radius: 8px;">
+                                                            <?php echo ucfirst($inv['status']); ?>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            <?php endwhile; ?>
+                                        <?php else: ?>
+                                            <tr><td colspan="5" style="text-align: center; padding: 30px; color: #94a3b8;">No detailed invoices found for this child.</td></tr>
+                                        <?php endif; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="card" style="text-align: center; padding: 50px;">
+                    <i class="fas fa-folder-open" style="font-size: 3rem; color: #e2e8f0; margin-bottom: 20px;"></i>
+                    <h3>No Children Linked</h3>
+                    <p style="color: #64748b;">Please contact the administrator to link your children to your account.</p>
                 </div>
-            </div>
+            <?php endif; ?>
         </div>
 
         <!-- Settings Tab -->
