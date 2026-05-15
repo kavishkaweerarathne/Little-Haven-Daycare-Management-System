@@ -31,10 +31,10 @@
                 <span class="logo-text">Little Haven</span>
             </a>
             <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#why-choose-us">Why Us</a></li>
-                <li><a href="#facilities">Facilities</a></li>
+                <li><a href="home.php">Home</a></li>
+                <li><a href="home.php#services">Services</a></li>
+                <li><a href="home.php#why-choose-us">Why Us</a></li>
+                <li><a href="home.php#facilities">Facilities</a></li>
                 <li><a href="about.php">About</a></li>
                 <li><a href="contact.php">Contact</a></li>
             </ul>
