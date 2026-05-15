@@ -67,19 +67,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <div class="form-group">
                     <label>Quantity</label>
-                    <input type="number" name="quantity" required min="1">
+                    <input type="number" name="quantity" id="quantity" required min="1" oninput="calculateTotal()">
+                </div>
+                <div class="form-group">
+                    <label>Unit Price (Rs.)</label>
+                    <input type="number" id="unit_price" step="0.01" oninput="calculateTotal()" placeholder="0.00">
                 </div>
                 <div class="form-group">
                     <label>Order Date</label>
                     <input type="date" name="order_date" value="<?php echo date('Y-m-d'); ?>" required>
                 </div>
                 <div class="form-group">
-                    <label>Estimated Total Cost (Rs.)</label>
-                    <input type="number" name="total_cost" step="0.01">
+                    <label>Total Cost (Rs.)</label>
+                    <input type="number" name="total_cost" id="total_cost" step="0.01" readonly style="background: #f8fafc; font-weight: 700;">
                 </div>
             </div>
             <button type="submit" class="btn">Place Order</button>
         </form>
     </div>
+
+    <script>
+        function calculateTotal() {
+            const qty = document.getElementById('quantity').value || 0;
+            const price = document.getElementById('unit_price').value || 0;
+            const total = qty * price;
+            document.getElementById('total_cost').value = total.toFixed(2);
+        }
+    </script>
 </body>
 </html>
