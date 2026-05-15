@@ -30,17 +30,20 @@ if (isset($_GET['id']) && isset($_GET['status'])) {
                     $new_qty = $inv_item['quantity'] + $quantity;
                     $con->query("UPDATE inventory SET quantity = $new_qty WHERE id = " . $inv_item['id']);
                 } else {
-                    // Fetch supplier name if available
+                    // Fetch supplier details if available
                     $supplier_id = $order['supplier_id'];
                     $s_name = '-';
+                    $s_cat = 'General';
                     if ($supplier_id) {
-                        $s_res = $con->query("SELECT name FROM suppliers WHERE id = $supplier_id");
+                        $s_res = $con->query("SELECT name, category FROM suppliers WHERE id = $supplier_id");
                         if ($s_res && $s_res->num_rows > 0) {
-                            $s_name = $s_res->fetch_assoc()['name'];
+                            $supplier_data = $s_res->fetch_assoc();
+                            $s_name = $supplier_data['name'];
+                            $s_cat = $supplier_data['category'];
                         }
                     }
                     // Insert new item
-                    $con->query("INSERT INTO inventory (item_name, quantity, unit, supplier_name) VALUES ('$item_name', $quantity, 'Units', '$s_name')");
+                    $con->query("INSERT INTO inventory (item_name, category, quantity, unit, supplier_name) VALUES ('$item_name', '$s_cat', $quantity, 'Units', '$s_name')");
                 }
             }
             $con->commit();
