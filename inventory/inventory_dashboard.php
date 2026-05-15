@@ -372,8 +372,25 @@ if ($tab == 'inventory') {
         .edit-btn { background: #EBF8FF; color: #3182CE; }
         .edit-btn:hover { background: #3182CE; color: white; }
 
-        .delete-btn { background: #FFF5F5; color: var(--danger); }
         .delete-btn:hover { background: var(--danger); color: white; }
+
+        .logout-btn {
+            background: #ef4444;
+            color: white !important;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(239, 68, 68, 0.3);
+        }
         /* Settings UI */
         .settings-container {
             display: grid;
