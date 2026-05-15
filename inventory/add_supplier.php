@@ -9,14 +9,13 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'inventory') {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = mysqli_real_escape_string($con, $_POST['name']);
-    $contact_person = mysqli_real_escape_string($con, $_POST['contact_person']);
     $phone = mysqli_real_escape_string($con, $_POST['phone']);
     $email = mysqli_real_escape_string($con, $_POST['email']);
     $address = mysqli_real_escape_string($con, $_POST['address']);
     $category = mysqli_real_escape_string($con, $_POST['category']);
 
-    $stmt = $con->prepare("INSERT INTO suppliers (name, contact_person, phone, email, address, category) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssss", $name, $contact_person, $phone, $email, $address, $category);
+    $stmt = $con->prepare("INSERT INTO suppliers (name, phone, email, address, category) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss", $name, $phone, $email, $address, $category);
 
     if ($stmt->execute()) {
         echo "<script>alert('Supplier added successfully!'); window.location.href='inventory_dashboard.php?tab=suppliers';</script>";
@@ -53,11 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="form-grid">
                 <div class="form-group full-width">
                     <label>Supplier Name</label>
-                    <input type="text" name="name" required placeholder="e.g. ABC Daycare Supplies">
-                </div>
-                <div class="form-group">
-                    <label>Contact Person</label>
-                    <input type="text" name="contact_person">
+                    <input type="text" name="name" required>
                 </div>
                 <div class="form-group">
                     <label>Category</label>
