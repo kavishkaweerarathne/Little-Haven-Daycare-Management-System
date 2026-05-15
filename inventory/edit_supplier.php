@@ -15,6 +15,9 @@ if (!$supplier) {
     exit();
 }
 
+$error = '';
+$success = '';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = mysqli_real_escape_string($con, $_POST['name']);
     $phone = mysqli_real_escape_string($con, $_POST['phone']);
@@ -22,13 +25,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $address = mysqli_real_escape_string($con, $_POST['address']);
     $category = mysqli_real_escape_string($con, $_POST['category']);
 
-    $stmt = $con->prepare("UPDATE suppliers SET name=?, phone=?, email=?, address=?, category=? WHERE id=?");
-    $stmt->bind_param("sssssi", $name, $phone, $email, $address, $category, $id);
-
-    if ($stmt->execute()) {
-        echo "<script>alert('Supplier updated successfully!'); window.location.href='inventory_dashboard.php?tab=suppliers';</script>";
+    // Server-side validation
+    if (empty($name)) {
+        $error = 'Supplier name is required.';
+    } elseif (!empty($phone) && !preg_match("/^[0-9]{10}$/", $phone)) {
+        $error = 'Phone number must be exactly 10 digits.';
+    } elseif (!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = 'Please enter a valid email address.';
     } else {
-        echo "<script>alert('Error updating supplier: " . $con->error . "');</script>";
+        $stmt = $con->prepare("UPDATE suppliers SET name=?, phone=?, email=?, address=?, category=? WHERE id=?");
+        $stmt->bind_param("sssssi", $name, $phone, $email, $address, $category, $id);
+
+        if ($stmt->execute()) {
+            $success = 'Supplier updated successfully!';
+        } else {
+            $error = 'Error updating supplier: ' . $con->error;
+        }
     }
 }
 ?>
@@ -40,6 +52,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Edit Supplier | Inventory</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         :root { --primary: #FF9F1C; --secondary: #264653; --bg: #F7FAFC; }
         body { font-family: 'Outfit', sans-serif; background: var(--bg); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
@@ -48,7 +62,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .full-width { grid-column: span 2; }
         .form-group { display: flex; flex-direction: column; gap: 8px; }
         label { font-weight: 600; font-size: 0.9rem; color: var(--secondary); }
-        input, select, textarea { padding: 12px; border: 1.5px solid #E2E8F0; border-radius: 10px; font-family: inherit; }
+        input, select, textarea { padding: 12px; border: 1.5px solid #E2E8F0; border-radius: 10px; font-family: inherit; transition: 0.3s; }
+        input:focus, select:focus { border-color: var(--primary); outline: none; }
         .btn { background: var(--secondary); color: white; padding: 15px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; margin-top: 20px; width: 100%; transition: 0.3s; }
         .btn:hover { background: var(--primary); transform: translateY(-2px); }
     </style>
@@ -56,11 +71,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="container">
         <h2 style="margin-bottom: 30px;"><a href="inventory_dashboard.php?tab=suppliers" style="color: inherit; text-decoration: none;"><i class="fas fa-arrow-left"></i></a> Edit Supplier</h2>
-        <form method="POST">
+        <form method="POST" id="supplierForm">
             <div class="form-grid">
                 <div class="form-group full-width">
                     <label>Supplier Name</label>
-                    <input type="text" name="name" value="<?php echo $supplier['name']; ?>" required>
+                    <input type="text" name="name" id="name" value="<?php echo $supplier['name']; ?>" required>
                 </div>
                 <div class="form-group">
                     <label>Category</label>
@@ -83,20 +98,60 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Phone</label>
-                    <input type="text" name="phone" value="<?php echo $supplier['phone']; ?>">
+                    <label>Phone Number (10 digits)</label>
+                    <input type="text" name="phone" id="phone" value="<?php echo $supplier['phone']; ?>" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                 </div>
                 <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" name="email" value="<?php echo $supplier['email']; ?>">
+                    <label>Email Address</label>
+                    <input type="email" name="email" id="email" value="<?php echo $supplier['email']; ?>">
                 </div>
                 <div class="form-group full-width">
-                    <label>Address</label>
+                    <label>Office Address</label>
                     <textarea name="address" rows="3"><?php echo $supplier['address']; ?></textarea>
                 </div>
             </div>
             <button type="submit" class="btn">Update Supplier</button>
         </form>
     </div>
+
+    <script>
+    document.getElementById('supplierForm').addEventListener('submit', function(e) {
+        const phone = document.getElementById('phone').value;
+        const email = document.getElementById('email').value;
+        const name = document.getElementById('name').value;
+
+        if (!name.trim()) {
+            e.preventDefault();
+            Swal.fire('Error', 'Supplier name is required!', 'error');
+            return;
+        }
+
+        if (phone && !/^[0-9]{10}$/.test(phone)) {
+            e.preventDefault();
+            Swal.fire('Error', 'Phone number must be exactly 10 digits!', 'error');
+            return;
+        }
+
+        if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            e.preventDefault();
+            Swal.fire('Error', 'Please enter a valid email address!', 'error');
+            return;
+        }
+    });
+
+    <?php if($success): ?>
+        Swal.fire({
+            title: 'Success!',
+            text: '<?php echo $success; ?>',
+            icon: 'success'
+        }).then(() => {
+            window.location.href = 'inventory_dashboard.php?tab=suppliers';
+        });
+    <?php endif; ?>
+
+    <?php if($error): ?>
+        Swal.fire('Error', '<?php echo $error; ?>', 'error');
+    <?php endif; ?>
+    </script>
 </body>
 </html>

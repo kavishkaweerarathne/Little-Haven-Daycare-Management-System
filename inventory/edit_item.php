@@ -19,16 +19,24 @@ if (!$item) {
     exit();
 }
 
+$error = '';
+$success = '';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $quantity = (int)$_POST['quantity'];
     
-    $update_stmt = $con->prepare("UPDATE inventory SET quantity = ? WHERE id = ?");
-    $update_stmt->bind_param("ii", $quantity, $id);
-
-    if ($update_stmt->execute()) {
-        echo "<script>alert('Item updated successfully!'); window.location.href='inventory_dashboard.php';</script>";
+    // Server-side validation
+    if ($quantity < 0) {
+        $error = 'Quantity cannot be negative.';
     } else {
-        echo "<script>alert('Error updating item: " . $con->error . "');</script>";
+        $update_stmt = $con->prepare("UPDATE inventory SET quantity = ? WHERE id = ?");
+        $update_stmt->bind_param("ii", $quantity, $id);
+
+        if ($update_stmt->execute()) {
+            $success = 'Inventory updated successfully!';
+        } else {
+            $error = 'Error updating item: ' . $con->error;
+        }
     }
 }
 ?>
@@ -40,6 +48,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Edit Item | Inventory</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         :root {
             --primary: #FF9F1C;
@@ -112,6 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             border-radius: 10px;
             font-family: inherit;
             outline: none;
+            transition: 0.3s;
         }
 
         input:focus { border-color: var(--primary); }
@@ -141,7 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <a href="inventory_dashboard.php"><i class="fas fa-arrow-left"></i></a>
             <h2>Edit Inventory Item</h2>
         </div>
-        <form method="POST">
+        <form method="POST" id="editItemForm">
             <div class="form-grid">
                 <div class="form-group full-width">
                     <label>Item Name</label>
@@ -177,11 +188,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <div class="form-group">
                     <label>Current Quantity</label>
-                    <input type="number" name="quantity" value="<?php echo $item['quantity']; ?>" required min="0" style="border: 2px solid var(--primary); font-weight: 700;">
+                    <input type="number" name="quantity" id="quantity" value="<?php echo $item['quantity']; ?>" required min="0" style="border: 2px solid var(--primary); font-weight: 700;">
                 </div>
             </div>
             <button type="submit" class="submit-btn">Update Item</button>
         </form>
     </div>
+
+    <script>
+    document.getElementById('editItemForm').addEventListener('submit', function(e) {
+        const qty = parseInt(document.getElementById('quantity').value);
+
+        if (isNaN(qty) || qty < 0) {
+            e.preventDefault();
+            Swal.fire('Error', 'Quantity cannot be negative!', 'error');
+            return;
+        }
+    });
+
+    <?php if($success): ?>
+        Swal.fire({
+            title: 'Success!',
+            text: '<?php echo $success; ?>',
+            icon: 'success'
+        }).then(() => {
+            window.location.href = 'inventory_dashboard.php';
+        });
+    <?php endif; ?>
+
+    <?php if($error): ?>
+        Swal.fire('Error', '<?php echo $error; ?>', 'error');
+    <?php endif; ?>
+    </script>
 </body>
 </html>
