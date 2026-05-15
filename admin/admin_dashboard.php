@@ -287,7 +287,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
         <div id="finance-tab" class="tab-content" style="display: none;">
             <div style="background: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                    <h2>Finance Management</h2>
+                    <h2>Finance Managers</h2>
                     <div style="display: flex; gap: 1rem;">
                         <div style="position: relative;">
                             <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8;"></i>
@@ -333,7 +333,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
         <div id="inventory-tab" class="tab-content" style="display: none;">
             <div style="background: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                    <h2>Inventory Management</h2>
+                    <h2>Inventory Managers</h2>
                     <div style="display: flex; gap: 1rem;">
                         <div style="position: relative;">
                             <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8;"></i>
