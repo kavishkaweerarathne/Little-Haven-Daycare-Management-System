@@ -29,20 +29,28 @@ if ($tab == 'inventory') {
     // Handle Profile Update
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_profile'])) {
         $fullname = mysqli_real_escape_string($con, $_POST['fullname']);
+        $email = mysqli_real_escape_string($con, $_POST['email']);
         $phone = mysqli_real_escape_string($con, $_POST['phone']);
         
-        if (empty($fullname)) {
-            $error = 'Full name is required.';
+        if (empty($fullname) || empty($email)) {
+            $error = 'Full name and email are required.';
         } elseif (!empty($phone) && !preg_match("/^[0-9]{10}$/", $phone)) {
             $error = 'Phone number must be exactly 10 digits.';
         } else {
-            $stmt = $con->prepare("UPDATE users SET fullname = ?, phone = ? WHERE id = ?");
-            $stmt->bind_param("ssi", $fullname, $phone, $user_id);
-            if ($stmt->execute()) {
-                $_SESSION['fullname'] = $fullname;
-                $success = 'Profile updated successfully!';
+            // Check if email is already taken by another user
+            $check_email = $con->query("SELECT id FROM users WHERE email = '$email' AND id != $user_id");
+            if ($check_email->num_rows > 0) {
+                $error = 'Email address is already in use by another account.';
             } else {
-                $error = 'Error updating profile.';
+                $stmt = $con->prepare("UPDATE users SET fullname = ?, email = ?, phone = ? WHERE id = ?");
+                $stmt->bind_param("sssi", $fullname, $email, $phone, $user_id);
+                if ($stmt->execute()) {
+                    $_SESSION['fullname'] = $fullname;
+                    $_SESSION['email'] = $email;
+                    $success = 'Profile updated successfully!';
+                } else {
+                    $error = 'Error updating profile.';
+                }
             }
         }
     }
@@ -90,18 +98,17 @@ if ($tab == 'inventory') {
     
     <style>
         :root {
-            --primary: #FF9F1C;
-            --primary-dark: #E76F51;
-            --secondary: #264653;
+            --primary: #26C6DA;
+            --primary-dark: #00ACC1;
+            --secondary: #1A5276;
             --bg-alt: #F7FAFC;
             --text-main: #1A202C;
             --text-muted: #718096;
             --radius-md: 20px;
             --radius-sm: 12px;
-            --shadow-soft: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
-            --danger: #E63946;
-            --success: #2A9D8F;
-            --warning: #FF9F1C;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --warning: #f59e0b;
         }
 
         * {
@@ -404,8 +411,8 @@ if ($tab == 'inventory') {
         }
 
         .settings-tab.active {
-            background: #F0F9FF;
-            color: #0284C7;
+            background: #E0F7FA;
+            color: #00838F;
         }
 
         .settings-tab i { font-size: 1.1rem; }
@@ -424,8 +431,8 @@ if ($tab == 'inventory') {
         .avatar-circle {
             width: 80px;
             height: 80px;
-            background: #BAE6FD;
-            color: #0284C7;
+            background: #B2EBF2;
+            color: #00838F;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -463,9 +470,9 @@ if ($tab == 'inventory') {
         }
 
         .input-field:focus {
-            border-color: #0284C7;
+            border-color: #26C6DA;
             background: white;
-            box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.1);
+            box-shadow: 0 0 0 4px rgba(38, 198, 218, 0.1);
         }
 
         .input-field:disabled {
@@ -475,7 +482,7 @@ if ($tab == 'inventory') {
         }
 
         .save-btn {
-            background: #0284C7;
+            background: #26C6DA;
             color: white;
             padding: 14px 28px;
             border: none;
@@ -488,7 +495,7 @@ if ($tab == 'inventory') {
             gap: 10px;
         }
 
-        .save-btn:hover { background: #0369A1; transform: translateY(-2px); }
+        .save-btn:hover { background: #00ACC1; transform: translateY(-2px); }
     </style>
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -764,7 +771,7 @@ if ($tab == 'inventory') {
                                 </div>
                                 <div class="input-group">
                                     <label><i class="fas fa-envelope"></i> Email Address</label>
-                                    <input type="email" class="input-field" value="<?php echo $user_data['email']; ?>" disabled>
+                                    <input type="email" name="email" class="input-field" value="<?php echo $user_data['email']; ?>" required>
                                 </div>
                             </div>
                             <div class="form-row">
