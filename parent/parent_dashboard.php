@@ -365,10 +365,47 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
 
         <!-- Notifications Tab -->
         <div id="notifications-tab" class="tab-content <?php echo $tab == 'notifications' ? 'active' : ''; ?>">
+            <!-- Attendance Section -->
+            <div class="card" style="margin-bottom: 2rem; border-left: 4px solid #10b981;">
+                <div class="section-header">
+                    <h2><i class="fas fa-user-clock"></i> Daily Attendance Updates</h2>
+                    <p style="color: #64748b; font-size: 0.9rem;">Arrival and departure logs for today: <?php echo date('d M Y'); ?></p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+                    <?php if(!empty($children)): ?>
+                        <?php foreach($children as $child): 
+                            $c_id = $child['id'];
+                            $today = date('Y-m-d');
+                            $att_res = $con->query("SELECT * FROM attendance WHERE child_id = $c_id AND attendance_date = '$today'");
+                            $att = $att_res->fetch_assoc();
+                        ?>
+                            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; padding: 20px; display: flex; align-items: center; gap: 15px;">
+                                <div style="width: 45px; height: 45px; background: <?php echo $att ? '#dcfce7' : '#fee2e2'; ?>; color: <?php echo $att ? '#10b981' : '#ef4444'; ?>; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                                    <i class="fas <?php echo $att ? 'fa-user-check' : 'fa-user-slash'; ?>"></i>
+                                </div>
+                                <div style="flex: 1;">
+                                    <h4 style="margin: 0; font-size: 1rem; color: var(--secondary);"><?php echo $child['name']; ?></h4>
+                                    <?php if($att): ?>
+                                        <p style="margin: 5px 0 0; font-size: 0.85rem; color: #64748b;">
+                                            <i class="fas fa-sign-in-alt"></i> In: <?php echo $att['check_in_time'] ? date('h:i A', strtotime($att['check_in_time'])) : '--:--'; ?> | 
+                                            <i class="fas fa-sign-out-alt"></i> Out: <?php echo $att['check_out_time'] ? date('h:i A', strtotime($att['check_out_time'])) : '--:--'; ?>
+                                        </p>
+                                    <?php else: ?>
+                                        <p style="margin: 5px 0 0; font-size: 0.85rem; color: #ef4444; font-weight: 600;">Status: Absent Today</p>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <!-- Events Section -->
             <div class="card">
                 <div class="section-header">
-                    <h2>Notifications & Updates</h2>
-                    <p style="color: #64748b; font-size: 0.9rem;">Important announcements and scheduled events from school</p>
+                    <h2><i class="fas fa-bullhorn"></i> School Announcements & Events</h2>
+                    <p style="color: #64748b; font-size: 0.9rem;">Important events and scheduled activities</p>
                 </div>
 
                 <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem;">
