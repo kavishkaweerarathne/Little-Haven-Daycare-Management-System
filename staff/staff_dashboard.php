@@ -14,7 +14,7 @@ $staff_id = $_SESSION['user_id'];
 // Fetch real stats
 $total_children = $con->query("SELECT COUNT(*) as count FROM children")->fetch_assoc()['count'];
 // For now, attendance is just a placeholder until we have an attendance table, but let's assume it's 0
-$today_attendance = 0; 
+$today_attendance = $con->query("SELECT COUNT(*) as count FROM attendance WHERE attendance_date = CURDATE() AND check_in_time IS NOT NULL")->fetch_assoc()['count']; 
 $pending_tasks = 3;
 
 // Fetch data for specific tabs
@@ -458,6 +458,10 @@ if ($tab == 'my_class') {
                 <i class="fas fa-list-check"></i>
                 <span>Activity Logs</span>
             </a>
+            <a href="staff_dashboard.php?tab=attendance" class="nav-item <?php echo $tab == 'attendance' ? 'active' : ''; ?>">
+                <i class="fas fa-user-check"></i>
+                <span>Attendance</span>
+            </a>
             <a href="staff_dashboard.php?tab=settings" class="nav-item <?php echo $tab == 'settings' ? 'active' : ''; ?>">
                 <i class="fas fa-user-gear"></i>
                 <span>Settings</span>
@@ -778,6 +782,84 @@ if ($tab == 'my_class') {
                         </tbody>
                     </table>
                 </div>
+            </div>
+            </div>
+        <?php elseif ($tab == 'attendance'): 
+            $attendance_date = date('Y-m-d');
+            $all_students_q = "SELECT c.id, c.name, a.check_in_time, a.check_out_time 
+                              FROM children c 
+                              LEFT JOIN attendance a ON c.id = a.child_id AND a.attendance_date = '$attendance_date'
+                              ORDER BY c.name ASC";
+            $students_res = $con->query($all_students_q);
+        ?>
+            <div class="card">
+                <div class="section-header" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+                    <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                        <h2 style="font-size: 1.5rem;"><i class="fas fa-calendar-check"></i> Daily Attendance</h2>
+                        <span class="badge badge-success" style="font-size: 1rem; padding: 10px 20px;">
+                            <i class="fas fa-calendar-day"></i> <?php echo date('d M Y'); ?>
+                        </span>
+                    </div>
+                    <p style="color: var(--text-muted);">Record arrival and departure times for all students.</p>
+                </div>
+
+                <form action="process_attendance.php" method="POST" style="margin-top: 20px;">
+                    <div class="table-container">
+                        <table style="border-spacing: 0 10px; border-collapse: separate;">
+                            <thead>
+                                <tr style="background: transparent;">
+                                    <th style="border: none;"># ID</th>
+                                    <th style="border: none;">Student Name</th>
+                                    <th style="border: none;">Check-in Time</th>
+                                    <th style="border: none;">Check-out Time</th>
+                                    <th style="border: none;">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if ($students_res->num_rows > 0): ?>
+                                    <?php while($s = $students_res->fetch_assoc()): ?>
+                                        <tr style="background: #f8fafc; transition: 0.3s;">
+                                            <td style="padding: 15px; border-radius: 12px 0 0 12px; font-weight: 600; color: var(--text-muted);">#C-<?php echo $s['id']; ?></td>
+                                            <td style="padding: 15px;">
+                                                <input type="hidden" name="child_ids[]" value="<?php echo $s['id']; ?>">
+                                                <div style="display: flex; align-items: center; gap: 12px;">
+                                                    <div style="width: 35px; height: 35px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700;">
+                                                        <?php echo strtoupper(substr($s['name'], 0, 1)); ?>
+                                                    </div>
+                                                    <span style="font-weight: 600; color: var(--secondary);"><?php echo $s['name']; ?></span>
+                                                </div>
+                                            </td>
+                                            <td style="padding: 15px;">
+                                                <div class="input-group" style="margin: 0;">
+                                                    <input type="time" name="check_in_times[]" value="<?php echo $s['check_in_time']; ?>" style="padding: 8px 12px; font-size: 0.9rem; width: 140px;">
+                                                </div>
+                                            </td>
+                                            <td style="padding: 15px;">
+                                                <div class="input-group" style="margin: 0;">
+                                                    <input type="time" name="check_out_times[]" value="<?php echo $s['check_out_time']; ?>" style="padding: 8px 12px; font-size: 0.9rem; width: 140px;">
+                                                </div>
+                                            </td>
+                                            <td style="padding: 15px; border-radius: 0 12px 12px 0;">
+                                                <?php if ($s['check_in_time']): ?>
+                                                    <span class="badge badge-success"><i class="fas fa-check"></i> Present</span>
+                                                <?php else: ?>
+                                                    <span class="badge btn-danger" style="background: #fee2e2; color: #ef4444;"><i class="fas fa-user-slash"></i> Absent</span>
+                                                <?php endif; ?>
+                                            </td>
+                                        </tr>
+                                    <?php endwhile; ?>
+                                <?php else: ?>
+                                    <tr><td colspan="5" style="text-align: center; padding: 50px;">No students found in the system.</td></tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div style="margin-top: 30px; display: flex; justify-content: flex-end; gap: 15px;">
+                        <button type="reset" class="btn-action btn-danger" style="padding: 12px 25px;"><i class="fas fa-undo"></i> Reset Changes</button>
+                        <button type="submit" class="btn-save" style="margin: 0; width: auto;"><i class="fas fa-save"></i> Save Attendance Logs</button>
+                    </div>
+                </form>
             </div>
         <?php elseif ($tab == 'settings'): ?>
             <div class="settings-container">
