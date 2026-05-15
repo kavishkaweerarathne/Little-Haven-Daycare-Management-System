@@ -11,7 +11,7 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : 'inventory';
 
 // Fetch stats
 $total_items = $con->query("SELECT COUNT(*) as count FROM inventory")->fetch_assoc()['count'];
-$low_stock = $con->query("SELECT COUNT(*) as count FROM inventory WHERE quantity <= reorder_threshold AND quantity > 0")->fetch_assoc()['count'];
+$low_stock = $con->query("SELECT COUNT(*) as count FROM inventory WHERE quantity <= 5 AND quantity > 0")->fetch_assoc()['count'];
 $out_of_stock = $con->query("SELECT COUNT(*) as count FROM inventory WHERE quantity <= 0")->fetch_assoc()['count'];
 
 // Data for different tabs
@@ -22,7 +22,7 @@ if ($tab == 'inventory') {
 } elseif ($tab == 'orders') {
     $orders_result = $con->query("SELECT o.*, s.name as supplier_name FROM inventory_orders o LEFT JOIN suppliers s ON o.supplier_id = s.id ORDER BY o.order_date DESC");
 } elseif ($tab == 'stock_level') {
-    $low_stock_items = $con->query("SELECT * FROM inventory WHERE quantity <= reorder_threshold ORDER BY quantity ASC");
+    $low_stock_items = $con->query("SELECT * FROM inventory WHERE quantity <= 5 ORDER BY quantity ASC");
 }
 ?>
 <!DOCTYPE html>
@@ -396,12 +396,13 @@ if ($tab == 'inventory') {
                     <tbody>
                         <?php if ($inventory_result->num_rows > 0): ?>
                             <?php while ($item = $inventory_result->fetch_assoc()): ?>
-                                <?php $isLowStock = ($item['quantity'] <= $item['reorder_threshold']); ?>
+                                <?php $isLowStock = ($item['quantity'] <= 5 && $item['quantity'] > 0); ?>
+                                <?php $isOutOfStock = ($item['quantity'] <= 0); ?>
                                 <tr>
                                     <td><?php echo $item['item_name']; ?></td>
                                     <td><span class="badge badge-category"><?php echo $item['category'] ?: 'N/A'; ?></span></td>
                                     <td>
-                                        <span class="<?php echo $isLowStock ? 'stock-low' : 'stock-ok'; ?>">
+                                        <span class="<?php echo ($isLowStock || $isOutOfStock) ? 'stock-low' : 'stock-ok'; ?>">
                                             <?php echo $item['quantity'] . " " . $item['unit']; ?>
                                         </span>
                                         <?php if ($isLowStock): ?>
@@ -543,8 +544,8 @@ if ($tab == 'inventory') {
                                 <tr>
                                     <td><strong><?php echo $item['item_name']; ?></strong></td>
                                     <td><span class="stock-low"><?php echo $item['quantity'] . " " . $item['unit']; ?></span></td>
-                                    <td><?php echo $item['reorder_threshold']; ?></td>
-                                    <td><span style="color: var(--danger); font-weight: bold;"><?php echo $item['reorder_threshold'] - $item['quantity']; ?> needed</span></td>
+                                    <td>5</td>
+                                    <td><span style="color: var(--danger); font-weight: bold;"><?php echo 5 - $item['quantity']; ?> needed</span></td>
                                     <td><a href="create_order.php?item=<?php echo urlencode($item['item_name']); ?>" class="add-btn" style="padding: 8px 15px; font-size: 0.8rem;">Order Now</a></td>
                                 </tr>
                             <?php endwhile; ?>
