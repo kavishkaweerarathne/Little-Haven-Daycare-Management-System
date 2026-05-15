@@ -205,26 +205,43 @@
     <footer class="footer">
         <div class="container footer-grid">
             <div class="footer-column">
-                <a href="#" class="logo" style="color: white; margin-bottom: 30px;">
+                <a href="home.php" class="logo" style="color: white; margin-bottom: 25px;">
                     <i class="fas fa-hands-holding-child logo-icon" style="color: var(--primary); font-size: 2.5rem;"></i>
                     <span class="logo-text" style="background: white; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Little Haven</span>
                 </a>
-                <p class="footer-info">Setting the gold standard for early childhood education and management since 2015.</p>
+                <p class="footer-info" style="margin-bottom: 25px;">Setting the gold standard for early childhood education and management since 2015. We nurture the next generation of leaders with love and expert care.</p>
+                <div class="social-links">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                </div>
             </div>
             <div class="footer-column">
                 <h4>Explore</h4>
                 <ul class="footer-links">
-                    <li><a href="#home">Our Philosophy</a></li>
-                    <li><a href="#services">Learning Paths</a></li>
-                    <li><a href="about.php">The Facility</a></li>
+                    <li><a href="home.php">Our Philosophy</a></li>
+                    <li><a href="home.php#services">Our Services</a></li>
+                    <li><a href="home.php#why-choose-us">Why Choose Us</a></li>
+                    <li><a href="home.php#facilities">The Facility</a></li>
                 </ul>
             </div>
             <div class="footer-column">
-                <h4>Connect</h4>
-                <p class="footer-info">123 Elite Avenue, Sky City<br>hello@littlehaven.com</p>
-                <div class="social-links">
-                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="../login/login.php">Login Portal</a></li>
+                    <li><a href="../register/register.php">Registration</a></li>
+                    <li><a href="about.php">About Us</a></li>
+                    <li><a href="contact.php">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Get In Touch</h4>
+                <div class="footer-info">
+                    <p style="margin-bottom: 15px;"><i class="fas fa-location-dot" style="color: var(--primary); margin-right: 10px;"></i> 123 Elite Avenue, Sky City, Colombo 07</p>
+                    <p style="margin-bottom: 15px;"><i class="fas fa-phone" style="color: var(--primary); margin-right: 10px;"></i> +94 11 234 5678</p>
+                    <p style="margin-bottom: 15px;"><i class="fas fa-envelope" style="color: var(--primary); margin-right: 10px;"></i> hello@littlehaven.com</p>
+                    <p><i class="fas fa-clock" style="color: var(--primary); margin-right: 10px;"></i> Mon - Fri: 7am - 6pm</p>
                 </div>
             </div>
         </div>
