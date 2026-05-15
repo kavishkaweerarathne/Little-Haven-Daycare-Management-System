@@ -11,8 +11,8 @@ if (isset($_GET['id'])) {
     $id = (int)$_GET['id'];
     $staff_id = $_SESSION['user_id'];
     
-    // Delete the event only if it belongs to this staff member
-    $sql = "DELETE FROM staff_schedule WHERE id = $id AND staff_id = $staff_id";
+    // Delete the event
+    $sql = "DELETE FROM staff_schedule WHERE id = $id";
     
     if (mysqli_query($con, $sql)) {
         header("Location: staff_dashboard.php?tab=schedule&success=Event deleted successfully!");

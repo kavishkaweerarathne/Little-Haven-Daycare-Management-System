@@ -11,7 +11,7 @@ $id = $_GET['id'] ?? 0;
 $staff_id = $_SESSION['user_id'];
 
 // Fetch the event
-$sql = "SELECT * FROM staff_schedule WHERE id = $id AND staff_id = $staff_id";
+$sql = "SELECT * FROM staff_schedule WHERE id = $id";
 $result = mysqli_query($con, $sql);
 $event = mysqli_fetch_assoc($result);
 
@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                    start_time = '$start_time', 
                    room = '$room', 
                    status = '$status' 
-                   WHERE id = $id AND staff_id = $staff_id";
+                   WHERE id = $id";
 
     if (mysqli_query($con, $update_sql)) {
         echo "<script>alert('Event updated successfully!'); window.location.href='staff_dashboard.php?tab=schedule';</script>";

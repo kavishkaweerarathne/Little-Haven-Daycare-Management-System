@@ -511,8 +511,7 @@ if ($tab == 'my_class') {
 
             <?php 
                 $today_query = "SELECT * FROM staff_schedule 
-                               WHERE staff_id = $staff_id 
-                               AND activity_date = CURDATE() 
+                               WHERE activity_date = CURDATE() 
                                AND status NOT IN ('Completed', 'Cancelled') 
                                ORDER BY start_time ASC";
                 $today_res = $con->query($today_query);
@@ -561,7 +560,7 @@ if ($tab == 'my_class') {
 
 
         <?php elseif ($tab == 'schedule'): 
-            $schedule_result = $con->query("SELECT * FROM staff_schedule WHERE staff_id = $staff_id ORDER BY activity_date ASC, start_time ASC");
+            $schedule_result = $con->query("SELECT * FROM staff_schedule ORDER BY activity_date ASC, start_time ASC");
         ?>
             <div class="card">
                 <div class="section-header">
