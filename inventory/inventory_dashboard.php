@@ -390,7 +390,6 @@ if ($tab == 'inventory') {
                             <th>Category</th>
                             <th>Stock Level</th>
                             <th>Supplier</th>
-                            <th>Expiry Date</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -410,7 +409,6 @@ if ($tab == 'inventory') {
                                         <?php endif; ?>
                                     </td>
                                     <td><?php echo $item['supplier_name'] ?: '-'; ?></td>
-                                    <td><?php echo $item['expiry_date'] ?: 'No Expiry'; ?></td>
                                     <td>
                                         <div class="actions">
                                             <a href="edit_item.php?id=<?php echo $item['id']; ?>" class="btn-icon edit-btn"><i class="fas fa-edit"></i></a>
