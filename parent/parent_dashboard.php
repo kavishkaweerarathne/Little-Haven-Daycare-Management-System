@@ -126,7 +126,7 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                 if(!empty($children)) {
                     $cids = array_column($children, 'id');
                     $cid_list = implode(',', $cids);
-                    $att_res = $con->query("SELECT COUNT(*) as count FROM attendance WHERE child_id IN ($cid_list) AND attendance_date = '$today' AND status = 'Present'");
+                    $att_res = $con->query("SELECT COUNT(*) as count FROM attendance WHERE child_id IN ($cid_list) AND attendance_date = '$today' AND check_in_time IS NOT NULL");
                     $attendance_today = $att_res->fetch_assoc()['count'];
                 }
                 ?>
