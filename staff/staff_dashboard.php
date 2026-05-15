@@ -246,6 +246,8 @@ if ($tab == 'my_class') {
         .badge { padding: 6px 14px; border-radius: 50px; font-size: 0.8rem; font-weight: 600; }
         .badge-success { background: #DCFCE7; color: #166534; }
         .badge-warning { background: #FEF3C7; color: #92400E; }
+        .badge-danger { background: #FEE2E2; color: #991B1B; }
+        .badge-info { background: #E0F2FE; color: #0369A1; }
 
         .btn-action {
             padding: 8px 15px;
@@ -516,7 +518,6 @@ if ($tab == 'my_class') {
             <?php 
                 $today_query = "SELECT * FROM staff_schedule 
                                WHERE activity_date = CURDATE() 
-                               AND status NOT IN ('Completed', 'Cancelled') 
                                ORDER BY start_time ASC";
                 $today_res = $con->query($today_query);
             ?>
@@ -545,7 +546,9 @@ if ($tab == 'my_class') {
                                         <td>
                                             <?php 
                                                 $s_badge = 'badge-warning';
-                                                if ($row['status'] == 'Ongoing') $s_badge = 'badge-success';
+                                                if ($row['status'] == 'Ongoing') $s_badge = 'badge-info';
+                                                if ($row['status'] == 'Completed') $s_badge = 'badge-success';
+                                                if ($row['status'] == 'Cancelled') $s_badge = 'badge-danger';
                                             ?>
                                             <span class="badge <?php echo $s_badge; ?>"><?php echo $row['status']; ?></span>
                                         </td>
@@ -596,6 +599,7 @@ if ($tab == 'my_class') {
                                         <td>
                                             <?php 
                                                 $s_badge = 'badge-warning';
+                                                if ($row['status'] == 'Ongoing') $s_badge = 'badge-info';
                                                 if ($row['status'] == 'Completed') $s_badge = 'badge-success';
                                                 if ($row['status'] == 'Cancelled') $s_badge = 'badge-danger';
                                             ?>
