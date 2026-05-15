@@ -15,7 +15,7 @@ $staff_id = $_SESSION['user_id'];
 $total_children = $con->query("SELECT COUNT(*) as count FROM children")->fetch_assoc()['count'];
 // For now, attendance is just a placeholder until we have an attendance table, but let's assume it's 0
 $today_attendance = $con->query("SELECT COUNT(*) as count FROM attendance WHERE attendance_date = CURDATE() AND check_in_time IS NOT NULL")->fetch_assoc()['count']; 
-$pending_tasks = 3;
+$today_events_count = $con->query("SELECT COUNT(*) as count FROM staff_schedule WHERE activity_date = CURDATE()")->fetch_assoc()['count']; 
 
 // Fetch data for specific tabs
 if ($tab == 'my_class') {
@@ -505,10 +505,10 @@ if ($tab == 'my_class') {
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon" style="background: #FEF3C7; color: #92400E;"><i class="fas fa-tasks"></i></div>
+                    <div class="stat-icon" style="background: #FEF3C7; color: #92400E;"><i class="fas fa-calendar-day"></i></div>
                     <div class="stat-info">
-                        <h3>Daily Tasks</h3>
-                        <p><?php echo $pending_tasks; ?></p>
+                        <h3>Today's Events</h3>
+                        <p><?php echo $today_events_count; ?></p>
                     </div>
                 </div>
             </div>
