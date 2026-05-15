@@ -475,7 +475,7 @@ if ($tab == 'my_class') {
             <div class="user-profile">
                 <div class="avatar"><?php echo strtoupper(substr($fullname, 0, 1)); ?></div>
                 <div style="text-align: left;">
-                    <p style="font-weight: 600; font-size: 0.95rem; line-height: 1;"><?php echo $fullname; ?></p>
+                    <p style="font-weight: 600; font-size: 0.95rem; line-height: 1;">Ms. <?php echo $fullname; ?></p>
                     <span style="font-size: 0.75rem; color: var(--text-muted);">Teacher / Staff</span>
                 </div>
                 <a href="../login/logout.php" class="logout-btn">Logout</a>
@@ -484,7 +484,7 @@ if ($tab == 'my_class') {
 
         <?php if ($tab == 'overview'): ?>
             <div class="welcome-card">
-                <h2>Hello, <?php echo explode(' ', $fullname)[0]; ?>!</h2>
+                <h2>Hello, Ms. <?php echo explode(' ', $fullname)[0]; ?>!</h2>
                 <p>Ready for another day of shaping little minds? Here's what's happening today in your class.</p>
                 <i class="fas fa-graduation-cap bg-icon"></i>
             </div>
