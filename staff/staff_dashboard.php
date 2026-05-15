@@ -509,6 +509,14 @@ if ($tab == 'my_class') {
                 </div>
             </div>
 
+            <?php 
+                $today_query = "SELECT * FROM staff_schedule 
+                               WHERE staff_id = $staff_id 
+                               AND activity_date = CURDATE() 
+                               AND status NOT IN ('Completed', 'Cancelled') 
+                               ORDER BY start_time ASC";
+                $today_res = $con->query($today_query);
+            ?>
             <div class="card">
                 <div class="section-header">
                     <h3>Today's Schedule</h3>
@@ -525,18 +533,24 @@ if ($tab == 'my_class') {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>09:00 AM</td>
-                                <td><strong>Morning Circle</strong></td>
-                                <td>Sunflower Room</td>
-                                <td><span class="badge badge-success">Completed</span></td>
-                            </tr>
-                            <tr>
-                                <td>10:30 AM</td>
-                                <td><strong>Art & Craft</strong></td>
-                                <td>Sunflower Room</td>
-                                <td><span class="badge badge-warning">Ongoing</span></td>
-                            </tr>
+                            <?php if ($today_res->num_rows > 0): ?>
+                                <?php while($row = $today_res->fetch_assoc()): ?>
+                                    <tr>
+                                        <td><?php echo date('h:i A', strtotime($row['start_time'])); ?></td>
+                                        <td><strong><?php echo $row['activity_name']; ?></strong></td>
+                                        <td><?php echo $row['room']; ?></td>
+                                        <td>
+                                            <?php 
+                                                $s_badge = 'badge-warning';
+                                                if ($row['status'] == 'Ongoing') $s_badge = 'badge-success';
+                                            ?>
+                                            <span class="badge <?php echo $s_badge; ?>"><?php echo $row['status']; ?></span>
+                                        </td>
+                                    </tr>
+                                <?php endwhile; ?>
+                            <?php else: ?>
+                                <tr><td colspan="4" style="text-align: center; padding: 30px; color: var(--text-muted);">No active tasks for today.</td></tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
