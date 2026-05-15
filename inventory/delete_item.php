@@ -11,7 +11,7 @@ if (isset($_GET['id'])) {
     $id = (int)$_GET['id'];
 
     // Archive the item first
-    $stmt_archive = $con->prepare("INSERT INTO inventory_archive (id, item_name, category, unit, quantity, reorder_threshold, supplier_name, supplier_contact, expiry_date) SELECT id, item_name, category, unit, quantity, reorder_threshold, supplier_name, supplier_contact, expiry_date FROM inventory WHERE id = ?");
+    $stmt_archive = $con->prepare("INSERT INTO inventory_archive (id, item_name, category, unit, quantity, supplier_name) SELECT id, item_name, category, unit, quantity, supplier_name FROM inventory WHERE id = ?");
     $stmt_archive->bind_param("i", $id);
     $stmt_archive->execute();
 
