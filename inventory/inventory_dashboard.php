@@ -491,7 +491,6 @@ if ($tab == 'inventory') {
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Contact Person</th>
                             <th>Phone</th>
                             <th>Email</th>
                             <th>Category</th>
@@ -503,7 +502,6 @@ if ($tab == 'inventory') {
                             <?php while ($supplier = $suppliers_result->fetch_assoc()): ?>
                                 <tr>
                                     <td><strong><?php echo $supplier['name']; ?></strong></td>
-                                    <td><?php echo $supplier['contact_person'] ?: '-'; ?></td>
                                     <td><?php echo $supplier['phone'] ?: '-'; ?></td>
                                     <td><?php echo $supplier['email'] ?: '-'; ?></td>
                                     <td><span class="badge badge-category"><?php echo $supplier['category'] ?: 'General'; ?></span></td>
