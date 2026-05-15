@@ -377,9 +377,6 @@ if ($tab == 'inventory') {
                     <i class="fas fa-search text-muted"></i>
                     <input type="text" id="inventorySearch" placeholder="Search inventory items...">
                 </div>
-                <a href="reports.php" class="add-btn" style="background: #E2E8F0; color: var(--text-main);">
-                    <i class="fas fa-file-pdf"></i> Download PDF
-                </a>
             </div>
 
             <div class="table-container">
