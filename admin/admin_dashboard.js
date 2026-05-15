@@ -110,28 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Form submission mock
-    document.querySelectorAll('.settings-form').forEach(form => {
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const btn = form.querySelector('.save-btn');
-            const originalText = btn.textContent;
-            
-            btn.disabled = true;
-            btn.textContent = 'Saving...';
-            
-            setTimeout(() => {
-                btn.textContent = 'Changes Saved!';
-                btn.style.background = '#26C6DA'; // Changed to primary teal
-                
-                setTimeout(() => {
-                    btn.disabled = false;
-                    btn.textContent = originalText;
-                    btn.style.background = '';
-                }, 2000);
-            }, 1000);
-        });
-    });
+    // Settings form logic removed as it's now handled by PHP
 
 
 

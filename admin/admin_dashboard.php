@@ -1,8 +1,89 @@
 <?php
 session_start();
+include '../config.php';
+
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: ../login/login.php");
     exit();
+}
+
+$admin_email = 'admin@gmail.com';
+
+// Handle Profile Update
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
+    // Debug: Uncomment the line below to test if the handler is reached
+    // die("Server received update request for: " . $_POST['fullname']);
+    
+    $fullname = mysqli_real_escape_string($con, $_POST['fullname']);
+    $phone = mysqli_real_escape_string($con, $_POST['phone']);
+    $error = "";
+
+    if (!preg_match("/^[a-zA-Z\s]+$/", $fullname)) {
+        $error = "Full Name can only contain letters and spaces.";
+    } elseif (!preg_match("/^[0-9]{10}$/", $phone)) {
+        $error = "Phone Number must be exactly 10 digits.";
+    } else {
+        // Use email to identify the admin record
+        $update_query = "UPDATE users SET fullname = '$fullname', phone = '$phone' WHERE email = '$admin_email'";
+        if (mysqli_query($con, $update_query)) {
+            if (mysqli_affected_rows($con) > 0) {
+                $_SESSION['fullname'] = $fullname;
+                $success_msg = "Profile updated successfully!";
+            } else {
+                $success_msg = "No changes were made (data is already up to date).";
+            }
+        } else {
+            $error = "Database Error: " . mysqli_error($con);
+        }
+    }
+}
+
+// Handle Password Change
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
+    $current_pass = $_POST['current_password'];
+    $new_pass = $_POST['new_password'];
+    $confirm_pass = $_POST['confirm_password'];
+    $error = "";
+
+    // Fetch current data by email
+    $admin_q = mysqli_query($con, "SELECT password FROM users WHERE email = '$admin_email'");
+    $admin_db_data = mysqli_fetch_assoc($admin_q);
+
+    if (!$admin_db_data) {
+        $error = "Critical Error: Admin record for 'admin@gmail.com' not found in database.";
+    } elseif ($current_pass !== $admin_db_data['password']) {
+        $error = "Current password is incorrect.";
+    } elseif ($new_pass !== $confirm_pass) {
+        $error = "New passwords do not match.";
+    } elseif (strlen($new_pass) < 4) {
+        $error = "New password must be at least 4 characters.";
+    } else {
+        // Update password by email
+        $update_pass = "UPDATE users SET password = '$new_pass' WHERE email = '$admin_email'";
+        if (mysqli_query($con, $update_pass)) {
+            if (mysqli_affected_rows($con) > 0) {
+                $success_msg = "Password updated successfully!";
+            } else {
+                $success_msg = "No changes made (password is the same).";
+            }
+        } else {
+            $error = "Database Error: " . mysqli_error($con);
+        }
+    }
+}
+
+// Fetch current admin data by email
+$admin_res = mysqli_query($con, "SELECT * FROM users WHERE email = '$admin_email'");
+$admin_data = mysqli_fetch_assoc($admin_res);
+
+// If record still not found, use session as fallback for UI
+if (!$admin_data) {
+    $admin_data = [
+        'fullname' => $_SESSION['fullname'],
+        'email' => 'admin@gmail.com',
+        'phone' => '0000000000',
+        'role' => 'admin'
+    ];
 }
 ?>
 <!DOCTYPE html>
@@ -15,6 +96,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="admin_dashboard.css">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <div class="sidebar">
@@ -37,7 +120,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
         <!-- Dashboard Section -->
         <div id="dashboard-tab" class="tab-content active">
             <?php
-            include '../config.php';
             $staff_count_query = "SELECT COUNT(*) as total FROM users WHERE role = 'staff'";
             $staff_count_res = mysqli_query($con, $staff_count_query);
             $staff_count = mysqli_fetch_assoc($staff_count_res)['total'];
@@ -57,7 +139,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 
             <div class="welcome-banner">
                 <div class="welcome-text">
-                    <h2>Hello, Kavishka Weerarathne! 👋</h2>
+                    <h2>Hello, <?php echo htmlspecialchars($admin_data['fullname']); ?>! 👋</h2>
                     <p>Welcome back to Little Haven. Here's what's happening today.</p>
                 </div>
                 <div class="welcome-date" style="text-align: right;">
@@ -446,10 +528,11 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                             <h2>Profile Settings</h2>
                             <p>Manage your personal information and how it appears to others.</p>
                         </div>
-                        <form class="settings-form">
+                        <form class="settings-form" method="POST" action="?tab=settings">
+                            <input type="hidden" name="update_profile" value="1">
                             <div class="profile-upload">
                                 <div class="avatar-preview">
-                                    <img src="https://ui-avatars.com/api/?name=Admin&background=26C6DA&color=fff" alt="Profile">
+                                    <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($admin_data['fullname']); ?>&background=26C6DA&color=fff" alt="Profile">
                                     <div class="avatar-edit">
                                         <i class="fas fa-camera"></i>
                                     </div>
@@ -462,19 +545,19 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label>Full Name</label>
-                                    <input type="text" value="Kavishka Weerarathne" placeholder="Enter full name">
+                                    <input type="text" name="fullname" value="<?php echo htmlspecialchars($admin_data['fullname']); ?>" placeholder="Enter full name" pattern="^[a-zA-Z\s]+$" title="Only letters and spaces are allowed" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Email Address</label>
-                                    <input type="email" value="admin@gmail.com" placeholder="Enter email">
+                                    <input type="email" name="email" value="admin@gmail.com" readonly style="background: #f1f5f9; cursor: not-allowed;" title="Admin email cannot be changed">
                                 </div>
                                 <div class="form-group">
                                     <label>Phone Number</label>
-                                    <input type="tel" value="+94 77 123 4567" placeholder="Enter phone">
+                                    <input type="tel" name="phone" value="<?php echo htmlspecialchars($admin_data['phone']); ?>" placeholder="Enter phone" pattern="[0-9]{10}" maxlength="10" title="Must be exactly 10 digits" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Position</label>
-                                    <input type="text" value="Head Administrator" readonly>
+                                    <input type="text" value="<?php echo ucfirst($admin_data['role']); ?> Administrator" readonly>
                                 </div>
                             </div>
                             <div class="form-actions">
@@ -525,18 +608,19 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                             <h2>Security & Privacy</h2>
                             <p>Update your password and manage security preferences.</p>
                         </div>
-                        <form class="settings-form">
+                        <form class="settings-form" method="POST" action="?tab=settings">
+                            <input type="hidden" name="change_password" value="1">
                             <div class="form-group">
                                 <label>Current Password</label>
-                                <input type="password" placeholder="••••••••">
+                                <input type="password" name="current_password" placeholder="••••••••" required>
                             </div>
                             <div class="form-group">
                                 <label>New Password</label>
-                                <input type="password" placeholder="••••••••">
+                                <input type="password" name="new_password" placeholder="••••••••" required>
                             </div>
                             <div class="form-group">
                                 <label>Confirm New Password</label>
-                                <input type="password" placeholder="••••••••">
+                                <input type="password" name="confirm_password" placeholder="••••••••" required>
                             </div>
                             <div class="security-list">
                                 <div class="security-item">
@@ -643,6 +727,27 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
         </div>
     </div>
     <!-- Custom JS -->
-    <script src="admin_dashboard.js"></script>
+    <script src="admin_dashboard.js?v=<?php echo time(); ?>"></script>
+    <?php if (isset($success_msg)): ?>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Updated!',
+            text: '<?php echo $success_msg; ?>',
+            confirmButtonColor: '#26C6DA'
+        });
+    </script>
+    <?php endif; ?>
+
+    <?php if (isset($error) && $error): ?>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '<?php echo $error; ?>',
+            confirmButtonColor: '#1A5276'
+        });
+    </script>
+    <?php endif; ?>
 </body>
 </html>

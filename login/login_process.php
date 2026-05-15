@@ -8,8 +8,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Hardcoded Admin Check
     if ($username === 'admin@gmail.com' && $password === '0000') {
-        $_SESSION['user_id'] = 'admin';
-        $_SESSION['fullname'] = 'Administrator';
+        $admin_check = mysqli_query($con, "SELECT id, fullname FROM users WHERE email = 'admin@gmail.com'");
+        if ($admin_row = mysqli_fetch_assoc($admin_check)) {
+            $_SESSION['user_id'] = $admin_row['id'];
+            $_SESSION['fullname'] = $admin_row['fullname'];
+        } else {
+            $_SESSION['user_id'] = '1'; // Fallback if record somehow missing
+            $_SESSION['fullname'] = 'Administrator';
+        }
         $_SESSION['email'] = 'admin@gmail.com';
         $_SESSION['role'] = 'admin';
         header("Location: ../admin/admin_dashboard.php");
