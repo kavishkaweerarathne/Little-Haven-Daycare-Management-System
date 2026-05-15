@@ -324,7 +324,7 @@ if ($tab == 'inventory') {
     <div class="sidebar">
         <h2><i class="fas fa-hands-holding-child"></i> Little Haven</h2>
         <div class="nav-links">
-            <a href="inventory_dashboard.php?tab=inventory" class="nav-item <?php echo $tab == 'inventory' ? 'active' : ''; ?>"><i class="fas fa-boxes-stacked"></i> Inventory</a>
+            <a href="inventory_dashboard.php?tab=inventory" class="nav-item <?php echo $tab == 'inventory' ? 'active' : ''; ?>"><i class="fas fa-boxes-stacked"></i> Overview</a>
             <a href="inventory_dashboard.php?tab=orders" class="nav-item <?php echo $tab == 'orders' ? 'active' : ''; ?>"><i class="fas fa-cart-plus"></i> Orders</a>
             <a href="inventory_dashboard.php?tab=suppliers" class="nav-item <?php echo $tab == 'suppliers' ? 'active' : ''; ?>"><i class="fas fa-truck-ramp-box"></i> Suppliers</a>
             <a href="inventory_dashboard.php?tab=stock_level" class="nav-item <?php echo $tab == 'stock_level' ? 'active' : ''; ?>"><i class="fas fa-warehouse"></i> Stock Level</a>
@@ -335,7 +335,7 @@ if ($tab == 'inventory') {
 
     <main class="main-content">
         <div class="header">
-            <h1><?php echo ucfirst(str_replace('_', ' ', $tab)); ?> Overview</h1>
+            <h1><?php echo $tab == 'inventory' ? 'Inventory Overview' : ucfirst(str_replace('_', ' ', $tab)); ?></h1>
             <div class="user-info">
                 <span>Welcome, <strong><?php echo $_SESSION['fullname']; ?></strong></span>
                 <a href="../login/logout.php" class="logout-btn">Logout</a>
@@ -379,9 +379,6 @@ if ($tab == 'inventory') {
                 </div>
                 <a href="reports.php" class="add-btn" style="background: #E2E8F0; color: var(--text-main);">
                     <i class="fas fa-file-pdf"></i> Download PDF
-                </a>
-                <a href="add_item.php" class="add-btn">
-                    <i class="fas fa-plus"></i> Add New Item
                 </a>
             </div>
 
