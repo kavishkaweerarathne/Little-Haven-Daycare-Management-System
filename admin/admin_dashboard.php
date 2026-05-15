@@ -113,31 +113,57 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                         </div>
                         <div class="activity-list">
                             <?php
-                            // Dynamic Activity Feed using UNION - Simplified and Powerful
-                            $activity_q = "(SELECT 'User Registration' as type, fullname as description, created_at as activity_date, role as meta, 'user-plus' as icon, 'var(--primary)' as color FROM users)
+                            // Comprehensive System-wide Activity Feed
+                            $activity_q = "(SELECT 'User Registration' as type, fullname as description, created_at as activity_date, role as meta, 'user-plus' as icon, '#1A5276' as color FROM users WHERE role IN ('staff', 'finance', 'inventory'))
+                                          UNION
+                                          (SELECT 'Parent Joined' as type, fullname as description, created_at as activity_date, 'parent' as meta, 'user-check' as icon, '#26C6DA' as color FROM users WHERE role = 'parent')
                                           UNION
                                           (SELECT 'Child Enrollment' as type, name as description, enrolled_date as activity_date, 'child' as meta, 'baby' as icon, '#f59e0b' as color FROM children)
                                           UNION
-                                          (SELECT 'Daily Update' as type, CONCAT(c.name, ': ', da.mood) as description, da.activity_date as activity_date, 'activity' as meta, 'notes-medical' as icon, '#10b981' as color FROM daily_activities da JOIN children c ON da.child_id = c.id)
+                                          (SELECT 'Invoice Issued' as type, CONCAT('Inv #', invoice_number, ' - Rs. ', amount) as description, issue_date as activity_date, 'billing' as meta, 'file-invoice-dollar' as icon, '#ef4444' as color FROM invoices)
                                           UNION
-                                          (SELECT 'Invoice Issued' as type, CONCAT('Inv #', invoice_number, ' - ', amount) as description, issue_date as activity_date, 'billing' as meta, 'file-invoice-dollar' as icon, '#ef4444' as color FROM invoices)
-                                          ORDER BY activity_date DESC LIMIT 5";
+                                          (SELECT 'Payment Received' as type, CONCAT('Inv #', invoice_number, ' Paid') as description, issue_date as activity_date, 'payment' as meta, 'hand-holding-dollar' as icon, '#10b981' as color FROM invoices WHERE status = 'Paid')
+                                          UNION
+                                          (SELECT 'Supply Order' as type, item_name as description, order_date as activity_date, 'order' as meta, 'cart-plus' as icon, '#26C6DA' as color FROM inventory_orders WHERE status = 'Pending')
+                                          UNION
+                                          (SELECT 'Stock Received' as type, item_name as description, order_date as activity_date, 'stock' as meta, 'box-open' as icon, '#059669' as color FROM inventory_orders WHERE status = 'Received')
+                                          UNION
+                                          (SELECT 'New Supplier' as type, name as description, CURDATE() as activity_date, 'supplier' as meta, 'truck-ramp-box' as icon, '#8B5CF6' as color FROM suppliers)
+                                          UNION
+                                          (SELECT 'Staff Schedule' as type, activity_name as description, activity_date as activity_date, 'event' as meta, 'calendar-check' as icon, '#EC4899' as color FROM staff_schedule)
+                                          ORDER BY activity_date DESC LIMIT 10";
+                            
                             $activity_res = mysqli_query($con, $activity_q);
                             
                             if ($activity_res && mysqli_num_rows($activity_res) > 0):
                                 while ($act = mysqli_fetch_assoc($activity_res)):
-                                    $bg_color = str_replace('var(--primary)', 'rgba(38, 198, 218, 0.1)', $act['color']);
-                                    if ($act['color'] == '#f59e0b') $bg_color = 'rgba(245, 158, 11, 0.1)';
-                                    if ($act['color'] == '#10b981') $bg_color = 'rgba(16, 185, 129, 0.1)';
+                                    // Calculate soft background color
+                                    $rgb = sscanf($act['color'], "#%02x%02x%02x");
+                                    $bg_color = $rgb ? "rgba($rgb[0], $rgb[1], $rgb[2], 0.1)" : "rgba(38, 198, 218, 0.1)";
                             ?>
                                 <div class="activity-item">
                                     <div class="activity-icon" style="background: <?php echo $bg_color; ?>; color: <?php echo $act['color']; ?>;">
                                         <i class="fas fa-<?php echo $act['icon']; ?>"></i>
                                     </div>
                                     <div class="activity-details">
-                                        <h4><?php echo $act['type']; ?></h4>
-                                        <p><?php echo $act['description']; ?> <span style="font-size: 0.7rem; color: #94a3b8;">(<?php echo ucfirst($act['meta']); ?>)</span></p>
-                                        <span style="font-size: 0.75rem; color: #94a3b8;"><?php echo date('d M Y', strtotime($act['activity_date'])); ?></span>
+                                        <div class="activity-header">
+                                            <div class="activity-title-group">
+                                                <h4><?php echo $act['type']; ?></h4>
+                                                <p><?php echo $act['description']; ?></p>
+                                            </div>
+                                            <div class="activity-right">
+                                                <span class="activity-time" style="color: var(--text); font-weight: 700;">
+                                                    <i class="far fa-calendar-alt"></i> <?php echo date('d M Y', strtotime($act['activity_date'])); ?>
+                                                </span>
+                                                <span style="color: #cbd5e1;">|</span>
+                                                <span class="activity-time">
+                                                    <i class="far fa-clock"></i> <?php echo date('h:i A', strtotime($act['activity_date'])); ?>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="activity-meta-tags">
+                                            <span class="activity-badge"><?php echo ucfirst($act['meta']); ?></span>
+                                        </div>
                                     </div>
                                 </div>
                             <?php 

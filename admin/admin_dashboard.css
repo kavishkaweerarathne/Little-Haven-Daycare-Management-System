@@ -214,40 +214,102 @@ tr:hover {
 .activity-list {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.25rem;
 }
 
 .activity-item {
     display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #f3f4f6;
+    gap: 1.25rem;
+    align-items: center;
+    padding: 1.25rem;
+    background: #f8fafc;
+    border-radius: 1rem;
+    border: 1px solid #f1f5f9;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.activity-item:last-child {
-    border-bottom: none;
+.activity-item:hover {
+    transform: translateX(8px);
+    background: white;
+    border-color: var(--primary);
+    box-shadow: 0 10px 15px -3px rgba(38, 198, 218, 0.1);
 }
 
 .activity-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1rem;
+    font-size: 1.25rem;
     flex-shrink: 0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.activity-details {
+    flex: 1;
+}
+
+.activity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.activity-title-group {
+    display: flex;
+    flex-direction: column;
 }
 
 .activity-details h4 {
-    font-size: 0.95rem;
-    margin-bottom: 2px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--secondary);
+    margin: 0;
 }
 
 .activity-details p {
-    font-size: 0.85rem;
-    color: #6b7280;
+    font-size: 0.95rem;
+    color: #4b5563;
+    margin: 4px 0 0 0;
+    line-height: 1.4;
+}
+
+.activity-right {
+    text-align: right;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+}
+
+.activity-meta-tags {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.activity-badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.activity-time {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 500;
 }
 
 .quick-actions {

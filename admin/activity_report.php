@@ -8,13 +8,23 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 }
 
 // Fetch all activities for the report
-$report_q = "(SELECT 'User Registration' as type, fullname as description, created_at as activity_date, role as meta FROM users)
+$report_q = "(SELECT 'User Registration' as type, fullname as description, created_at as activity_date, role as meta FROM users WHERE role IN ('staff', 'finance', 'inventory'))
+              UNION
+              (SELECT 'Parent Joined' as type, fullname as description, created_at as activity_date, 'parent' as meta FROM users WHERE role = 'parent')
               UNION
               (SELECT 'Child Enrollment' as type, name as description, enrolled_date as activity_date, 'child' as meta FROM children)
               UNION
-              (SELECT 'Daily Update' as type, CONCAT(c.name, ': ', da.mood) as description, da.activity_date as activity_date, 'activity' as meta FROM daily_activities da JOIN children c ON da.child_id = c.id)
+              (SELECT 'Invoice Issued' as type, CONCAT('Inv #', invoice_number, ' - Rs. ', amount) as description, issue_date as activity_date, 'billing' as meta FROM invoices)
               UNION
-              (SELECT 'Invoice Issued' as type, CONCAT('Inv #', invoice_number, ' - ', amount) as description, issue_date as activity_date, 'billing' as meta FROM invoices)
+              (SELECT 'Payment Received' as type, CONCAT('Inv #', invoice_number, ' Paid') as description, issue_date as activity_date, 'payment' as meta FROM invoices WHERE status = 'Paid')
+              UNION
+              (SELECT 'Supply Order' as type, item_name as description, order_date as activity_date, 'order' as meta FROM inventory_orders WHERE status = 'Pending')
+              UNION
+              (SELECT 'Stock Received' as type, item_name as description, order_date as activity_date, 'stock' as meta FROM inventory_orders WHERE status = 'Received')
+              UNION
+              (SELECT 'New Supplier' as type, name as description, CURDATE() as activity_date, 'supplier' as meta FROM suppliers)
+              UNION
+              (SELECT 'Staff Schedule' as type, activity_name as description, activity_date as activity_date, 'event' as meta FROM staff_schedule)
               ORDER BY activity_date DESC";
 $report_res = mysqli_query($con, $report_q);
 ?>
