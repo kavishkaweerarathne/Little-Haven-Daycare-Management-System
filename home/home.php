@@ -181,8 +181,8 @@
                     <div style="display: flex; align-items: center; gap: 15px; margin-top: 20px;">
                         <img src="https://i.pravatar.cc/100?u=1" alt="Parent" style="width: 50px; height: 50px; border-radius: 50%;">
                         <div>
-                            <strong>Isabella Reed</strong>
-                            <span style="display: block; font-size: 0.8rem; color: var(--text-muted);">Executive Mother</span>
+                            <strong>Charitha Alwis</strong>
+                            <span style="display: block; font-size: 0.8rem; color: var(--text-muted);">Parent</span>
                         </div>
                     </div>
                 </div>
@@ -192,8 +192,8 @@
                     <div style="display: flex; align-items: center; gap: 15px; margin-top: 20px;">
                         <img src="https://i.pravatar.cc/100?u=2" alt="Parent" style="width: 50px; height: 50px; border-radius: 50%;">
                         <div>
-                            <strong>Marcus Thorne</strong>
-                            <span style="display: block; font-size: 0.8rem; color: var(--text-muted);">Tech Entrepreneur</span>
+                            <strong>Heshan Fernando</strong>
+                            <span style="display: block; font-size: 0.8rem; color: var(--text-muted);">Parent</span>
                         </div>
                     </div>
                 </div>
