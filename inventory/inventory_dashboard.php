@@ -445,6 +445,7 @@ if ($tab == 'inventory') {
                             <th>Item Name</th>
                             <th>Supplier</th>
                             <th>Quantity</th>
+                            <th>Total Cost</th>
                             <th>Order Date</th>
                             <th>Status</th>
                             <th>Actions</th>
@@ -458,6 +459,7 @@ if ($tab == 'inventory') {
                                     <td><?php echo $order['item_name']; ?></td>
                                     <td><?php echo $order['supplier_name'] ?: 'N/A'; ?></td>
                                     <td><?php echo $order['quantity']; ?></td>
+                                    <td><strong>Rs. <?php echo number_format($order['total_cost'], 2); ?></strong></td>
                                     <td><?php echo date('d M Y', strtotime($order['order_date'])); ?></td>
                                     <td><span class="badge status-<?php echo strtolower($order['status']); ?>"><?php echo $order['status']; ?></span></td>
                                     <td>
@@ -469,7 +471,7 @@ if ($tab == 'inventory') {
                                 </tr>
                             <?php endwhile; ?>
                         <?php else: ?>
-                            <tr><td colspan="7" style="text-align: center; padding: 40px;">No orders found.</td></tr>
+                            <tr><td colspan="8" style="text-align: center; padding: 40px;">No orders found.</td></tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
