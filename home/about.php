@@ -139,7 +139,7 @@
                 </div>
             </div>
 
-            <div class="mission-vision">
+            <div id="vision-mission" class="mission-vision">
                 <div class="mv-card reveal fade-up" style="transition-delay: 0.1s;">
                     <i class="fas fa-eye"></i>
                     <h3>Our Vision</h3>

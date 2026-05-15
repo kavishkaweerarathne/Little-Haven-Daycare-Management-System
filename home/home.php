@@ -220,7 +220,7 @@
             <div class="footer-column">
                 <h4>Explore</h4>
                 <ul class="footer-links">
-                    <li><a href="home.php">Our Philosophy</a></li>
+                    <li><a href="about.php#vision-mission">Vision & Mission</a></li>
                     <li><a href="home.php#services">Our Services</a></li>
                     <li><a href="home.php#why-choose-us">Why Choose Us</a></li>
                     <li><a href="home.php#facilities">The Facility</a></li>
