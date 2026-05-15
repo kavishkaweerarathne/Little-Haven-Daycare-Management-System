@@ -161,7 +161,6 @@ $recent_result = mysqli_query($con, $recent_payments);
             <li><a href="invoices.php"><i class="fas fa-file-invoice"></i> Invoices</a></li>
             <li><a href="payments.php"><i class="fas fa-receipt"></i> Payments</a></li>
             <li><a href="reports.php" class="active"><i class="fas fa-chart-line"></i> Reports</a></li>
-            <li><a href="../admin/admin_dashboard.php"><i class="fas fa-arrow-left"></i> Back to Admin</a></li>
         </ul>
     </div>
     

@@ -416,7 +416,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['save'])) {
             <li><a href="invoices.php"><i class="fas fa-file-invoice"></i> Invoices</a></li>
             <li><a href="payments.php"><i class="fas fa-receipt"></i> Payments</a></li>
             <li><a href="reports.php"><i class="fas fa-chart-line"></i> Reports</a></li>
-            <li><a href="../admin/admin_dashboard.php"><i class="fas fa-arrow-left"></i> Back to Admin</a></li>
         </ul>
     </div>
     
