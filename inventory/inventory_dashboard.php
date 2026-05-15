@@ -23,6 +23,56 @@ if ($tab == 'inventory') {
     $orders_result = $con->query("SELECT o.*, s.name as supplier_name FROM inventory_orders o LEFT JOIN suppliers s ON o.supplier_id = s.id ORDER BY o.order_date DESC");
 } elseif ($tab == 'stock_level') {
     $low_stock_items = $con->query("SELECT * FROM inventory WHERE quantity <= 5 ORDER BY quantity ASC");
+} elseif ($tab == 'settings') {
+    $user_id = $_SESSION['user_id'];
+    
+    // Handle Profile Update
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_profile'])) {
+        $fullname = mysqli_real_escape_string($con, $_POST['fullname']);
+        $phone = mysqli_real_escape_string($con, $_POST['phone']);
+        
+        if (empty($fullname)) {
+            $error = 'Full name is required.';
+        } elseif (!empty($phone) && !preg_match("/^[0-9]{10}$/", $phone)) {
+            $error = 'Phone number must be exactly 10 digits.';
+        } else {
+            $stmt = $con->prepare("UPDATE users SET fullname = ?, phone = ? WHERE id = ?");
+            $stmt->bind_param("ssi", $fullname, $phone, $user_id);
+            if ($stmt->execute()) {
+                $_SESSION['fullname'] = $fullname;
+                $success = 'Profile updated successfully!';
+            } else {
+                $error = 'Error updating profile.';
+            }
+        }
+    }
+    
+    // Handle Password Update
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_security'])) {
+        $current_password = $_POST['current_password'];
+        $new_password = $_POST['new_password'];
+        $confirm_password = $_POST['confirm_password'];
+        
+        $user = $con->query("SELECT password FROM users WHERE id = $user_id")->fetch_assoc();
+        
+        if ($current_password !== $user['password']) {
+            $error = 'Current password is incorrect.';
+        } elseif ($new_password !== $confirm_password) {
+            $error = 'New passwords do not match.';
+        } elseif (strlen($new_password) < 4) {
+            $error = 'New password must be at least 4 characters.';
+        } else {
+            $stmt = $con->prepare("UPDATE users SET password = ? WHERE id = ?");
+            $stmt->bind_param("si", $new_password, $user_id);
+            if ($stmt->execute()) {
+                $success = 'Password updated successfully!';
+            } else {
+                $error = 'Error updating password.';
+            }
+        }
+    }
+
+    $user_data = $con->query("SELECT * FROM users WHERE id = $user_id")->fetch_assoc();
 }
 ?>
 <!DOCTYPE html>
@@ -317,7 +367,131 @@ if ($tab == 'inventory') {
 
         .delete-btn { background: #FFF5F5; color: var(--danger); }
         .delete-btn:hover { background: var(--danger); color: white; }
+        /* Settings UI */
+        .settings-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            min-height: 500px;
+        }
+
+        .settings-sidebar {
+            border-right: 1.5px solid #F1F5F9;
+            padding-right: 20px;
+        }
+
+        .settings-tab {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 20px;
+            border-radius: 12px;
+            color: #64748B;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-family: inherit;
+        }
+
+        .settings-tab.active {
+            background: #F0F9FF;
+            color: #0284C7;
+        }
+
+        .settings-tab i { font-size: 1.1rem; }
+
+        .settings-content { padding: 10px 0; }
+        .settings-section { display: none; }
+        .settings-section.active { display: block; }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .avatar-circle {
+            width: 80px;
+            height: 80px;
+            background: #BAE6FD;
+            color: #0284C7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            border-radius: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .input-group label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .input-field {
+            padding: 12px 16px;
+            border: 1.5px solid #E2E8F0;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            background: #F8FAFC;
+        }
+
+        .input-field:focus {
+            border-color: #0284C7;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.1);
+        }
+
+        .input-field:disabled {
+            background: #F1F5F9;
+            cursor: not-allowed;
+            color: #94A3B8;
+        }
+
+        .save-btn {
+            background: #0284C7;
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .save-btn:hover { background: #0369A1; transform: translateY(-2px); }
     </style>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
@@ -556,43 +730,119 @@ if ($tab == 'inventory') {
             </div>
 
         <?php elseif ($tab == 'settings'): ?>
-            <div class="table-container" style="padding: 40px; max-width: 600px;">
-                <h2 style="margin-bottom: 20px;">Manager Settings</h2>
-                <form action="update_settings.php" method="POST">
-                    <div style="display: flex; flex-direction: column; gap: 20px;">
-                        <div style="display: flex; flex-direction: column; gap: 8px;">
-                            <label style="font-weight: 600;">Full Name</label>
-                            <input type="text" name="fullname" value="<?php echo $_SESSION['fullname']; ?>" required style="padding: 12px; border: 1.5px solid #E2E8F0; border-radius: 10px;">
-                        </div>
-                        <div style="display: flex; flex-direction: column; gap: 8px;">
-                            <label style="font-weight: 600;">Email Address</label>
-                            <input type="email" value="<?php echo $_SESSION['email']; ?>" disabled style="padding: 12px; border: 1.5px solid #E2E8F0; border-radius: 10px; background: #f8fafc;">
-                        </div>
-                        
-                        <hr style="border: 0; border-top: 1px solid #edf2f7; margin: 10px 0;">
-                        <h4 style="color: var(--text-muted);">Change Password (Optional)</h4>
+            <div class="settings-container">
+                <!-- Settings Sidebar -->
+                <div class="settings-sidebar">
+                    <button class="settings-tab active" onclick="switchSettingsTab('profile')">
+                        <i class="fas fa-user-circle"></i> Profile
+                    </button>
+                    <button class="settings-tab" onclick="switchSettingsTab('security')">
+                        <i class="fas fa-shield-halved"></i> Security
+                    </button>
+                </div>
 
-                        <div style="display: flex; flex-direction: column; gap: 8px;">
-                            <label style="font-weight: 600;">Current Password</label>
-                            <input type="password" name="current_password" placeholder="Required to change password" style="padding: 12px; border: 1.5px solid #E2E8F0; border-radius: 10px;">
+                <!-- Settings Content -->
+                <div class="settings-content">
+                    <!-- Profile Section -->
+                    <div id="profile-section" class="settings-section active">
+                        <div class="profile-header">
+                            <div class="avatar-circle">
+                                <?php echo strtoupper(substr($user_data['fullname'], 0, 1)); ?>
+                            </div>
+                            <div>
+                                <h2 style="margin: 0; font-size: 1.5rem;">My Profile</h2>
+                                <p style="margin: 5px 0 0; color: #64748B;">Manage your personal information and contact details.</p>
+                            </div>
                         </div>
-                        <div style="display: flex; flex-direction: column; gap: 8px;">
-                            <label style="font-weight: 600;">New Password</label>
-                            <input type="password" name="new_password" placeholder="Enter new password" style="padding: 12px; border: 1.5px solid #E2E8F0; border-radius: 10px;">
-                        </div>
-                        <div style="display: flex; flex-direction: column; gap: 8px;">
-                            <label style="font-weight: 600;">Confirm New Password</label>
-                            <input type="password" name="confirm_password" placeholder="Repeat new password" style="padding: 12px; border: 1.5px solid #E2E8F0; border-radius: 10px;">
-                        </div>
-                        
-                        <button type="submit" class="add-btn" style="width: 100%; justify-content: center; margin-top: 10px;">Save Changes</button>
+
+                        <form method="POST" action="inventory_dashboard.php?tab=settings">
+                            <input type="hidden" name="update_profile" value="1">
+                            <div class="form-row">
+                                <div class="input-group">
+                                    <label><i class="fas fa-user"></i> Full Name</label>
+                                    <input type="text" name="fullname" class="input-field" value="<?php echo $user_data['fullname']; ?>" required>
+                                </div>
+                                <div class="input-group">
+                                    <label><i class="fas fa-envelope"></i> Email Address</label>
+                                    <input type="email" class="input-field" value="<?php echo $user_data['email']; ?>" disabled>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="input-group">
+                                    <label><i class="fas fa-phone"></i> Phone Number</label>
+                                    <input type="text" name="phone" id="settings_phone" class="input-field" value="<?php echo $user_data['phone'] ?? ''; ?>" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '');" placeholder="e.g. 0712345678">
+                                </div>
+                                <div class="input-group">
+                                    <label><i class="fas fa-user-shield"></i> Account Role</label>
+                                    <input type="text" class="input-field" value="Inventory Manager" disabled>
+                                </div>
+                            </div>
+                            <button type="submit" class="save-btn">
+                                <i class="fas fa-save"></i> Save Profile Changes
+                            </button>
+                        </form>
                     </div>
-                </form>
+
+                    <!-- Security Section -->
+                    <div id="security-section" class="settings-section">
+                        <div class="profile-header">
+                            <div class="avatar-circle" style="background: #FEF3C7; color: #D97706;">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <div>
+                                <h2 style="margin: 0; font-size: 1.5rem;">Password & Security</h2>
+                                <p style="margin: 5px 0 0; color: #64748B;">Update your password to keep your account secure.</p>
+                            </div>
+                        </div>
+
+                        <form method="POST" action="inventory_dashboard.php?tab=settings" style="max-width: 500px;">
+                            <input type="hidden" name="update_security" value="1">
+                            <div class="input-group" style="margin-bottom: 20px;">
+                                <label>Current Password</label>
+                                <input type="password" name="current_password" class="input-field" required placeholder="Enter current password">
+                            </div>
+                            <div class="input-group" style="margin-bottom: 20px;">
+                                <label>New Password</label>
+                                <input type="password" name="new_password" class="input-field" required minlength="6" placeholder="Enter new password">
+                            </div>
+                            <div class="input-group" style="margin-bottom: 25px;">
+                                <label>Confirm New Password</label>
+                                <input type="password" name="confirm_password" class="input-field" required minlength="6" placeholder="Repeat new password">
+                            </div>
+                            <button type="submit" class="save-btn" style="background: #059669;">
+                                <i class="fas fa-shield-check"></i> Update Password
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         <?php endif; ?>
     </main>
 
     <script>
+        // Tab Switching for Settings
+        function switchSettingsTab(tabName) {
+            // Update tabs
+            document.querySelectorAll('.settings-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+
+            // Update sections
+            document.querySelectorAll('.settings-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(tabName + '-section').classList.add('active');
+        }
+
+        // SweetAlert Notifications
+        <?php if(isset($success)): ?>
+            Swal.fire('Success', '<?php echo $success; ?>', 'success');
+        <?php endif; ?>
+
+        <?php if(isset($error)): ?>
+            Swal.fire('Error', '<?php echo $error; ?>', 'error');
+        <?php endif; ?>
         function confirmDeleteItem(id) {
             if (confirm('Are you sure you want to delete this item? It will be moved to the archive.')) {
                 window.location.href = 'delete_item.php?id=' + id;
