@@ -111,7 +111,7 @@
                     <p style="font-size: 0.85rem;">Certified experts in early childhood education.</p>
                 </div>
                 <div class="feature-card reveal fade-up" style="transition-delay: 0.2s;">
-                    <div class="icon" style="background: rgba(38, 198, 218, 0.1); color: var(--primary);"><i class="fas fa-shield-check"></i></div>
+                    <div class="icon" style="background: rgba(38, 198, 218, 0.1); color: var(--primary);"><i class="fas fa-shield-heart"></i></div>
                     <h4 style="margin: 15px 0;">Safe Environment</h4>
                     <p style="font-size: 0.85rem;">Designed with the highest safety standards.</p>
                 </div>
