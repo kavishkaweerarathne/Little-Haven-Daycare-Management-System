@@ -16,11 +16,11 @@ $out_of_stock = $con->query("SELECT COUNT(*) as count FROM inventory WHERE quant
 
 // Data for different tabs
 if ($tab == 'inventory') {
-    $inventory_result = $con->query("SELECT * FROM inventory ORDER BY created_at DESC");
+    $inventory_result = $con->query("SELECT * FROM inventory ORDER BY id DESC");
 } elseif ($tab == 'suppliers') {
     $suppliers_result = $con->query("SELECT * FROM suppliers ORDER BY name ASC");
 } elseif ($tab == 'orders') {
-    $orders_result = $con->query("SELECT o.*, s.name as supplier_name FROM inventory_orders o LEFT JOIN suppliers s ON o.supplier_id = s.id ORDER BY o.created_at DESC");
+    $orders_result = $con->query("SELECT o.*, s.name as supplier_name FROM inventory_orders o LEFT JOIN suppliers s ON o.supplier_id = s.id ORDER BY o.order_date DESC");
 } elseif ($tab == 'stock_level') {
     $low_stock_items = $con->query("SELECT * FROM inventory WHERE quantity <= reorder_threshold ORDER BY quantity ASC");
 }
