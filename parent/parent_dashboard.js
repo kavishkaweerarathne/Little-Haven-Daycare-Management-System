@@ -20,7 +20,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const titleMap = {
                 'dashboard': 'Parent & Child Overview',
                 'children': 'My Children',
-                'attendance': 'Attendance Records',
+                'activities': 'Daily Activities',
+                'notifications': 'Notifications & Announcements',
                 'billing': 'Billing & Payments',
                 'settings': 'Account Settings'
             };

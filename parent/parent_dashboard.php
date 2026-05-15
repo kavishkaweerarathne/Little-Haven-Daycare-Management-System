@@ -81,6 +81,7 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
             <p class="<?php echo $tab == 'dashboard' ? 'active' : ''; ?>" data-tab="dashboard"><i class="fas fa-chart-line"></i> <span>Dashboard</span></p>
             <p class="<?php echo $tab == 'children' ? 'active' : ''; ?>" data-tab="children"><i class="fas fa-baby"></i> <span>My Children</span></p>
             <p class="<?php echo $tab == 'activities' ? 'active' : ''; ?>" data-tab="activities"><i class="fas fa-book-open"></i> <span>Daily Activities</span></p>
+            <p class="<?php echo $tab == 'notifications' ? 'active' : ''; ?>" data-tab="notifications"><i class="fas fa-bell"></i> <span>Notifications</span></p>
             <p class="<?php echo $tab == 'billing' ? 'active' : ''; ?>" data-tab="billing"><i class="fas fa-file-invoice-dollar"></i> <span>Billing</span></p>
             <p class="<?php echo $tab == 'settings' ? 'active' : ''; ?>" data-tab="settings"><i class="fas fa-user-gear"></i> <span>Settings</span></p>
         </nav>
@@ -189,7 +190,32 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </div>
+                        <div class="card" style="margin-top: 2rem;">
+                        <div class="card-header">
+                            <h3>Recent School Events</h3>
+                            <a href="javascript:void(0)" onclick="document.querySelector('[data-tab=\'notifications\']').click()" style="color: var(--primary); text-decoration: none; font-size: 0.85rem; font-weight: 600;">View All</a>
+                        </div>
+                        <div class="notification-preview">
+                            <?php 
+                            $recent_notif = mysqli_query($con, "SELECT s.*, st.fullname as staff_name FROM staff_schedule s JOIN users st ON s.staff_id = st.id ORDER BY s.activity_date DESC LIMIT 2");
+                            if ($recent_notif && mysqli_num_rows($recent_notif) > 0):
+                                while($rn = mysqli_fetch_assoc($recent_notif)):
+                            ?>
+                                <div style="padding: 15px; border-bottom: 1px solid #f1f5f9; display: flex; gap: 15px; align-items: center;">
+                                    <div style="width: 40px; height: 40px; background: #e0f2fe; color: #0ea5e9; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <i class="fas fa-calendar-day"></i>
+                                    </div>
+                                    <div>
+                                        <h5 style="margin: 0; font-size: 0.95rem;"><?php echo $rn['activity_name']; ?></h5>
+                                        <p style="margin: 3px 0 0; font-size: 0.8rem; color: #64748b;"><?php echo date('d M', strtotime($rn['activity_date'])); ?> • <?php echo $rn['staff_name']; ?></p>
+                                    </div>
+                                </div>
+                            <?php endwhile; else: ?>
+                                <p style="text-align: center; color: #94a3b8; padding: 1rem; font-size: 0.9rem;">No recent events.</p>
+                            <?php endif; ?>
+                        </div>
                     </div>
+                </div>
                 </div>
                 <div class="right-col">
                     <div class="card">
@@ -333,6 +359,58 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                         echo "<div style='text-align: center; padding: 5rem; background: #f8fafc; border-radius: 30px; color: #94a3b8;'><h3>No Children Linked</h3><p>Please link your children to see their activities.</p></div>";
                     }
                     ?>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications Tab -->
+        <div id="notifications-tab" class="tab-content <?php echo $tab == 'notifications' ? 'active' : ''; ?>">
+            <div class="card">
+                <div class="section-header">
+                    <h2>Notifications & Updates</h2>
+                    <p style="color: #64748b; font-size: 0.9rem;">Important announcements and scheduled events from school</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem;">
+                    <?php 
+                    $notif_query = "SELECT s.*, st.fullname as staff_name 
+                                  FROM staff_schedule s
+                                  JOIN users st ON s.staff_id = st.id
+                                  ORDER BY s.activity_date DESC, s.start_time DESC";
+                    $notif_res = mysqli_query($con, $notif_query);
+
+                    if ($notif_res && mysqli_num_rows($notif_res) > 0):
+                        while($notif = mysqli_fetch_assoc($notif_res)):
+                            $is_today = $notif['activity_date'] == date('Y-m-d');
+                    ?>
+                        <div style="background: <?php echo $is_today ? '#f0f9ff' : '#f8fafc'; ?>; border: 1px solid <?php echo $is_today ? '#bae6fd' : '#e2e8f0'; ?>; border-radius: 20px; padding: 1.5rem; display: flex; gap: 20px; align-items: flex-start; transition: all 0.3s;">
+                            <div style="width: 50px; height: 50px; background: <?php echo $is_today ? '#0ea5e9' : '#94a3b8'; ?>; color: white; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0;">
+                                <i class="fas <?php echo $is_today ? 'fa-calendar-check' : 'fa-calendar-day'; ?>"></i>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                                    <h4 style="margin: 0; font-size: 1.1rem; color: var(--secondary);"><?php echo $notif['activity_name']; ?></h4>
+                                    <span style="font-size: 0.8rem; font-weight: 600; color: #64748b;"><?php echo date('d M Y', strtotime($notif['activity_date'])); ?></span>
+                                </div>
+                                <p style="margin: 0 0 12px 0; color: #475569; font-size: 0.95rem;">
+                                    Scheduled at <strong><?php echo $notif['room']; ?></strong> starting at <strong><?php echo date('h:i A', strtotime($notif['start_time'])); ?></strong>.
+                                </p>
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <span style="font-size: 0.8rem; color: #94a3b8;"><i class="fas fa-user-tie"></i> Posted by <?php echo $notif['staff_name']; ?></span>
+                                    <span class="badge <?php echo $notif['status'] == 'Upcoming' ? 'badge-warning' : 'badge-success'; ?>" style="font-size: 0.75rem;"><?php echo $notif['status']; ?></span>
+                                </div>
+                            </div>
+                        </div>
+                    <?php 
+                        endwhile;
+                    else:
+                    ?>
+                        <div style="text-align: center; padding: 5rem; color: #94a3b8;">
+                            <i class="fas fa-bell-slash" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                            <h3>No Notifications</h3>
+                            <p>You'll see updates here when staff members schedule new events.</p>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
