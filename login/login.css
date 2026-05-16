@@ -63,7 +63,7 @@ body {
     z-index: -1;
 }
 
-/* Login Container */
+/* Login Container card*/
 .login-container {
     width: 100%;
     max-width: 520px;
@@ -133,7 +133,7 @@ body {
     font-size: 0.95rem;
 }
 
-/* Form Styles */
+/* Form input Styles */
 .form-group {
     margin-bottom: 20px;
     text-align: left;
@@ -258,7 +258,7 @@ body {
     transform: translateY(-50%) scale(1.1);
 }
 
-/* Animations */
+/* Slide Animations */
 @keyframes slideUp {
     from {
         opacity: 0;
@@ -294,7 +294,7 @@ body {
     box-shadow: 0 0 0 4px rgba(255, 77, 77, 0.1);
 }
 
-/* Responsive */
+/* Responsive Design*/
 @media (max-width: 480px) {
     .login-card {
         padding: 40px 25px;

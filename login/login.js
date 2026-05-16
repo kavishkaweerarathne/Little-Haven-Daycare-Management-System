@@ -2,48 +2,48 @@
  * Login Page Scripts
  * Little Haven Daycare Management System
  */
-
+// DOMContentLoaded Event
 document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.querySelector('form');
+    //DOM Element References
+    const loginForm = document.querySelector('form');                
     const emailInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
     const emailError = document.getElementById('username-error');
     const passwordError = document.getElementById('password-error');
+    
 
     // --- Validation Functions ---
 
+    //  Email Validation Function
     const validateEmail = (email) => {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;  
         if (!email) return "Email address is required.";
         if (!regex.test(email)) return "Please enter a valid email address.";
         return "";
     };
 
+    // Password Validation Function
     const validatePassword = (password) => {
-        if (!password) return "Password is required.";
+        if (!password) return "Password is required."; 
         if (password.length < 4) return "Password must be at least 4 characters.";
-        
-        // Example of special character check (Rule 6)
-        // If you want to ensure at least one special char, uncomment below:
-        // const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
-        // if (!specialCharRegex.test(password)) return "Password should contain at least one special character.";
-        
         return "";
     };
 
+    // Show Error Function
     const showError = (input, errorElement, message) => {
         if (message) {
-            input.classList.add('error');
-            errorElement.textContent = message;
-            errorElement.classList.add('show');
+            input.classList.add('error');         // Add red border to input field
+            errorElement.textContent = message;   //sets error msg
+            errorElement.classList.add('show');   //shows the error msg
         } else {
-            input.classList.remove('error');
-            errorElement.classList.remove('show');
-            errorElement.textContent = "";
+            input.classList.remove('error');      // Removes the red border 
+            errorElement.classList.remove('show');  // Removes the error message
+            errorElement.textContent = "";        // Clears the error message
         }
     };
 
-    // --- Real-time Validation (Rule 5) ---
+
+    // --- Real-time Validation (Input Events) ---
 
     emailInput.addEventListener('input', () => {
         const error = validateEmail(emailInput.value);
@@ -75,7 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- Form Submission (Rule 1, 2, 3, 6) ---
+
+    // --- Form Submission Handler ---
 
     if (loginForm) {
         loginForm.addEventListener('submit', (e) => {
@@ -83,9 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const passErr = validatePassword(passwordInput.value);
 
             if (emailErr || passErr) {
-                e.preventDefault();
-                showError(emailInput, emailError, emailErr);
-                showError(passwordInput, passwordError, passErr);
+                e.preventDefault();           //// Stops form from submitting
+                showError(emailInput, emailError, emailErr);  //shows email error
+                showError(passwordInput, passwordError, passErr);  //shows password error
                 
                 // Show a main notification as well
                 showNotification("Please fix the errors in the form.", "error");
@@ -93,28 +94,30 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Show loading state
-            const btn = loginForm.querySelector('.btn-login');
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Signing In...';
-            btn.style.opacity = '0.8';
+            const btn = loginForm.querySelector('.btn-login');  //get the sign in button
+            btn.disabled = true;  //disable the sign in button
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Signing In...';  //change the sign in button to a loading spinner
+            btn.style.opacity = '0.8';  //reduce the opacity of the sign in button
         });
     }
 
+
     // --- Handle URL Errors/Success ---
-    const urlParams = new URLSearchParams(window.location.search);
-    const error = urlParams.get('error');
-    const success = urlParams.get('success');
+    const urlParams = new URLSearchParams(window.location.search);  //get URL parameters
+    const error = urlParams.get('error');  //get error from URL parameters
+    const success = urlParams.get('success');  //get success from URL parameters
 
     if (error) {
-        showNotification(decodeURIComponent(error), 'error');
+        showNotification(decodeURIComponent(error), 'error');  //show error notification
     }
     if (success) {
-        showNotification(decodeURIComponent(success), 'success');
+        showNotification(decodeURIComponent(success), 'success');  //show success notification
     }
 });
 
+
 /**
- * Show Premium Notification
+ * Show Premium Notification Function
  */
 function showNotification(message, type = 'error') {
     // Remove existing notifications
@@ -157,13 +160,13 @@ function showNotification(message, type = 'error') {
             .notification.success i { color: #2ecc71; }
             .notification span { font-weight: 600; color: var(--secondary); font-size: 0.95rem; }
         `;
-        document.head.appendChild(style);
+        document.head.appendChild(style);  //add styles to the head
     }
     
-    document.body.appendChild(notification);
-    setTimeout(() => notification.classList.add('show'), 100);
+    document.body.appendChild(notification);  //add notification to the body
+    setTimeout(() => notification.classList.add('show'), 100);  //add show class to notification after 100ms
     setTimeout(() => {
-        notification.classList.remove('show');
-        setTimeout(() => notification.remove(), 500);
+        notification.classList.remove('show');  //remove show class from notification after 4 seconds
+        setTimeout(() => notification.remove(), 500);  //remove notification after 500ms
     }, 4000);
 }
