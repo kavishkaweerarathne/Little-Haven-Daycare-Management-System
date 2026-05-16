@@ -56,3 +56,7 @@ window.addEventListener('scroll', () => {
         heroImage.style.transform = `translateY(${scrolled * 0.05}px)`;
     }
 });
+        heroImage.style.transform = `translateY(${scrolled * 0.05}px)`;
+    }
+});
+

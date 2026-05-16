@@ -14,6 +14,9 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <!-- Shared CSS -->
     <link rel="stylesheet" href="home.css?v=<?php echo time(); ?>">
     
@@ -227,27 +230,27 @@
 
             <!-- Form Side -->
             <div class="contact-form-card reveal fade-up" style="transition-delay: 0.2s;">
-                <form action="#" method="POST">
+                <form id="contactForm" action="#" method="POST">
                     <div class="form-grid">
                         <div class="form-group">
                             <label>First Name</label>
-                            <input type="text" placeholder="John" required>
+                            <input type="text" id="firstName" name="first_name" placeholder="John" required>
                         </div>
                         <div class="form-group">
                             <label>Last Name</label>
-                            <input type="text" placeholder="Doe" required>
+                            <input type="text" id="lastName" name="last_name" placeholder="Doe" required>
                         </div>
                         <div class="form-group full-width">
                             <label>Email Address</label>
-                            <input type="email" placeholder="john@example.com" required>
+                            <input type="email" id="email" name="email" placeholder="john@example.com" required>
                         </div>
                         <div class="form-group full-width">
                             <label>Subject</label>
-                            <input type="text" placeholder="Inquiry about Enrollment">
+                            <input type="text" id="subject" name="subject" placeholder="Inquiry about Enrollment">
                         </div>
                         <div class="form-group full-width">
                             <label>Your Message</label>
-                            <textarea rows="5" placeholder="Tell us how we can help..."></textarea>
+                            <textarea id="message" name="message" rows="5" placeholder="Tell us how we can help..."></textarea>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary" style="width: 100%; padding: 18px; font-size: 1.1rem; justify-content: center;">Send Message <i class="fas fa-paper-plane" style="margin-left: 10px;"></i></button>
@@ -316,5 +319,6 @@
     </footer>
 
     <script src="home.js"></script>
+    <script src="contact.js"></script>
 </body>
 </html>
