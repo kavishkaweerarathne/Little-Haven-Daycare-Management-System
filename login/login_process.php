@@ -1,15 +1,18 @@
 <?php
 include '../config.php';
 session_start();
-
+// check if the request method is POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = mysqli_real_escape_string($con, $_POST['username']);
-    $password = $_POST['password'];
+
+    $username = mysqli_real_escape_string($con, $_POST['username']); // escape special characters from username
+    $password = $_POST['password']; //get password
+
 
     // Hardcoded Admin Check
-    if ($username === 'admin@gmail.com' && $password === '0000') {
+
+    if ($username === 'admin@gmail.com' && $password === '0000') {       // if the user is admin
         $admin_check = mysqli_query($con, "SELECT id, fullname FROM users WHERE email = 'admin@gmail.com'");
-        if ($admin_row = mysqli_fetch_assoc($admin_check)) {
+        if ($admin_row = mysqli_fetch_assoc($admin_check)) {  // fetch admin data
             $_SESSION['user_id'] = $admin_row['id'];
             $_SESSION['fullname'] = $admin_row['fullname'];
         } else {
@@ -26,11 +29,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "SELECT * FROM users WHERE email = '$username'";
     $result = mysqli_query($con, $sql);
 
-    if (mysqli_num_rows($result) === 1) {
-        $user = mysqli_fetch_assoc($result);
+    if (mysqli_num_rows($result) === 1) {  // if user exists
+        $user = mysqli_fetch_assoc($result);  // fetch user data
         
         // Verify password
-        if ($password === $user['password']) {
+        if ($password === $user['password']) {  // if password is correct
             // Set session variables
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['fullname'] = $user['fullname'];
@@ -38,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['phone'] = $user['phone'];
             $_SESSION['role'] = $user['role'];
 
-            // Redirect based on role
+            // Redirect based on role - Dashboard paths
             if ($user['role'] === 'parent') {
                 header("Location: ../parent/parent_dashboard.php");
             } elseif ($user['role'] === 'staff') {
