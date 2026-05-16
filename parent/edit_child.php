@@ -25,6 +25,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $age = (int)$_POST['age'];
     $gender = mysqli_real_escape_string($con, $_POST['gender']);
 
+    // Validation
+    if (!preg_match("/^[a-zA-Z\s]+$/", $_POST['name'])) {
+        echo "<script>alert('Error: Name can only contain letters and spaces.'); window.history.back();</script>";
+        exit();
+    }
+
     $stmt = $con->prepare("UPDATE children SET name = ?, age = ?, gender = ? WHERE id = ? AND parent_id = ?");
     $stmt->bind_param("sisii", $name, $age, $gender, $id, $parent_id);
 
@@ -56,6 +62,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .btn { background: var(--primary); color: white; padding: 16px; border: none; border-radius: 14px; font-weight: 700; cursor: pointer; width: 100%; transition: 0.3s; font-size: 1rem; }
         .btn:hover { background: #00ACC1; transform: translateY(-2px); box-shadow: 0 8px 15px rgba(38, 198, 218, 0.2); }
         .back-link { display: inline-flex; align-items: center; gap: 8px; color: #64748b; text-decoration: none; margin-bottom: 25px; font-weight: 600; }
+        .error-text { color: #ef4444; font-size: 0.8rem; margin-top: 5px; display: none; }
+        input.error { border-color: #ef4444; background: #fff5f5; }
     </style>
 </head>
 <body>
@@ -68,7 +76,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form method="POST">
             <div class="form-group">
                 <label>Child's Full Name</label>
-                <input type="text" name="name" value="<?php echo $child['name']; ?>" required>
+                <input type="text" name="name" id="child_name" value="<?php echo $child['name']; ?>" required>
+                <span id="name_error" class="error-text">Only letters and spaces are allowed.</span>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                 <div class="form-group">
@@ -87,5 +96,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button type="submit" class="btn">Update Information</button>
         </form>
     </div>
+
+    <script>
+        const nameInput = document.getElementById('child_name');
+        const nameError = document.getElementById('name_error');
+
+        nameInput.addEventListener('input', function() {
+            const originalValue = this.value;
+            const cleanedValue = originalValue.replace(/[^a-zA-Z\s]/g, '');
+            
+            if (originalValue !== cleanedValue) {
+                this.value = cleanedValue;
+                nameError.style.display = 'block';
+                this.classList.add('error');
+            } else {
+                nameError.style.display = 'none';
+                this.classList.remove('error');
+            }
+
+            if (this.value.trim().length > 0 && this.value.trim().length < 3) {
+                nameError.textContent = 'Name must be at least 3 characters.';
+                nameError.style.display = 'block';
+            } else {
+                nameError.textContent = 'Only letters and spaces are allowed.';
+                if (originalValue === cleanedValue) nameError.style.display = 'none';
+            }
+        });
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const name = nameInput.value.trim();
+            if (name.length < 3 || !/^[a-zA-Z\s]+$/.test(name)) {
+                e.preventDefault();
+                nameError.style.display = 'block';
+                nameInput.classList.add('error');
+                nameInput.focus();
+            }
+        });
+    </script>
 </body>
 </html>

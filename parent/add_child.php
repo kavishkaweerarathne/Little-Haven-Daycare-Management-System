@@ -19,6 +19,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $gender = mysqli_real_escape_string($con, $_POST['gender']);
     $enrolled_date = date('Y-m-d');
 
+    // Validation
+    if (!preg_match("/^[a-zA-Z\s]+$/", $_POST['child_name'])) {
+        echo "<script>alert('Error: Child name can only contain letters and spaces.'); window.history.back();</script>";
+        exit();
+    }
+
     // We'll store the child's basic info and link it to the parent
     // The user mentioned parent name, email, phone in the form - we'll handle them as context
     $stmt = $con->prepare("INSERT INTO children (name, age, gender, parent_id, enrolled_date, staff_id) VALUES (?, ?, ?, ?, ?, 0)");
@@ -58,6 +64,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .btn-submit { background: var(--primary); color: white; border: none; padding: 16px; border-radius: 16px; font-weight: 700; font-size: 1.1rem; cursor: pointer; width: 100%; transition: 0.3s; box-shadow: 0 10px 20px rgba(38, 198, 218, 0.2); }
         .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(38, 198, 218, 0.3); }
         .back-btn { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: #64748b; font-weight: 600; margin-bottom: 2rem; font-size: 0.9rem; }
+        .error-text { color: #ef4444; font-size: 0.8rem; margin-top: 5px; display: none; }
+        input.error { border-color: #ef4444; background: #fff5f5; }
     </style>
 </head>
 <body>
@@ -88,7 +96,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="section-title">Child Information</div>
             <div class="form-group">
                 <label>Child's Full Name</label>
-                <input type="text" name="child_name" placeholder="Enter child's name" required>
+                <input type="text" name="child_name" id="child_name" placeholder="Enter child's name" required>
+                <span id="name_error" class="error-text">Only letters and spaces are allowed.</span>
             </div>
             <div class="form-grid">
                 <div class="form-group">
@@ -109,5 +118,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button type="submit" class="btn-submit">Complete Registration</button>
         </form>
     </div>
+
+    <script>
+        const nameInput = document.getElementById('child_name');
+        const nameError = document.getElementById('name_error');
+
+        nameInput.addEventListener('input', function() {
+            // Remove any characters that are not letters or spaces
+            const originalValue = this.value;
+            const cleanedValue = originalValue.replace(/[^a-zA-Z\s]/g, '');
+            
+            if (originalValue !== cleanedValue) {
+                this.value = cleanedValue;
+                nameError.style.display = 'block';
+                this.classList.add('error');
+            } else {
+                nameError.style.display = 'none';
+                this.classList.remove('error');
+            }
+
+            if (this.value.trim().length > 0 && this.value.trim().length < 3) {
+                nameError.textContent = 'Name must be at least 3 characters.';
+                nameError.style.display = 'block';
+            } else {
+                nameError.textContent = 'Only letters and spaces are allowed.';
+                if (originalValue === cleanedValue) nameError.style.display = 'none';
+            }
+        });
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const name = nameInput.value.trim();
+            if (name.length < 3 || !/^[a-zA-Z\s]+$/.test(name)) {
+                e.preventDefault();
+                nameError.style.display = 'block';
+                nameInput.classList.add('error');
+                nameInput.focus();
+            }
+        });
+    </script>
 </body>
 </html>
