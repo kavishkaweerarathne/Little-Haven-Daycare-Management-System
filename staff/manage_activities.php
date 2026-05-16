@@ -16,8 +16,8 @@ if (!$child) {
     exit();
 }
 
-$selected_date = $_GET['date'] ?? date('Y-m-d');
-// Fetch existing log for selected date
+$selected_date = date('Y-m-d'); // Strictly today's date as per user request
+// Fetch existing log for today
 $log = $con->query("SELECT * FROM daily_activities WHERE child_id = $child_id AND activity_date = '$selected_date'")->fetch_assoc();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -82,8 +82,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <div class="date-selector">
-            <label style="margin: 0; color: #1e40af;">Select Date:</label>
-            <input type="date" id="logDate" value="<?php echo $selected_date; ?>" onchange="changeDate(this.value)" style="padding: 8px 12px; border-radius: 8px; border: 1px solid #bfdbfe; font-size: 0.9rem;">
+            <label style="margin: 0; color: #1e40af;"><i class="fas fa-calendar-day"></i> Log Date:</label>
+            <input type="date" id="logDate" value="<?php echo $selected_date; ?>" 
+                   min="<?php echo $selected_date; ?>" 
+                   max="<?php echo $selected_date; ?>" 
+                   style="padding: 8px 12px; border-radius: 8px; border: 1px solid #bfdbfe; font-size: 0.9rem; background: #fff; cursor: pointer; font-weight: 600; color: #1e40af;">
+            <span style="font-size: 0.8rem; color: #64748b; margin-left: 10px;">(Today Only)</span>
         </div>
 
         <form method="POST">
@@ -122,10 +126,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </form>
     </div>
 
-    <script>
-        function changeDate(date) {
-            window.location.href = 'manage_activities.php?child_id=<?php echo $child_id; ?>&date=' + date;
-        }
-    </script>
+    <!-- No date change allowed as per user request -->
 </body>
 </html>
