@@ -231,6 +231,6 @@
         </div>
     </footer>
 
-    <script src="home.js"></script>
+    <script src="home.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>

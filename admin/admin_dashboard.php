@@ -7,6 +7,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     exit();
 }
 
+//Admin Email Constant
 $admin_email = 'admin@gmail.com';
 
 // Handle Profile Update
@@ -23,7 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
     } elseif (!preg_match("/^[0-9]{10}$/", $phone)) {
         $error = "Phone Number must be exactly 10 digits.";
     } else {
-        // Use email to identify the admin record
+       
+    // Use email to identify the admin record
         $update_query = "UPDATE users SET fullname = '$fullname', phone = '$phone' WHERE email = '$admin_email'";
         if (mysqli_query($con, $update_query)) {
             if (mysqli_affected_rows($con) > 0) {
@@ -116,8 +118,8 @@ if (!$admin_data) {
             <h1 id="tab-title">Admin Overview</h1>
             <a href="../login/logout.php" class="logout-btn">Logout</a>
         </div>
-        
-        <!-- Dashboard Section -->
+        <!--Dashboard-->
+        <!-- Statistics Queries (Dashboard)--> 
         <div id="dashboard-tab" class="tab-content active">
             <?php
             $staff_count_query = "SELECT COUNT(*) as total FROM users WHERE role = 'staff'";
@@ -137,17 +139,19 @@ if (!$admin_data) {
             $inventory_count = mysqli_fetch_assoc($inventory_count_res)['total'];
             ?>
 
+            <!--Welcome Banner-->
             <div class="welcome-banner">
                 <div class="welcome-text">
                     <h2>Hello, <?php echo htmlspecialchars($admin_data['fullname']); ?>! 👋</h2>
                     <p>Welcome back to Little Haven. Here's what's happening today.</p>
                 </div>
                 <div class="welcome-date" style="text-align: right;">
-                    <h3 style="margin:0;"><?php echo date('l'); ?></h3>
-                    <p style="margin:0; opacity: 0.8;"><?php echo date('jS F, Y'); ?></p>
+                    <h3 style="margin:0;"><?php echo date('l'); ?></h3>  <!-- Day of week -->
+                    <p style="margin:0; opacity: 0.8;"><?php echo date('jS F, Y'); ?></p> <!-- 15th January, 2026 -->
                 </div>
             </div>
 
+            <!--Statistics Cards with Click Handlers-->
             <div class="stats-grid">
                 <div class="stat-card" onclick="document.querySelector('[data-tab=\'staff\']').click()" style="cursor: pointer;">
                     <div class="stat-icon" style="background: var(--primary);"><i class="fas fa-users"></i></div>
@@ -184,6 +188,7 @@ if (!$admin_data) {
                 </div>
             </div>
 
+<!--Activity Feed UNION Query-->
             <div class="dashboard-grid">
                 <div class="left-col">
                     <div class="card">
@@ -219,7 +224,8 @@ if (!$admin_data) {
                             
                             if ($activity_res && mysqli_num_rows($activity_res) > 0):
                                 while ($act = mysqli_fetch_assoc($activity_res)):
-                                    // Calculate soft background color
+
+                                    // Calculate soft background color. Color Processing for Activity Icons
                                     $rgb = sscanf($act['color'], "#%02x%02x%02x");
                                     $bg_color = $rgb ? "rgba($rgb[0], $rgb[1], $rgb[2], 0.1)" : "rgba(38, 198, 218, 0.1)";
                             ?>

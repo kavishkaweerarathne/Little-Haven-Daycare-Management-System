@@ -344,7 +344,7 @@ if (isset($_GET['status'])) {
         </div>
     </footer>
 
-    <script src="home.js"></script>
+    <script src="home.js?v=<?php echo time(); ?>"></script>
     <script src="contact.js"></script>
     <script>
         <?php echo $notification; ?>

@@ -253,6 +253,6 @@
     <div class="scroll-top glass"><i class="fas fa-arrow-up"></i></div>
 
     <!-- Custom JS -->
-    <script src="home.js"></script>
+    <script src="home.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>

@@ -7,9 +7,9 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     exit();
 }
 
-// Fetch all activities for the report
+// Fetch all activities for the report  - User Registration (Staff/Finance/Inventory)  - parent Joined
 $report_q = "(SELECT 'User Registration' as type, fullname as description, created_at as activity_date, role as meta FROM users WHERE role IN ('staff', 'finance', 'inventory'))
-              UNION
+              UNION    
               (SELECT 'Parent Joined' as type, fullname as description, created_at as activity_date, 'parent' as meta FROM users WHERE role = 'parent')
               UNION
               (SELECT 'Child Enrollment' as type, name as description, enrolled_date as activity_date, 'child' as meta FROM children)
@@ -179,7 +179,7 @@ $report_res = mysqli_query($con, $report_q);
     </style>
 </head>
 <body>
-
+<!--Report Generate-->
     <div class="no-print-actions">
         <a href="admin_dashboard.php" class="btn btn-back"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
         <button onclick="window.print()" class="btn btn-print"><i class="fas fa-print"></i> Print / Save PDF</button>
