@@ -18,18 +18,22 @@
     <link rel="stylesheet" href="register.css">
 </head>
 <body>
-
+ 
+<!-- Background Image-->
     <div class="login-bg"></div>
     <div class="login-overlay"></div>
 
+<!--Registration Form-->
+<!--Main Container-->
     <main class="register-container">
         <div class="register-card">
+
             <!-- Logo -->
             <a href="../home/home.php" class="logo">
                 <i class="fas fa-hands-holding-child logo-icon"></i>
                 <span class="logo-text">Little Haven</span>
             </a>
-
+<!--Register Header-->
             <div class="register-header">
                 <h1>Join Our Community</h1>
                 <p>Create an account to manage your child's journey or your teaching schedule.</p>
@@ -102,10 +106,11 @@
                         <span class="error-text" id="confirm_password-error"></span>
                     </div>
                 </div>
-
+<!--Submit Button-->
                 <button type="submit" class="btn-register">Create Account</button>
             </form>
 
+<!--Registration Footer-->
             <div class="register-footer">
                 <p>Already have an account? <a href="../login/login.php">Sign In</a></p>
                 <a href="../home/home.php" class="back-home">
@@ -114,7 +119,7 @@
             </div>
         </div>
     </main>
-
+<!--Registration JS-->
     <script src="register.js"></script>
 </body>
 </html>
