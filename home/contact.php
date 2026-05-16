@@ -1,4 +1,30 @@
-<?php include '../config.php'; ?>
+<?php 
+include '../config.php'; 
+
+// Handle status notifications
+$notification = '';
+if (isset($_GET['status'])) {
+    if ($_GET['status'] == 'success') {
+        $notification = "Swal.fire({
+            icon: 'success',
+            title: 'Message Sent!',
+            text: 'Thank you for reaching out. We will get back to you soon.',
+            confirmButtonColor: '#26c6da'
+        });";
+    } elseif ($_GET['status'] == 'error') {
+        $msg = "An error occurred. Please try again.";
+        if (isset($_GET['message']) && $_GET['message'] == 'required') {
+            $msg = "Please fill in all required fields.";
+        }
+        $notification = "Swal.fire({
+            icon: 'error',
+            title: 'Submission Failed',
+            text: '$msg',
+            confirmButtonColor: '#26c6da'
+        });";
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -230,7 +256,7 @@
 
             <!-- Form Side -->
             <div class="contact-form-card reveal fade-up" style="transition-delay: 0.2s;">
-                <form id="contactForm" action="#" method="POST">
+                <form id="contactForm" action="contact_process.php" method="POST">
                     <div class="form-grid">
                         <div class="form-group">
                             <label>First Name</label>
@@ -320,5 +346,8 @@
 
     <script src="home.js"></script>
     <script src="contact.js"></script>
+    <script>
+        <?php echo $notification; ?>
+    </script>
 </body>
 </html>

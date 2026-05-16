@@ -16,8 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
             const firstName = document.getElementById('firstName').value.trim();
             const lastName = document.getElementById('lastName').value.trim();
             const email = document.getElementById('email').value.trim();
@@ -30,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
             if (!nameRegex.test(firstName)) {
+                e.preventDefault();
                 Swal.fire({
                     icon: 'error',
                     title: 'Invalid First Name',
@@ -40,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (!nameRegex.test(lastName)) {
+                e.preventDefault();
                 Swal.fire({
                     icon: 'error',
                     title: 'Invalid Last Name',
@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (!emailRegex.test(email)) {
+                e.preventDefault();
                 Swal.fire({
                     icon: 'error',
                     title: 'Invalid Email',
@@ -59,17 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // If all validations pass
-            Swal.fire({
-                icon: 'success',
-                title: 'Message Sent!',
-                text: 'Thank you for reaching out. We will get back to you soon.',
-                confirmButtonColor: '#26c6da',
-                timer: 3000,
-                timerProgressBar: true
-            }).then(() => {
-                contactForm.reset();
-            });
+            // If all validations pass, the form will submit normally to contact_process.php
+            // We just don't preventDefault() if everything is fine
         });
     }
 });
